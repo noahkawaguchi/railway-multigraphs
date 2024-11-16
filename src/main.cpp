@@ -5,7 +5,7 @@
 int main() {
 
   // Make network
-  std::shared_ptr<Network> memoryland_railways = std::make_shared<Network>();
+  std::unique_ptr<Network> memoryland_railways = std::make_unique<Network>();
 
   // Add stations to network
   memoryland_railways->new_station('A');
