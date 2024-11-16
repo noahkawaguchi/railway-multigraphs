@@ -20,7 +20,9 @@ public:
 
   // Create and add a track to the network, specifying the number of minutes 
   // it takes to go between the two stations with the given IDs
-  void new_track(std::shared_ptr<Station> station1, std::shared_ptr<Station> station2, int minutes);
+  void new_track(std::shared_ptr<Station> station1,
+                 std::shared_ptr<Station> station2,
+                 int minutes);
 
   // Find Dijkstra's shortest path from start to destination prioritizing time
   std::string DSP_time(std::shared_ptr<Station> start, std::shared_ptr<Station> destination);
@@ -30,7 +32,6 @@ public:
 
 private:
   std::vector<std::shared_ptr<Station>> stations;
-  // std::vector<std::shared_ptr<Track>> tracks;
   std::unordered_map<std::string, std::vector<std::shared_ptr<Track>>> tracks;
 
   // Custom comparator for priority queue

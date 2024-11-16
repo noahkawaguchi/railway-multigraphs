@@ -9,7 +9,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 add_executable(railway_simulator
     src/main.cpp
     src/Station.cpp
-    src/Track.cpp
     src/Network.cpp
 )
 
