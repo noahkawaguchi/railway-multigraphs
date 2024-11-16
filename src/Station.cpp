@@ -1,4 +1,7 @@
 #include "Station.h"
 
-Station::Station(AreaType area_type) : area_type(area_type) {}
+Station::Station(char id) : id(id) {}
 
+char Station::get_id() {
+  return this->id;
+}

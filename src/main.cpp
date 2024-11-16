@@ -1,29 +1,28 @@
-#include "Train.h"
-#include "Passenger.h"
-#include "Station.h"
-#include "Line.h"
-
 #include <memory>
+
+#include "Network.h"
 
 int main() {
 
-  // 1. Create stations
-  std::shared_ptr<Station> memoryland_city =
-      std::make_shared<Station>(Station::BUSINESS);
-  std::shared_ptr<Station> shopping_central =
-      std::make_shared<Station>(Station::LEISURE);
+  // Make network
+  std::shared_ptr<Network> memoryland_railways = std::make_shared<Network>();
 
-  // 2. Create a line and add stations to line
-  std::shared_ptr<Line> red_line = std::make_shared<Line>();
-  red_line->print();
-  red_line->add_station(memoryland_city);
-  red_line->print();
-  red_line->add_station(shopping_central);
-  red_line->print();
+  // Add stations to network
+  memoryland_railways->new_station('A');
+  memoryland_railways->new_station('B');
+  memoryland_railways->new_station('C');
+  memoryland_railways->new_station('D');
 
-  // 3. Create a train
-  std::shared_ptr<Train> train001 = std::make_shared<Train>(red_line);
-  train001->begin_day(true);
+  // Connect stations with tracks
+  memoryland_railways->new_track('A', 'B', 3);
+  memoryland_railways->new_track('A', 'C', 7);
+  memoryland_railways->new_track('B', 'C', 5);
+  memoryland_railways->new_track('B', 'D', 1);
+  memoryland_railways->new_track('C', 'D', 2);
+
+  // Print the result
+  memoryland_railways->print();
+
 
   return 0;
 }
