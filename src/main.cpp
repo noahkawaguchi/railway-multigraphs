@@ -5,26 +5,37 @@
 int main() {
 
   // Make network
-  std::unique_ptr<Network> memoryland_railways = std::make_unique<Network>();
+  std::unique_ptr<Network> basic_network = std::make_unique<Network>();
 
   // Add stations to network
-  std::shared_ptr<Station> stationA = memoryland_railways->new_station("Station A");
-  std::shared_ptr<Station> stationB = memoryland_railways->new_station("Station B");
-  std::shared_ptr<Station> stationC = memoryland_railways->new_station("Station C");
-  std::shared_ptr<Station> stationD = memoryland_railways->new_station("Station D");
+  std::shared_ptr<Station> stationA = basic_network->new_station("Station A");
+  std::shared_ptr<Station> stationB = basic_network->new_station("Station B");
+  std::shared_ptr<Station> stationC = basic_network->new_station("Station C");
+  std::shared_ptr<Station> stationD = basic_network->new_station("Station D");
 
   // Connect stations with tracks
-  memoryland_railways->new_track(stationA, stationB, 3);
-  memoryland_railways->new_track(stationA, stationC, 7);
-  memoryland_railways->new_track(stationB, stationC, 5);
-  memoryland_railways->new_track(stationB, stationD, 1);
-  memoryland_railways->new_track(stationC, stationD, 2);
+  basic_network->new_track(stationA, stationB, 3);
+  basic_network->new_track(stationA, stationC, 7);
+  basic_network->new_track(stationB, stationC, 5);
+  basic_network->new_track(stationB, stationD, 1);
+  basic_network->new_track(stationC, stationD, 2);
 
   // Print the network
-  memoryland_railways->print();
+  basic_network->print();
 
-  // Calculate Dijkstra's shortest path from Station A (destination not implemented yet)
-  memoryland_railways->DSP_time(stationA, stationB);
+  // Calculate Dijkstra's shortest path from Station A to all other stations
+  basic_network->basic_DSP(stationA, stationB, false);
+
+  // Calculate Dijkstra's shortest path from Station A to station C
+  basic_network->basic_DSP(stationA, stationC, true);
+
+  /*
+    TODO:
+      Split basic DSP into one arg and two arg versions
+      Make two arg output more readable
+      Initialize prececessor to no predecessor instead of initializing to nullptr and setting it later
+  */
+
 
 
 

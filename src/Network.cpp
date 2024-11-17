@@ -21,12 +21,13 @@ void Network::new_track(std::shared_ptr<Station> station1,
   this->tracks[station2->get_name()].push_back(track_from_2);
 }
 
-std::string Network::DSP_time(std::shared_ptr<Station> start,
-                              std::shared_ptr<Station> destination) 
+void Network::basic_DSP(std::shared_ptr<Station> start,
+                        std::shared_ptr<Station> destination,
+                        bool destination_only) 
 {
   // Prepare for Dijkstra's shortest path
   for (const auto& station : this->stations) {
-    // Set minutes to "infinity" and predecessor to null
+    // Set minutes to "infinity," predecessor to nullptr, and processed to false
     station->dijkstra_reset();
     // Enqueue in unvisited queue
     this->dijkstra_unvisited.push(station);
@@ -43,6 +44,14 @@ std::string Network::DSP_time(std::shared_ptr<Station> start,
     // Visit minimum from unvisited queue
     std::shared_ptr<Station> current_station = this->dijkstra_unvisited.top();
     this->dijkstra_unvisited.pop();
+
+    // Skip if this station has already been processed.
+    // Otherwise mark it as being processed now.
+    if (current_station->get_dijkstra_processed()) { continue; }
+    current_station->set_dijkstra_processed(true);
+
+    // Stop early if only one path is needed
+    if (destination_only && current_station == destination) { break; }
     
     // Iterate over adjacent stations (via adjacent tracks)
     for (const auto& adj_track : this->tracks[current_station->get_name()]) {
@@ -50,16 +59,32 @@ std::string Network::DSP_time(std::shared_ptr<Station> start,
       int alt_path_minutes = current_station->get_dijkstra_minutes() + track_minutes;
 
       // If a shorter path from the starting station to the adjacent station 
-      // is found, update the adjacent station's time and predecessor
+      // is found, update the adjacent station's time and predecessor.
       if (alt_path_minutes < adj_track->other_station->get_dijkstra_minutes()) {
         adj_track->other_station->set_dijkstra_minutes(alt_path_minutes);
         adj_track->other_station->set_dijkstra_predecessor(current_station);
+        // The station with modified data must be reinserted to maintain sorting
+        dijkstra_unvisited.push(adj_track->other_station);
       }
     }
   }
 
-  // Verbose option to print full results
-  if (true) {
+  // Option to get only the path from start to finish
+  if (destination_only) {
+    std::vector<std::shared_ptr<Station>> route;
+    std::shared_ptr<Station> cursor = destination;
+    while (cursor != start) {
+      route.push_back(cursor);
+      cursor = cursor->get_dijkstra_predecessor();
+    }
+    std::cout << "Start: " << start->get_name() << std::endl;
+    for (int i = route.size() - 1; i >= 0; i--) {
+      std::cout << route[i]->get_dijkstra_minutes() << " min to " << route[i]->get_name() << std::endl;
+    }
+  }
+
+  // Option to get full Dijkstra results
+  else {
     std::cout << std::endl << std::string(20, '-') << std::endl;
     std::cout << "\nDijkstra's shortest path from " << start->get_name() << '\n' << std::endl;
     for (const auto& station : this->stations) {
@@ -70,10 +95,6 @@ std::string Network::DSP_time(std::shared_ptr<Station> start,
     }
     std::cout << std::string(20, '-') << '\n' << std::endl;
   }
-
-  // TODO: stop when the destination is reached and use predecessor pointers to determine the path
-
-  return "This will eventually return a specific path from start to destination";
 }
 
 void Network::print() {
