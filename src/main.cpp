@@ -29,10 +29,7 @@ int main() {
   // Calculate Dijkstra's shortest path from Station A to station C
   basic_network->basic_DSP(stationA, stationC);
 
-  /*
-    TODO:
-      Make two arg output more readable
-  */
+
 
 
 

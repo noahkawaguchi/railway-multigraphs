@@ -63,7 +63,7 @@ void Network::basic_DSP(std::shared_ptr<Station> start) {
 
   // Print full Dijkstra results
   std::cout << std::endl << std::string(20, '-') << std::endl;
-  std::cout << "\nDijkstra's shortest path from " << start->get_name() << '\n' << std::endl;
+  std::cout << "\nDijkstra's shortest path from " << start->get_name() << ":\n" << std::endl;
   for (const auto& station : this->stations) {
     std::cout << "  " << station->get_name() << ":\n";
     std::cout << "    Minutes: " << station->get_dijkstra_minutes() << std::endl;
@@ -116,17 +116,26 @@ void Network::basic_DSP(std::shared_ptr<Station> start, std::shared_ptr<Station>
     }
   }
 
-  // Print the path from start to finish
+  // Accumulate the path from start to destination in reverse using the predecessors
   std::vector<std::shared_ptr<Station>> route;
   std::shared_ptr<Station> cursor = destination;
   while (cursor != start) {
     route.push_back(cursor);
     cursor = cursor->get_dijkstra_predecessor();
   }
-  std::cout << "Start: " << start->get_name() << std::endl;
+  // Print the path from start to destination
+  std::cout << std::endl << std::string(20, '-') << std::endl;
+  std::cout << "\nDijkstra's shortest path from " << start->get_name() 
+            << " to " << destination->get_name() << ":\n" << std::endl;
+  std::cout << "  ";
   for (int i = route.size() - 1; i >= 0; i--) {
-    std::cout << route[i]->get_dijkstra_minutes() << " min to " << route[i]->get_name() << std::endl;
+    std::cout << route[i]->get_name();
+    if (i > 0) {
+      std::cout << " -> ";
+    }
   }
+  std::cout << "\n  Total time: " << destination->get_dijkstra_minutes() << " min\n\n";
+  std::cout << std::string(20, '-') << '\n' << std::endl;
 }
 
 void Network::print() {
