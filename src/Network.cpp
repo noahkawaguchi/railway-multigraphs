@@ -27,7 +27,7 @@ void Network::basic_DSP(std::shared_ptr<Station> start,
 {
   // Prepare for Dijkstra's shortest path
   for (const auto& station : this->stations) {
-    // Set minutes to "infinity," predecessor to nullptr, and processed to false
+    // Set minutes to "infinity," predecessor to dummy predecessor, and processed to false
     station->dijkstra_reset();
     // Enqueue in unvisited queue
     this->dijkstra_unvisited.push(station);
@@ -35,9 +35,6 @@ void Network::basic_DSP(std::shared_ptr<Station> start,
 
   // Time from start to start is 0
   start->set_dijkstra_minutes(0);
-  // Dummy predecessor station for seg fault safety and printed readability
-  std::shared_ptr<Station> dummy_station = std::make_shared<Station>("No predecessor");
-  start->set_dijkstra_predecessor(dummy_station);
 
   // Visit each of the unvisited stations
   while (!this->dijkstra_unvisited.empty()) {
@@ -45,8 +42,9 @@ void Network::basic_DSP(std::shared_ptr<Station> start,
     std::shared_ptr<Station> current_station = this->dijkstra_unvisited.top();
     this->dijkstra_unvisited.pop();
 
-    // Skip if this station has already been processed.
-    // Otherwise mark it as being processed now.
+    // Skip if this station has already been processed. (There may be 
+    // duplicate pointers to processed stations left in the queue because 
+    // of reinsertion.) Otherwise mark it as being processed now.
     if (current_station->get_dijkstra_processed()) { continue; }
     current_station->set_dijkstra_processed(true);
 
@@ -64,7 +62,7 @@ void Network::basic_DSP(std::shared_ptr<Station> start,
         adj_track->other_station->set_dijkstra_minutes(alt_path_minutes);
         adj_track->other_station->set_dijkstra_predecessor(current_station);
         // The station with modified data must be reinserted to maintain sorting
-        dijkstra_unvisited.push(adj_track->other_station);
+        this->dijkstra_unvisited.push(adj_track->other_station);
       }
     }
   }

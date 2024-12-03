@@ -33,7 +33,6 @@ int main() {
     TODO:
       Split basic DSP into one arg and two arg versions
       Make two arg output more readable
-      Initialize prececessor to no predecessor instead of initializing to nullptr and setting it later
   */
 
 

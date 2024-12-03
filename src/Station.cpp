@@ -1,6 +1,16 @@
 #include "Station.h"
 
-Station::Station(std::string name) : name(name) {}
+// Dummy predecessor to point to by default
+static std::shared_ptr<Station> dummy_predecessor = std::make_shared<Station>("No predecessor");
+
+Station::Station(std::string name) : name(name) {
+  // Avoid dummy_predecessor pointing to itself
+  if (this != dummy_predecessor.get()) {
+    this->dijkstra_predecessor = dummy_predecessor;
+  } else {
+    this->dijkstra_predecessor = nullptr;
+  }
+}
 
 std::string Station::get_name() {
   return this->name;
@@ -32,7 +42,7 @@ void Station::set_dijkstra_processed(bool processed) {
 
 void Station::dijkstra_reset() {
   this->dijkstra_minutes = std::numeric_limits<int>::max(); // "Infinity"
-  this->dijkstra_predecessor = nullptr;
+  this->dijkstra_predecessor = dummy_predecessor;
   this->dijkstra_processed = false;
 }
 

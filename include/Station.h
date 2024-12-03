@@ -37,7 +37,7 @@ public:
 private:
   std::string name;
   int dijkstra_minutes = std::numeric_limits<int>::max(); // Initialize to "inifinity"
-  std::shared_ptr<Station> dijkstra_predecessor = nullptr;
+  std::shared_ptr<Station> dijkstra_predecessor;
   bool dijkstra_processed = false;
 
 };
