@@ -24,14 +24,13 @@ int main() {
   basic_network->print();
 
   // Calculate Dijkstra's shortest path from Station A to all other stations
-  basic_network->basic_DSP(stationA, stationB, false);
+  basic_network->basic_DSP(stationA);
 
   // Calculate Dijkstra's shortest path from Station A to station C
-  basic_network->basic_DSP(stationA, stationC, true);
+  basic_network->basic_DSP(stationA, stationC);
 
   /*
     TODO:
-      Split basic DSP into one arg and two arg versions
       Make two arg output more readable
   */
 

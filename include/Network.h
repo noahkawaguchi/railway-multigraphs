@@ -24,13 +24,13 @@ public:
                  std::shared_ptr<Station> station2,
                  int minutes);
 
-  // Calculate and print Dijkstra's shortest (quickest) path from start.
-  // Fares are free and transfers are instant.
-  // If destination_only is true, find a single path to the destination.
-  // Else find all shortest paths from start.
-  void basic_DSP(std::shared_ptr<Station> start,
-                 std::shared_ptr<Station> destination,
-                 bool destination_only);
+  // Calculate and print Dijkstra's shortest (quickest) path from start 
+  // to all other stations. Fares are free and transfers are instant.
+  void basic_DSP(std::shared_ptr<Station> start);
+
+  // Calculate and print Dijkstra's shortest (quickest) path from start 
+  // to destination only. Fares are free and transfers are instant.
+  void basic_DSP(std::shared_ptr<Station> start, std::shared_ptr<Station> destination);
 
   // Print a representation of the network
   void print();
