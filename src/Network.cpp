@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 
 #include "Network.h"
 
@@ -21,17 +22,33 @@ void Network::new_track(std::shared_ptr<Station> station1,
   this->tracks[station2->get_name()].push_back(track_from_2);
 }
 
-void Network::basic_DSP(std::shared_ptr<Station> start) {
-  // Prepare for Dijkstra's shortest path
+void Network::print() {
+  std::cout << std::endl << std::string(20, '-') << '\n' << std::endl;
   for (const auto& station : this->stations) {
-    // Set minutes to "infinity," predecessor to dummy predecessor, and processed to false
+    std::cout << station->get_name() << " connections:\n";
+    for (const auto& track : this->tracks[station->get_name()]) {
+      std::cout << "  " << track->minutes << " min to "<< track->other_station->get_name() << '\n';
+    }
+    std::cout << std::endl; 
+  }
+  std::cout << std::string(20, '-') << '\n' << std::endl;
+}
+
+// *** SHORTEST PATH ALGORITHMS ***
+
+void Network::basic_DSP(std::shared_ptr<Station> start) {
+  // Set all stations' minutes to "infinity," predecessor to dummy predecessor, and processed to false
+  for (const auto& station : this->stations) {
     station->dijkstra_reset();
-    // Enqueue in unvisited queue
-    this->dijkstra_unvisited.push(station);
   }
 
   // Time from start to start is 0
   start->set_dijkstra_minutes(0);
+
+  // Enqueue all stations in unvisited queue
+  for (const auto& station : this->stations) {
+    this->dijkstra_unvisited.push(station);
+  }
 
   // Visit each of the unvisited stations
   while (!this->dijkstra_unvisited.empty()) {
@@ -74,16 +91,18 @@ void Network::basic_DSP(std::shared_ptr<Station> start) {
 }
 
 void Network::basic_DSP(std::shared_ptr<Station> start, std::shared_ptr<Station> destination) {
-  // Prepare for Dijkstra's shortest path
+  // Set all stations' minutes to "infinity," predecessor to dummy predecessor, and processed to false
   for (const auto& station : this->stations) {
-    // Set minutes to "infinity," predecessor to dummy predecessor, and processed to false
     station->dijkstra_reset();
-    // Enqueue in unvisited queue
-    this->dijkstra_unvisited.push(station);
   }
 
   // Time from start to start is 0
   start->set_dijkstra_minutes(0);
+
+  // Enqueue all stations in unvisited queue
+  for (const auto& station : this->stations) {
+    this->dijkstra_unvisited.push(station);
+  }
 
   // Visit each of the unvisited stations
   while (!this->dijkstra_unvisited.empty()) {
@@ -138,14 +157,81 @@ void Network::basic_DSP(std::shared_ptr<Station> start, std::shared_ptr<Station>
   std::cout << std::string(20, '-') << '\n' << std::endl;
 }
 
-void Network::print() {
-  std::cout << std::endl << std::string(20, '-') << '\n' << std::endl;
+std::shared_ptr<Route> Network::helper_DSP(std::shared_ptr<Station> start, std::shared_ptr<Station> destination) {
+  // Set all stations' minutes to "infinity," predecessor to dummy predecessor, and processed to false
   for (const auto& station : this->stations) {
-    std::cout << station->get_name() << " connections:\n";
-    for (const auto& track : this->tracks[station->get_name()]) {
-      std::cout << "  " << track->minutes << " min to "<< track->other_station->get_name() << '\n';
-    }
-    std::cout << std::endl; 
+    station->dijkstra_reset();
   }
-  std::cout << std::string(20, '-') << '\n' << std::endl;
+
+  // Time from start to start is 0
+  start->set_dijkstra_minutes(0);
+
+  // Enqueue all stations in unvisited queue
+  for (const auto& station : this->stations) {
+    this->dijkstra_unvisited.push(station);
+  }
+
+  // Visit each of the unvisited stations
+  while (!this->dijkstra_unvisited.empty()) {
+    // Visit minimum from unvisited queue
+    std::shared_ptr<Station> current_station = this->dijkstra_unvisited.top();
+    this->dijkstra_unvisited.pop();
+
+    // Skip if this station has already been processed. (There may be 
+    // duplicate pointers to processed stations left in the queue because 
+    // of reinsertion.) Otherwise mark it as being processed now.
+    if (current_station->get_dijkstra_processed()) { continue; }
+    current_station->set_dijkstra_processed(true);
+
+    // Stop early if the destination is found
+    if (current_station == destination) { break; }
+    
+    // Iterate over adjacent stations (via adjacent tracks)
+    for (const auto& adj_track : this->tracks[current_station->get_name()]) {
+      int track_minutes = adj_track->minutes;
+      int alt_path_minutes = current_station->get_dijkstra_minutes() + track_minutes;
+
+      // If a shorter path from the starting station to the adjacent station 
+      // is found, update the adjacent station's time and predecessor.
+      if (alt_path_minutes < adj_track->other_station->get_dijkstra_minutes()) {
+        adj_track->other_station->set_dijkstra_minutes(alt_path_minutes);
+        adj_track->other_station->set_dijkstra_predecessor(current_station);
+        // The station with modified data must be reinserted to maintain sorting
+        this->dijkstra_unvisited.push(adj_track->other_station);
+      }
+    }
+  }
+
+  // Accumulate the path from start to destination in reverse using the predecessors
+  std::shared_ptr<Route> route = std::make_shared<Route>();
+  std::shared_ptr<Station> cursor = destination;
+  while (cursor != start) {
+    route->stations.push_back(cursor);
+    cursor = cursor->get_dijkstra_predecessor();
+  }
+  // Reverse to get the stations in the correct order 
+  std::reverse(route->stations.begin(), route->stations.end());
+
+  return route;
+}
+
+// Custom comparator for yen priority queue--orders by the minutes it takes to traverse the path
+struct ShorterPath {
+  bool operator()(std::shared_ptr<Route>& a, std::shared_ptr<Route>& b) {
+    return a->get_minutes() > b->get_minutes();
+  }
+};
+
+void Network::basic_yen(std::shared_ptr<Station> start, std::shared_ptr<Station> destination, int k) {
+  std::vector<std::shared_ptr<Route>> A; // K shortest paths in order of shortest to longest
+  std::priority_queue<std::shared_ptr<Route>, std::vector<std::shared_ptr<Route>>, ShorterPath> B; // Candidate paths
+
+  // Find #1 shortest path using regular Dijkstra
+  A.push_back(this->helper_DSP(start, destination));
+
+
+  // TODO
+
+
+  
 }

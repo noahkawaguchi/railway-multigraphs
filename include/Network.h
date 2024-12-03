@@ -9,6 +9,7 @@
 
 #include "Station.h"
 #include "Track.h"
+#include "Route.h" // For shortest path algorithms
 
 class Network {
 public:
@@ -23,6 +24,9 @@ public:
   void new_track(std::shared_ptr<Station> station1,
                  std::shared_ptr<Station> station2,
                  int minutes);
+  
+  // Print a representation of the network
+  void print();
 
   // Calculate and print Dijkstra's shortest (quickest) path from start 
   // to all other stations. Fares are free and transfers are instant.
@@ -32,8 +36,12 @@ public:
   // to destination only. Fares are free and transfers are instant.
   void basic_DSP(std::shared_ptr<Station> start, std::shared_ptr<Station> destination);
 
-  // Print a representation of the network
-  void print();
+  // Find Dijkstra's shortest path from start to destination for use in other member functions
+  std::shared_ptr<Route> helper_DSP(std::shared_ptr<Station> start, std::shared_ptr<Station> destination);
+
+  // Calculate and print Yen's K shortest (quickest) paths. 
+  // Fares are free and transfers are instant.
+  void basic_yen(std::shared_ptr<Station> start, std::shared_ptr<Station> destination, int k);
 
 private:
   std::vector<std::shared_ptr<Station>> stations;

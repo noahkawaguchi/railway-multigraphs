@@ -1,4 +1,5 @@
 #include <memory>
+#include <iostream>
 
 #include "Network.h"
 
@@ -26,10 +27,13 @@ int main() {
   // Calculate Dijkstra's shortest path from Station A to all other stations
   basic_network->basic_DSP(stationA);
 
-  // Calculate Dijkstra's shortest path from Station A to station C
+  // Calculate Dijkstra's shortest path from Station A to Station C
   basic_network->basic_DSP(stationA, stationC);
 
-
+  std::shared_ptr<Route> route = basic_network->helper_DSP(stationA, stationC);
+  for (const auto& station : route->stations) {
+    std::cout << station->get_name() << std::endl;
+  }
 
 
 
