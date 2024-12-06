@@ -142,6 +142,7 @@ void Network::basic_DSP(std::shared_ptr<Station> start, std::shared_ptr<Station>
     route.push_back(cursor);
     cursor = cursor->get_dijkstra_predecessor();
   }
+  route.push_back(start);
   // Print the path from start to destination
   std::cout << std::endl << std::string(20, '-') << std::endl;
   std::cout << "\nDijkstra's shortest path from " << start->get_name() 
@@ -209,6 +210,7 @@ std::shared_ptr<Route> Network::helper_DSP(std::shared_ptr<Station> start, std::
     route->stations.push_back(cursor);
     cursor = cursor->get_dijkstra_predecessor();
   }
+  route->stations.push_back(start);
   // Reverse to get the stations in the correct order 
   std::reverse(route->stations.begin(), route->stations.end());
 
