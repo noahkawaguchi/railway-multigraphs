@@ -16,7 +16,7 @@ public:
   Network();
   ~Network() = default;
 
-  // Create and add a station to the network with the given ID
+  // Create and add a station to the network with the given name
   std::shared_ptr<Station> new_station(std::string name);
 
   // Create and add a track to the network, specifying the number 
@@ -28,16 +28,14 @@ public:
   // Print a representation of the network
   void print();
 
-  // Calculate and print Dijkstra's shortest (quickest) path from start 
-  // to all other stations. Fares are free and transfers are instant.
-  void basic_DSP(std::shared_ptr<Station> start);
+  // Find Dijkstra's shortest (quickest) path from start to 
+  // destination. Fares are free and transfers are instant.
+  std::shared_ptr<Route> basic_DSP(std::shared_ptr<Station> start,
+                                   std::shared_ptr<Station> destination);
 
-  // Calculate and print Dijkstra's shortest (quickest) path from start 
-  // to destination only. Fares are free and transfers are instant.
-  void basic_DSP(std::shared_ptr<Station> start, std::shared_ptr<Station> destination);
-
-  // Find Dijkstra's shortest path from start to destination for use in other member functions
-  std::shared_ptr<Route> helper_DSP(std::shared_ptr<Station> start, std::shared_ptr<Station> destination);
+  // Print Dijkstra's shortest (quickest) path from start to 
+  // destination. Fares are free and transfers are instant.
+  void print_basic_DSP(std::shared_ptr<Station> start, std::shared_ptr<Station> destination);
 
   // Calculate and print Yen's K shortest (quickest) paths. 
   // Fares are free and transfers are instant.

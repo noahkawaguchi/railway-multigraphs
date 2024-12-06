@@ -1,10 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "../include/Track.h"
-#include "../include/Route.h"
 #include "../include/Network.h"
 
-TEST(HelperDSP, SimplestToyData) {
+TEST(BasicDSP, ToyDataABCD) {
   // Make network
   std::unique_ptr<Network> basic_network = std::make_unique<Network>();
 
@@ -21,10 +19,10 @@ TEST(HelperDSP, SimplestToyData) {
   basic_network->new_track(stationB, stationD, 1);
   basic_network->new_track(stationC, stationD, 2);
 
-  std::shared_ptr<Route> shortest_path = basic_network->helper_DSP(stationA, stationC);
+  // Find the shortest path from A to C
+  std::shared_ptr<Route> shortest_path = basic_network->basic_DSP(stationA, stationC);
   ASSERT_EQ(shortest_path->stations[0]->get_name(), "Station A");
   ASSERT_EQ(shortest_path->stations[1]->get_name(), "Station B");
   ASSERT_EQ(shortest_path->stations[2]->get_name(), "Station D");
   ASSERT_EQ(shortest_path->stations[3]->get_name(), "Station C");
-
 }
