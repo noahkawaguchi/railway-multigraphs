@@ -19,21 +19,23 @@ add_executable(railway_simulator
 add_subdirectory(external/googletest)
 
 # Add the test executable
-add_executable(main_tests
-    src/Network.cpp
+add_executable(tests
     src/Station.cpp
-    tests/main_tests.cpp
+    tests/test_Station.cpp
+    src/Network.cpp
+    tests/test_Network.cpp
+    tests/test_Track.cpp
 )
 
 # Discover and enable tests
 include(GoogleTest)
-gtest_discover_tests(main_tests)
+gtest_discover_tests(tests)
 
 # Enable testing for this project
 enable_testing()
 
 # Link Google Test libraries
-target_link_libraries(main_tests PRIVATE gtest gtest_main)
+target_link_libraries(tests PRIVATE gtest gtest_main)
 
 # Register the test executable with CTest
-add_test(NAME MainTests COMMAND main_tests --gtest_color=yes)
+add_test(NAME Tests COMMAND tests --gtest_color=yes)

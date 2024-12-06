@@ -14,7 +14,7 @@ struct Route {
     if (stations.empty()) {
       return 0;
     } else {
-      return stations.back()->get_dijkstra_minutes();
+      return stations.back()->get_path_minutes();
     }
   }
 };

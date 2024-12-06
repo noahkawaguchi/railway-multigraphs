@@ -9,7 +9,7 @@
 
 #include "Station.h"
 #include "Track.h"
-#include "Route.h" // For shortest path algorithms
+#include "Route.h"
 
 class Network {
 public:
@@ -50,7 +50,7 @@ private:
   // Custom comparator for priority queue
   struct MinimumMinutes {
     bool operator()(const std::shared_ptr<Station>& a, const std::shared_ptr<Station>& b) {
-      return a->get_dijkstra_minutes() > b->get_dijkstra_minutes();
+      return a->get_path_minutes() > b->get_path_minutes();
     }
   };
   std::priority_queue<std::shared_ptr<Station>, std::vector<std::shared_ptr<Station>>,

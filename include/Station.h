@@ -13,32 +13,32 @@ public:
   // Get the station name
   std::string get_name();
 
-  // Get the minutes from the starting station for Dijkstra's algorithm
-  int get_dijkstra_minutes();
+  // Get the minutes from the starting station for shortest path algorithms
+  int get_path_minutes();
 
-  // Get the predecessor station for Dijkstra's algorithm
-  std::shared_ptr<Station> get_dijkstra_predecessor();
+  // Get the predecessor station for shortest path algorithms
+  std::shared_ptr<Station> get_path_predecessor();
 
-  // Get the processed flag for Dijkstra's algorithm
-  bool get_dijkstra_processed();
+  // Get the processed flag for shortest path algorithms
+  bool get_path_processed();
 
-  // Set the minutes from the starting station for Dijkstra's algorithm
-  void set_dijkstra_minutes(int minutes);
+  // Set the minutes from the starting station for shortest path algorithms
+  void set_path_minutes(int minutes);
 
-  // Set the predecessor station for Dijkstra's algorithm
-  void set_dijkstra_predecessor(std::shared_ptr<Station> predecessor);
+  // Set the predecessor station for shortest path algorithms
+  void set_path_predecessor(std::shared_ptr<Station> predecessor);
 
-  // Set the processed flag for Dijkstra's algorithm
-  void set_dijkstra_processed(bool processed);
+  // Set the processed flag for shortest path algorithms
+  void set_path_processed(bool processed);
 
-  // Reset the minutes, predecessor, and processed flag for restarting Dijkstra's algorithm
-  void dijkstra_reset();
+  // Reset the minutes, predecessor, and processed flag for restarting shortest path algorithms
+  void path_reset();
 
 private:
   std::string name;
-  int dijkstra_minutes = std::numeric_limits<int>::max(); // Initialize to "inifinity"
-  std::shared_ptr<Station> dijkstra_predecessor;
-  bool dijkstra_processed = false;
+  int path_minutes = std::numeric_limits<int>::max(); // Initialize to "inifinity"
+  std::shared_ptr<Station> path_predecessor;
+  bool path_processed = false;
 
 };
 

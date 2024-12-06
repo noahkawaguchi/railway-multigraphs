@@ -39,11 +39,11 @@ void Network::print() {
 void Network::basic_DSP(std::shared_ptr<Station> start) {
   // Set all stations' minutes to "infinity," predecessor to dummy predecessor, and processed to false
   for (const auto& station : this->stations) {
-    station->dijkstra_reset();
+    station->path_reset();
   }
 
   // Time from start to start is 0
-  start->set_dijkstra_minutes(0);
+  start->set_path_minutes(0);
 
   // Enqueue all stations in unvisited queue
   for (const auto& station : this->stations) {
@@ -59,19 +59,19 @@ void Network::basic_DSP(std::shared_ptr<Station> start) {
     // Skip if this station has already been processed. (There may be 
     // duplicate pointers to processed stations left in the queue because 
     // of reinsertion.) Otherwise mark it as being processed now.
-    if (current_station->get_dijkstra_processed()) { continue; }
-    current_station->set_dijkstra_processed(true);
+    if (current_station->get_path_processed()) { continue; }
+    current_station->set_path_processed(true);
     
     // Iterate over adjacent stations (via adjacent tracks)
     for (const auto& adj_track : this->tracks[current_station->get_name()]) {
       int track_minutes = adj_track->minutes;
-      int alt_path_minutes = current_station->get_dijkstra_minutes() + track_minutes;
+      int alt_path_minutes = current_station->get_path_minutes() + track_minutes;
 
       // If a shorter path from the starting station to the adjacent station 
       // is found, update the adjacent station's time and predecessor.
-      if (alt_path_minutes < adj_track->other_station->get_dijkstra_minutes()) {
-        adj_track->other_station->set_dijkstra_minutes(alt_path_minutes);
-        adj_track->other_station->set_dijkstra_predecessor(current_station);
+      if (alt_path_minutes < adj_track->other_station->get_path_minutes()) {
+        adj_track->other_station->set_path_minutes(alt_path_minutes);
+        adj_track->other_station->set_path_predecessor(current_station);
         // The station with modified data must be reinserted to maintain sorting
         this->dijkstra_unvisited.push(adj_track->other_station);
       }
@@ -83,8 +83,8 @@ void Network::basic_DSP(std::shared_ptr<Station> start) {
   std::cout << "\nDijkstra's shortest path from " << start->get_name() << ":\n" << std::endl;
   for (const auto& station : this->stations) {
     std::cout << "  " << station->get_name() << ":\n";
-    std::cout << "    Minutes: " << station->get_dijkstra_minutes() << std::endl;
-    std::cout << "    Predecessor: " << station->get_dijkstra_predecessor()->get_name() << std::endl;
+    std::cout << "    Minutes: " << station->get_path_minutes() << std::endl;
+    std::cout << "    Predecessor: " << station->get_path_predecessor()->get_name() << std::endl;
     std::cout << std::endl;
   }
   std::cout << std::string(20, '-') << '\n' << std::endl;
@@ -93,11 +93,11 @@ void Network::basic_DSP(std::shared_ptr<Station> start) {
 void Network::basic_DSP(std::shared_ptr<Station> start, std::shared_ptr<Station> destination) {
   // Set all stations' minutes to "infinity," predecessor to dummy predecessor, and processed to false
   for (const auto& station : this->stations) {
-    station->dijkstra_reset();
+    station->path_reset();
   }
 
   // Time from start to start is 0
-  start->set_dijkstra_minutes(0);
+  start->set_path_minutes(0);
 
   // Enqueue all stations in unvisited queue
   for (const auto& station : this->stations) {
@@ -113,8 +113,8 @@ void Network::basic_DSP(std::shared_ptr<Station> start, std::shared_ptr<Station>
     // Skip if this station has already been processed. (There may be 
     // duplicate pointers to processed stations left in the queue because 
     // of reinsertion.) Otherwise mark it as being processed now.
-    if (current_station->get_dijkstra_processed()) { continue; }
-    current_station->set_dijkstra_processed(true);
+    if (current_station->get_path_processed()) { continue; }
+    current_station->set_path_processed(true);
 
     // Stop early if the destination is found
     if (current_station == destination) { break; }
@@ -122,13 +122,13 @@ void Network::basic_DSP(std::shared_ptr<Station> start, std::shared_ptr<Station>
     // Iterate over adjacent stations (via adjacent tracks)
     for (const auto& adj_track : this->tracks[current_station->get_name()]) {
       int track_minutes = adj_track->minutes;
-      int alt_path_minutes = current_station->get_dijkstra_minutes() + track_minutes;
+      int alt_path_minutes = current_station->get_path_minutes() + track_minutes;
 
       // If a shorter path from the starting station to the adjacent station 
       // is found, update the adjacent station's time and predecessor.
-      if (alt_path_minutes < adj_track->other_station->get_dijkstra_minutes()) {
-        adj_track->other_station->set_dijkstra_minutes(alt_path_minutes);
-        adj_track->other_station->set_dijkstra_predecessor(current_station);
+      if (alt_path_minutes < adj_track->other_station->get_path_minutes()) {
+        adj_track->other_station->set_path_minutes(alt_path_minutes);
+        adj_track->other_station->set_path_predecessor(current_station);
         // The station with modified data must be reinserted to maintain sorting
         this->dijkstra_unvisited.push(adj_track->other_station);
       }
@@ -140,7 +140,7 @@ void Network::basic_DSP(std::shared_ptr<Station> start, std::shared_ptr<Station>
   std::shared_ptr<Station> cursor = destination;
   while (cursor != start) {
     route.push_back(cursor);
-    cursor = cursor->get_dijkstra_predecessor();
+    cursor = cursor->get_path_predecessor();
   }
   route.push_back(start);
   // Print the path from start to destination
@@ -154,18 +154,18 @@ void Network::basic_DSP(std::shared_ptr<Station> start, std::shared_ptr<Station>
       std::cout << " -> ";
     }
   }
-  std::cout << "\n  Total time: " << destination->get_dijkstra_minutes() << " min\n\n";
+  std::cout << "\n  Total time: " << destination->get_path_minutes() << " min\n\n";
   std::cout << std::string(20, '-') << '\n' << std::endl;
 }
 
 std::shared_ptr<Route> Network::helper_DSP(std::shared_ptr<Station> start, std::shared_ptr<Station> destination) {
   // Set all stations' minutes to "infinity," predecessor to dummy predecessor, and processed to false
   for (const auto& station : this->stations) {
-    station->dijkstra_reset();
+    station->path_reset();
   }
 
   // Time from start to start is 0
-  start->set_dijkstra_minutes(0);
+  start->set_path_minutes(0);
 
   // Enqueue all stations in unvisited queue
   for (const auto& station : this->stations) {
@@ -181,8 +181,8 @@ std::shared_ptr<Route> Network::helper_DSP(std::shared_ptr<Station> start, std::
     // Skip if this station has already been processed. (There may be 
     // duplicate pointers to processed stations left in the queue because 
     // of reinsertion.) Otherwise mark it as being processed now.
-    if (current_station->get_dijkstra_processed()) { continue; }
-    current_station->set_dijkstra_processed(true);
+    if (current_station->get_path_processed()) { continue; }
+    current_station->set_path_processed(true);
 
     // Stop early if the destination is found
     if (current_station == destination) { break; }
@@ -190,13 +190,13 @@ std::shared_ptr<Route> Network::helper_DSP(std::shared_ptr<Station> start, std::
     // Iterate over adjacent stations (via adjacent tracks)
     for (const auto& adj_track : this->tracks[current_station->get_name()]) {
       int track_minutes = adj_track->minutes;
-      int alt_path_minutes = current_station->get_dijkstra_minutes() + track_minutes;
+      int alt_path_minutes = current_station->get_path_minutes() + track_minutes;
 
       // If a shorter path from the starting station to the adjacent station 
       // is found, update the adjacent station's time and predecessor.
-      if (alt_path_minutes < adj_track->other_station->get_dijkstra_minutes()) {
-        adj_track->other_station->set_dijkstra_minutes(alt_path_minutes);
-        adj_track->other_station->set_dijkstra_predecessor(current_station);
+      if (alt_path_minutes < adj_track->other_station->get_path_minutes()) {
+        adj_track->other_station->set_path_minutes(alt_path_minutes);
+        adj_track->other_station->set_path_predecessor(current_station);
         // The station with modified data must be reinserted to maintain sorting
         this->dijkstra_unvisited.push(adj_track->other_station);
       }
@@ -208,7 +208,7 @@ std::shared_ptr<Route> Network::helper_DSP(std::shared_ptr<Station> start, std::
   std::shared_ptr<Station> cursor = destination;
   while (cursor != start) {
     route->stations.push_back(cursor);
-    cursor = cursor->get_dijkstra_predecessor();
+    cursor = cursor->get_path_predecessor();
   }
   route->stations.push_back(start);
   // Reverse to get the stations in the correct order 

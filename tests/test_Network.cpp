@@ -1,18 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "../include/Station.h"
 #include "../include/Track.h"
 #include "../include/Route.h"
 #include "../include/Network.h"
-
-TEST(TestTesting, TrivialEquality) {
-  ASSERT_EQ(2+2, 4);
-}
-
-TEST(TestStation, InitStation) {
-  std::shared_ptr<Station> test_station = std::make_shared<Station>("Test Station");
-  ASSERT_EQ(test_station->get_name(), "Test Station");
-}
 
 TEST(HelperDSP, SimplestToyData) {
   // Make network
@@ -37,9 +27,4 @@ TEST(HelperDSP, SimplestToyData) {
   ASSERT_EQ(shortest_path->stations[2]->get_name(), "Station D");
   ASSERT_EQ(shortest_path->stations[3]->get_name(), "Station C");
 
-}
-
-int main(int argc, char **argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
 }
