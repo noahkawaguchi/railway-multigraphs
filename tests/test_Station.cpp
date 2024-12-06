@@ -8,7 +8,7 @@ TEST(TestStation, InitStation) {
   // Make sure name is set correctly
   ASSERT_EQ(test_station->get_name(), "Test Station");
   // Make sure default values are set correctly
-  ASSERT_EQ(test_station->get_path_minutes(), 2147483647);
+  ASSERT_EQ(test_station->get_path_minutes(), 1073741823);
   ASSERT_EQ(test_station->get_path_predecessor()->get_name(), "No Predecessor");
   ASSERT_EQ(test_station->get_path_processed(), false);
 }
@@ -38,7 +38,7 @@ TEST(TestStation, ResetPathStats) {
   // Reset path stats
   test_station->path_reset();
   // Make sure path stats are back to their default values
-  ASSERT_EQ(test_station->get_path_minutes(), 2147483647);
+  ASSERT_EQ(test_station->get_path_minutes(), 1073741823);
   ASSERT_EQ(test_station->get_path_predecessor()->get_name(), "No Predecessor");
   ASSERT_EQ(test_station->get_path_processed(), false);
 }

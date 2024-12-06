@@ -41,7 +41,7 @@ void Station::set_path_processed(bool processed) {
 }
 
 void Station::path_reset() {
-  this->path_minutes = std::numeric_limits<int>::max(); // "Infinity"
+  this->path_minutes = std::numeric_limits<int>::max() / 2; // "Infinity"
   this->path_predecessor = dummy_predecessor;
   this->path_processed = false;
 }

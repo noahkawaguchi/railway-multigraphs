@@ -37,9 +37,10 @@ public:
   // destination. Fares are free and transfers are instant.
   void print_basic_DSP(std::shared_ptr<Station> start, std::shared_ptr<Station> destination);
 
-  // Calculate and print Yen's K shortest (quickest) paths. 
-  // Fares are free and transfers are instant.
-  void basic_yen(std::shared_ptr<Station> start, std::shared_ptr<Station> destination, int k);
+  // Find Yen's K shortest (quickest) paths. Fares are free and transfers are instant.
+  std::vector<std::shared_ptr<Route>> basic_yen(std::shared_ptr<Station> start,
+                                                std::shared_ptr<Station> destination,
+                                                int k);
 
 private:
   std::vector<std::shared_ptr<Station>> stations;
@@ -53,7 +54,7 @@ private:
   };
   std::priority_queue<std::shared_ptr<Station>, std::vector<std::shared_ptr<Station>>,
                       MinimumMinutes> dijkstra_unvisited;
-
+  
 };
 
 #endif // NETWORK_H

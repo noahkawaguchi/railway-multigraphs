@@ -34,10 +34,11 @@ void Network::print() {
   std::cout << std::string(20, '-') << '\n' << std::endl;
 }
 
-// *** SHORTEST PATH ALGORITHMS ***
+// *** SHORTEST PATH ALGORITHMS *** //
 
-std::shared_ptr<Route> Network::basic_DSP(std::shared_ptr<Station> start, std::shared_ptr<Station> destination) {
-  
+std::shared_ptr<Route> Network::basic_DSP(std::shared_ptr<Station> start,
+                                          std::shared_ptr<Station> destination)
+{
   // Set all stations' minutes to "infinity," predecessor to dummy predecessor, and processed to false
   for (const auto& station : this->stations) {
     station->path_reset();
@@ -123,16 +124,31 @@ struct ShorterPath {
   }
 };
 
-void Network::basic_yen(std::shared_ptr<Station> start, std::shared_ptr<Station> destination, int k) {
+std::vector<std::shared_ptr<Route>> Network::basic_yen(std::shared_ptr<Station> start,
+                                                       std::shared_ptr<Station> destination,
+                                                       int k)
+{
   std::vector<std::shared_ptr<Route>> A; // K shortest paths in order of shortest to longest
-  std::priority_queue<std::shared_ptr<Route>, std::vector<std::shared_ptr<Route>>, ShorterPath> B; // Candidate paths
+  std::priority_queue<std::shared_ptr<Route>,
+                      std::vector<std::shared_ptr<Route>>,
+                      ShorterPath> B; // Candidate paths
 
   // Find #1 shortest path using regular Dijkstra
   A.push_back(this->basic_DSP(start, destination));
 
+  // For each node in the path most recently added to A other 
+  // than the destination, that node becomes the spur node 
+
+
 
   // TODO
-
-
   
+
+
+
+  // Just to avoid compiler warnings for now
+  std::shared_ptr<Route> dummy_route = std::make_shared<Route>();
+  std::vector<std::shared_ptr<Route>> dummy_ret;
+  dummy_ret.push_back(dummy_route);
+  return dummy_ret;
 }

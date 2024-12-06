@@ -36,7 +36,7 @@ public:
 
 private:
   std::string name;
-  int path_minutes = std::numeric_limits<int>::max(); // Initialize to "inifinity"
+  int path_minutes = std::numeric_limits<int>::max() / 2; // Initialize to "inifinity"
   std::shared_ptr<Station> path_predecessor;
   bool path_processed = false;
 
