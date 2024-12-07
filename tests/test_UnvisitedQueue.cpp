@@ -30,6 +30,42 @@ TEST(TestUQ, Top) {
 
 }
 
+TEST(TestUQ, Empty) {
+  // Create UnvisitedQueue, which should start empty
+  UnvisitedQueue uq;
+  ASSERT_EQ(uq.empty(), true);
+
+  // Create stations 
+  std::shared_ptr<Station> station1 = std::make_shared<Station>("Station 1");
+  std::shared_ptr<Station> station2 = std::make_shared<Station>("Station 2");
+  std::shared_ptr<Station> station3 = std::make_shared<Station>("Station 3");
+
+  // Set priorities
+  station1->set_path_minutes(7);
+  station2->set_path_minutes(3);
+  // (leave Station 3 as default)
+
+  // Insert into queue
+  uq.push(station1);
+  uq.push(station2);
+  uq.push(station3);
+
+  // Now the queue should not be empty
+  ASSERT_EQ(uq.empty(), false);
+
+  // Update priority, reinsert, and process, leaving a processed duplicate in the queue
+  station3->set_path_minutes(2);
+  uq.push(station3);
+  uq.top_unprocessed();
+
+  // Remove both remaining processed stations
+  uq.top_unprocessed();
+  uq.top_unprocessed();
+
+  // Now it should be empty again
+  ASSERT_EQ(uq.empty(), true);
+}
+
 TEST(TestUQ, TopReinsertion) {
   // Create stations 
   std::shared_ptr<Station> A = std::make_shared<Station>("A");
@@ -74,5 +110,9 @@ TEST(TestUQ, TopReinsertion) {
   ASSERT_EQ(uq.top_unprocessed(), B);
   ASSERT_EQ(uq.top_unprocessed(), F);
   ASSERT_EQ(uq.top_unprocessed(), A);
+
+  // Any number of further calls should get dummy station
+  ASSERT_EQ(uq.top_unprocessed()->get_name(), "Dummy Station");
+  ASSERT_EQ(uq.top_unprocessed()->get_name(), "Dummy Station");
 
 }

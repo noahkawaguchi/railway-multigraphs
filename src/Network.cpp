@@ -2,6 +2,7 @@
 #include <algorithm>
 
 #include "Network.h"
+#include "UnvisitedQueue.h"
 
 Network::Network() {}
 
@@ -48,8 +49,9 @@ void Network::print() {
 //   start->set_path_minutes(0);
 
 //   // Enqueue all stations in unvisited queue
+//   UnvisitedQueue uq;
 //   for (const auto& station : this->stations) {
-//     this->dijkstra_unvisited.push(station);
+//     uq.push(station);
 //   }
 
 //   // Visit each of the unvisited stations

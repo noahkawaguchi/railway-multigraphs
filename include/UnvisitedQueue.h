@@ -9,7 +9,7 @@
 #include "Station.h"
 
 // Dummy station to point to by default for safety
-static std::shared_ptr<Station> dummy_station = std::make_shared<Station>("No Predecessor");
+static std::shared_ptr<Station> dummy_station = std::make_shared<Station>("Dummy Station");
 
 // Representation of stations specifically for use in the priority queue
 struct QueueStation {
@@ -29,7 +29,7 @@ struct QueueStation {
 
 struct UnvisitedQueue {
 
-  // Initialize a QueueStation and push into internal priority queue
+  // Initialize a QueueStation and push it into internal priority queue
   void push(std::shared_ptr<Station> station) {
     QueueStation qs(station, station->get_path_minutes());
     this->pq.push(qs);
@@ -39,6 +39,10 @@ struct UnvisitedQueue {
   // path minutes), mark it as processed, and return it
   std::shared_ptr<Station> top_unprocessed() {
     QueueStation qs;
+
+    // Return dummy station if this function is mistakenly called on an empty queue
+    if (this->empty()) { return qs.station; }
+
     do {
       qs = this->pq.top();
       this->pq.pop();
@@ -47,6 +51,17 @@ struct UnvisitedQueue {
     this->processed.insert(qs.station);
 
     return qs.station;
+  }
+
+  // Check if the queue is empty. "Empty" means it contains no unprocessed stations.
+  bool empty() {
+    // Pop any processed stations off the top
+    while (!pq.empty() && processed.find(pq.top().station) != processed.end()) {
+      pq.pop();
+    }
+    // Now either the top element is unprocessed, or there are no elements at all
+    if (pq.empty()) { return true; }
+    else { return false; }
   }
 
   std::priority_queue<QueueStation> pq;
