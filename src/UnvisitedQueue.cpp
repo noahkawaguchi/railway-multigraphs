@@ -11,11 +11,12 @@ void UnvisitedQueue::push(std::shared_ptr<Station> station) {
 
 bool UnvisitedQueue::empty() {
   // Pop any processed stations off the top
-  while (!pq.empty() && processed.find(pq.top().station) != processed.end()) {
-    pq.pop();
-  }
+  while (!this->pq.empty() 
+         && this->processed.find(this->pq.top().station)
+         != this->processed.end())
+  { this->pq.pop(); }
   // Now either the top element is unprocessed, or there are no elements at all
-  if (pq.empty()) { return true; }
+  if (this->pq.empty()) { return true; }
   else { return false; }
 }
 
