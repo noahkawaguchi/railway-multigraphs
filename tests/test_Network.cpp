@@ -70,4 +70,12 @@ TEST(BasicDSP, ToyDataTinyCity) {
     east_residential, airport, city_hall, hospital, west_residential
   };
   ASSERT_EQ(east_west_route->stations, correct_path_east_west);
+
+  // Find the shortest path from the seaport to the hospital
+  std::shared_ptr<Route> seaport_hospital_route = tiny_city->basic_DSP(seaport, hospital);
+  std::vector<std::shared_ptr<Station>> correct_path_seaport_hospital = {
+    seaport, mall, city_hall, hospital
+  };
+  ASSERT_EQ(seaport_hospital_route->stations, correct_path_seaport_hospital);
+
 }
