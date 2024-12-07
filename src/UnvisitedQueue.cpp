@@ -9,22 +9,6 @@ void UnvisitedQueue::push(std::shared_ptr<Station> station) {
   this->pq.push(qs);
 }
 
-std::shared_ptr<Station> UnvisitedQueue::top_unprocessed() {
-  QueueStation qs;
-
-  // Return dummy station if this function is mistakenly called on an empty queue
-  if (this->empty()) { return qs.station; }
-
-  do {
-    qs = this->pq.top();
-    this->pq.pop();
-  } while (processed.find(qs.station) != processed.end());
-
-  this->processed.insert(qs.station);
-
-  return qs.station;
-}
-
 bool UnvisitedQueue::empty() {
   // Pop any processed stations off the top
   while (!pq.empty() && processed.find(pq.top().station) != processed.end()) {
@@ -33,4 +17,19 @@ bool UnvisitedQueue::empty() {
   // Now either the top element is unprocessed, or there are no elements at all
   if (pq.empty()) { return true; }
   else { return false; }
+}
+
+std::shared_ptr<Station> UnvisitedQueue::top_unprocessed() {
+  // Clear processed stations off the top of the queue. Return the dummy station if this function 
+  // has been mistakenly called on an empty queue or one with all processed stations.
+  if (this->empty()) { return UnvisitedQueue::QueueStation::dummy_station; }
+
+  // If the function did not return above, the top station must be unprocessed
+  QueueStation qs = this->pq.top();
+  this->pq.pop();
+
+  // Mark the station as being processed now
+  this->processed.insert(qs.station);
+
+  return qs.station;
 }

@@ -17,12 +17,13 @@ public:
   // Initialize a QueueStation and push it into the internal priority queue
   void push(std::shared_ptr<Station> station);
 
+  // Clear any processed stations off the top of the internal priority queue. If no 
+  // stations remain, return true. If an unprocessed station remains, return false.
+  bool empty();
+
   // Remove the top unprocessed element (the station with the minimum 
   // path minutes), mark it as processed, and return it
   std::shared_ptr<Station> top_unprocessed();
-
-  // Check if the UnvisitedQueue is empty. "Empty" means it contains no unprocessed stations.
-  bool empty();
 
 private:
   // Representation of stations specifically for use in the priority queue
@@ -33,7 +34,6 @@ private:
     std::shared_ptr<Station> station = dummy_station;
     int minutes = std::numeric_limits<int>::max() / 2; // "Infinity"
 
-    QueueStation() {}
     QueueStation(std::shared_ptr<Station> station, int minutes)
                 : station(station), minutes(minutes) {}
     
