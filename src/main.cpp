@@ -24,8 +24,8 @@ int main() {
   // Print the network
   basic_network->print();
 
-  // Calculate Dijkstra's shortest path from Station A to Station C
-  basic_network->print_basic_DSP(stationA, stationC);
+  // // Calculate Dijkstra's shortest path from Station A to Station C
+  // basic_network->print_basic_DSP(stationA, stationC);
 
 
 

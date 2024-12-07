@@ -28,32 +28,23 @@ public:
   // Print a representation of the network
   void print();
 
-  // Find Dijkstra's shortest (quickest) path from start to 
-  // destination. Fares are free and transfers are instant.
-  std::shared_ptr<Route> basic_DSP(std::shared_ptr<Station> start,
-                                   std::shared_ptr<Station> destination);
+  // // Find Dijkstra's shortest (quickest) path from start to 
+  // // destination. Fares are free and transfers are instant.
+  // std::shared_ptr<Route> basic_DSP(std::shared_ptr<Station> start,
+  //                                  std::shared_ptr<Station> destination);
 
-  // Print Dijkstra's shortest (quickest) path from start to 
-  // destination. Fares are free and transfers are instant.
-  void print_basic_DSP(std::shared_ptr<Station> start, std::shared_ptr<Station> destination);
+  // // Print Dijkstra's shortest (quickest) path from start to 
+  // // destination. Fares are free and transfers are instant.
+  // void print_basic_DSP(std::shared_ptr<Station> start, std::shared_ptr<Station> destination);
 
-  // Find Yen's K shortest (quickest) paths. Fares are free and transfers are instant.
-  std::vector<std::shared_ptr<Route>> basic_yen(std::shared_ptr<Station> start,
-                                                std::shared_ptr<Station> destination,
-                                                int k);
+  // // Find Yen's K shortest (quickest) paths. Fares are free and transfers are instant.
+  // std::vector<std::shared_ptr<Route>> basic_yen(std::shared_ptr<Station> start,
+  //                                               std::shared_ptr<Station> destination,
+  //                                               int k);
 
 private:
   std::vector<std::shared_ptr<Station>> stations;
   std::unordered_map<std::string, std::vector<std::shared_ptr<Track>>> tracks;
-
-  // Custom comparator for priority queue
-  struct MinimumMinutes {
-    bool operator()(const std::shared_ptr<Station>& a, const std::shared_ptr<Station>& b) {
-      return a->get_path_minutes() > b->get_path_minutes();
-    }
-  };
-  std::priority_queue<std::shared_ptr<Station>, std::vector<std::shared_ptr<Station>>,
-                      MinimumMinutes> dijkstra_unvisited;
   
 };
 

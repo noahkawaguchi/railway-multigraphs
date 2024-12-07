@@ -25,6 +25,7 @@ add_executable(tests
     src/Network.cpp
     tests/test_Network.cpp
     tests/test_Track.cpp
+    tests/test_UnvisitedQueue.cpp
 )
 
 # Discover and enable tests
