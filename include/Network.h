@@ -28,10 +28,10 @@ public:
   // Print a representation of the network
   void print();
 
-  // // Find Dijkstra's shortest (quickest) path from start to 
-  // // destination. Fares are free and transfers are instant.
-  // std::shared_ptr<Route> basic_DSP(std::shared_ptr<Station> start,
-  //                                  std::shared_ptr<Station> destination);
+  // Find Dijkstra's shortest (quickest) path from start to 
+  // destination. Fares are free and transfers are instant.
+  std::shared_ptr<Route> basic_DSP(std::shared_ptr<Station> start,
+                                   std::shared_ptr<Station> destination);
 
   // // Print Dijkstra's shortest (quickest) path from start to 
   // // destination. Fares are free and transfers are instant.

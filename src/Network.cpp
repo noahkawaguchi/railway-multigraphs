@@ -37,67 +37,60 @@ void Network::print() {
 
 // *** SHORTEST PATH ALGORITHMS *** //
 
-// std::shared_ptr<Route> Network::basic_DSP(std::shared_ptr<Station> start,
-//                                           std::shared_ptr<Station> destination)
-// {
-//   // Set all stations' minutes to "infinity," predecessor to dummy predecessor, and processed to false
-//   for (const auto& station : this->stations) {
-//     station->path_reset();
-//   }
+std::shared_ptr<Route> Network::basic_DSP(std::shared_ptr<Station> start,
+                                          std::shared_ptr<Station> destination)
+{
+  // Set all stations' minutes to "infinity," predecessor to dummy predecessor, and processed to false
+  for (const auto& station : this->stations) {
+    station->path_reset();
+  }
 
-//   // Time from start to start is 0
-//   start->set_path_minutes(0);
+  // Time from start to start is 0
+  start->set_path_minutes(0);
 
-//   // Enqueue all stations in unvisited queue
-//   UnvisitedQueue uq;
-//   for (const auto& station : this->stations) {
-//     uq.push(station);
-//   }
+  // Enqueue all stations in unvisited queue
+  UnvisitedQueue uq;
+  for (const auto& station : this->stations) {
+    uq.push(station);
+  }
 
-//   // Visit each of the unvisited stations
-//   while (!this->dijkstra_unvisited.empty()) {
-//     // Visit minimum from unvisited queue
-//     std::shared_ptr<Station> current_station = this->dijkstra_unvisited.top();
-//     this->dijkstra_unvisited.pop();
+  // Visit each of the unvisited stations
+  while (!uq.empty()) {
+    // Visit minimum from unvisited queue
+    std::shared_ptr<Station> current_station = uq.top_unprocessed();
 
-//     // Skip if this station has already been processed. (There may be 
-//     // duplicate pointers to processed stations left in the queue because 
-//     // of reinsertion.) Otherwise mark it as being processed now.
-//     if (current_station->get_path_processed()) { continue; }
-//     current_station->set_path_processed(true);
-
-//     // Stop early if the destination is found
-//     if (current_station == destination) { break; }
+    // Stop early if the destination is found
+    if (current_station == destination) { break; }
     
-//     // Iterate over adjacent stations (via adjacent tracks)
-//     for (const auto& adj_track : this->tracks[current_station->get_name()]) {
-//       int track_minutes = adj_track->minutes;
-//       int alt_path_minutes = current_station->get_path_minutes() + track_minutes;
+    // Iterate over adjacent stations (via adjacent tracks)
+    for (const auto& adj_track : this->tracks[current_station->get_name()]) {
+      int track_minutes = adj_track->minutes;
+      int alt_path_minutes = current_station->get_path_minutes() + track_minutes;
 
-//       // If a shorter path from the starting station to the adjacent station 
-//       // is found, update the adjacent station's time and predecessor.
-//       if (alt_path_minutes < adj_track->other_station->get_path_minutes()) {
-//         adj_track->other_station->set_path_minutes(alt_path_minutes);
-//         adj_track->other_station->set_path_predecessor(current_station);
-//         // The station with modified data must be reinserted to maintain sorting
-//         this->dijkstra_unvisited.push(adj_track->other_station);
-//       }
-//     }
-//   }
+      // If a shorter path from the starting station to the adjacent station 
+      // is found, update the adjacent station's time and predecessor.
+      if (alt_path_minutes < adj_track->other_station->get_path_minutes()) {
+        adj_track->other_station->set_path_minutes(alt_path_minutes);
+        adj_track->other_station->set_path_predecessor(current_station);
+        // The station with modified data must be reinserted to maintain sorting
+        uq.push(adj_track->other_station);
+      }
+    }
+  }
 
-//   // Accumulate the path from start to destination in reverse using the predecessors
-//   std::shared_ptr<Route> route = std::make_shared<Route>();
-//   std::shared_ptr<Station> cursor = destination;
-//   while (cursor != start) {
-//     route->stations.push_back(cursor);
-//     cursor = cursor->get_path_predecessor();
-//   }
-//   route->stations.push_back(start);
-//   // Reverse to get the stations in the correct order 
-//   std::reverse(route->stations.begin(), route->stations.end());
+  // Accumulate the path from start to destination in reverse using the predecessors
+  std::shared_ptr<Route> route = std::make_shared<Route>();
+  std::shared_ptr<Station> cursor = destination;
+  while (cursor != start) {
+    route->stations.push_back(cursor);
+    cursor = cursor->get_path_predecessor();
+  }
+  route->stations.push_back(start);
+  // Reverse to get the stations in the correct order 
+  std::reverse(route->stations.begin(), route->stations.end());
 
-//   return route;
-// }
+  return route;
+}
 
 // void Network::print_basic_DSP(std::shared_ptr<Station> start, std::shared_ptr<Station> destination) {
 
