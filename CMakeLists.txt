@@ -12,6 +12,7 @@ include_directories(include)
 add_executable(railway_simulator 
     src/Network.cpp
     src/Station.cpp
+    src/UnvisitedQueue.cpp
     src/main.cpp
 )
 
@@ -24,8 +25,9 @@ add_executable(tests
     tests/test_Station.cpp
     src/Network.cpp
     tests/test_Network.cpp
-    tests/test_Track.cpp
+    src/UnvisitedQueue.cpp
     tests/test_UnvisitedQueue.cpp
+    tests/test_Track.cpp
 )
 
 # Discover and enable tests

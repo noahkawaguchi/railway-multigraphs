@@ -92,58 +92,57 @@ std::shared_ptr<Route> Network::basic_DSP(std::shared_ptr<Station> start,
   return route;
 }
 
-// void Network::print_basic_DSP(std::shared_ptr<Station> start, std::shared_ptr<Station> destination) {
+void Network::print_basic_DSP(std::shared_ptr<Station> start, std::shared_ptr<Station> destination) {
 
-//   // Get the shortest path
-//   std::shared_ptr<Route> route = basic_DSP(start, destination);
+  // Get the shortest path
+  std::shared_ptr<Route> route = basic_DSP(start, destination);
 
-//   // Print the path from start to destination
-//   std::cout << std::endl << std::string(20, '-') << std::endl;
-//   std::cout << "\nDijkstra's shortest path from " << start->get_name() 
-//             << " to " << destination->get_name() << ":\n" << std::endl;
-//   std::cout << "  ";
-//   for (const auto& station : route->stations) {
-//     std::cout << station->get_name();
-//     if (station != route->stations.back()) {
-//       std::cout << " -> ";
-//     }
-//   }
-//   std::cout << "\n  Total time: " << destination->get_path_minutes() << " min\n\n";
-//   std::cout << std::string(20, '-') << '\n' << std::endl;
-// }
+  // Print the path from start to destination
+  std::cout << std::endl << std::string(20, '-') << std::endl;
+  std::cout << "\nDijkstra's shortest path from " << start->get_name() 
+            << " to " << destination->get_name() << ":\n" << std::endl;
+  std::cout << "  ";
+  for (const auto& station : route->stations) {
+    std::cout << station->get_name();
+    if (station != route->stations.back()) {
+      std::cout << " -> ";
+    }
+  }
+  std::cout << "\n  Total time: " << destination->get_path_minutes() << " min\n\n";
+  std::cout << std::string(20, '-') << '\n' << std::endl;
+}
 
-// // Custom comparator for Yen priority queue--orders by the minutes it takes to traverse the path
-// struct ShorterPath {
-//   bool operator()(std::shared_ptr<Route>& a, std::shared_ptr<Route>& b) {
-//     return a->get_minutes() > b->get_minutes();
-//   }
-// };
+// Custom comparator for Yen priority queue--orders by the minutes it takes to traverse the path
+struct ShorterPath {
+  bool operator()(std::shared_ptr<Route>& a, std::shared_ptr<Route>& b) {
+    return a->get_minutes() > b->get_minutes();
+  }
+};
 
-// std::vector<std::shared_ptr<Route>> Network::basic_yen(std::shared_ptr<Station> start,
-//                                                        std::shared_ptr<Station> destination,
-//                                                        int k)
-// {
-//   std::vector<std::shared_ptr<Route>> A; // K shortest paths in order of shortest to longest
-//   std::priority_queue<std::shared_ptr<Route>,
-//                       std::vector<std::shared_ptr<Route>>,
-//                       ShorterPath> B; // Candidate paths
+std::vector<std::shared_ptr<Route>> Network::basic_yen(std::shared_ptr<Station> start,
+                                                       std::shared_ptr<Station> destination,
+                                                       int k)
+{
+  std::vector<std::shared_ptr<Route>> A; // K shortest paths in order of shortest to longest
+  std::priority_queue<std::shared_ptr<Route>,
+                      std::vector<std::shared_ptr<Route>>,
+                      ShorterPath> B; // Candidate paths
 
-//   // Find #1 shortest path using regular Dijkstra
-//   A.push_back(this->basic_DSP(start, destination));
+  // Find #1 shortest path using regular Dijkstra
+  A.push_back(this->basic_DSP(start, destination));
 
-//   // For each node in the path most recently added to A other 
-//   // than the destination, that node becomes the spur node 
+  // For each node in the path most recently added to A other 
+  // than the destination, that node becomes the spur node 
 
 
 
-//   // TODO
+  // TODO
   
 
 
 
-//   // Just to avoid compiler warnings for now
-//   std::shared_ptr<Route> dummy_route = std::make_shared<Route>();
-//   std::vector<std::shared_ptr<Route>> dummy_ret;
-//   dummy_ret.push_back(dummy_route);
-//   return dummy_ret;
-// }
+  // Just to avoid compiler warnings for now
+  std::shared_ptr<Route> dummy_route = std::make_shared<Route>();
+  std::vector<std::shared_ptr<Route>> dummy_ret = {dummy_route};
+  return dummy_ret;
+}

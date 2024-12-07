@@ -69,17 +69,5 @@ TEST(BasicDSP, ToyDataTinyCity) {
   std::vector<std::shared_ptr<Station>> correct_path_east_west = {
     east_residential, airport, city_hall, hospital, west_residential
   };
-
-  for (const auto& station : east_west_route->stations) {
-    std::cout << station->get_name() << std::endl;
-  }
-
-  std::cout << std::endl;
-
-  for (const auto& station : correct_path_east_west) {
-    std::cout << station->get_name() << std::endl;
-  }
-
   ASSERT_EQ(east_west_route->stations, correct_path_east_west);
-
 }
