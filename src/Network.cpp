@@ -19,8 +19,25 @@ void Network::new_track(std::shared_ptr<Station> station1,
   std::shared_ptr<Track> track_from_1 = std::make_shared<Track>(station2, minutes);
   std::shared_ptr<Track> track_from_2 = std::make_shared<Track>(station1, minutes);
   // Add track to the adjacency list for both stations
-  this->tracks[station1].push_back(track_from_1);
-  this->tracks[station2].push_back(track_from_2);
+  this->tracks[station1].insert(track_from_1);
+  this->tracks[station2].insert(track_from_2);
+}
+
+void Network::set_transfer(std::shared_ptr<Station> station1, std::shared_ptr<Station> station2) {
+  station1->set_transfer(station2);
+  station2->set_transfer(station1);
+}
+
+std::unordered_set<std::shared_ptr<Track>> Network::get_adjacent_tracks(std::shared_ptr<Station> station) {
+  std::unordered_set<std::shared_ptr<Track>> ret = this->tracks[station]; // Input station's adjacent tracks
+  std::unordered_set<std::shared_ptr<Station>> transfers = station->get_transfers();
+  if (!transfers.empty()) {
+    // Adjacent tracks from transfers
+    for (const auto& transfer : transfers) {
+      ret.merge(this->tracks[transfer]);
+    }
+  }
+  return ret;
 }
 
 void Network::print() {

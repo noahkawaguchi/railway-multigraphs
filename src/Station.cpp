@@ -24,7 +24,7 @@ std::shared_ptr<Station> Station::get_path_predecessor() {
   return this->path_predecessor;
 }
 
-std::vector<std::shared_ptr<Station>> Station::get_transfers() {
+std::unordered_set<std::shared_ptr<Station>> Station::get_transfers() {
   return this->transfers;
 }
 
@@ -42,5 +42,5 @@ void Station::path_reset() {
 }
 
 void Station::set_transfer(std::shared_ptr<Station> station) {
-  this->transfers.push_back(station);
+  this->transfers.insert(station);
 }

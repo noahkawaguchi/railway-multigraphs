@@ -4,7 +4,7 @@
 #include <memory>
 #include <limits>
 #include <string>
-#include <vector>
+#include <unordered_set>
 
 class Station {
 public:
@@ -21,7 +21,7 @@ public:
   std::shared_ptr<Station> get_path_predecessor();
 
   // Get stops at the same location by other lines
-  std::vector<std::shared_ptr<Station>> get_transfers();
+  std::unordered_set<std::shared_ptr<Station>> get_transfers();
   
   // Set the minutes from the starting station for shortest path algorithms
   void set_path_minutes(int minutes);
@@ -39,7 +39,7 @@ private:
   std::string name;
   int path_minutes = std::numeric_limits<int>::max() / 2; // Initialize to "inifinity"
   std::shared_ptr<Station> path_predecessor;
-  std::vector<std::shared_ptr<Station>> transfers; // Stops at the same location by other lines
+  std::unordered_set<std::shared_ptr<Station>> transfers; // Stops at the same location by other lines
 
 };
 

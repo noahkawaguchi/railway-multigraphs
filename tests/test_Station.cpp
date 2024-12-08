@@ -43,7 +43,7 @@ TEST(TestStation, Transfers) {
   std::shared_ptr<Station> test_station = std::make_shared<Station>("Test Station");
 
   // Test getting transfers when there are none
-  std::vector<std::shared_ptr<Station>> empty_transfers = test_station->get_transfers();
+  std::unordered_set<std::shared_ptr<Station>> empty_transfers = test_station->get_transfers();
   ASSERT_EQ(empty_transfers.size(), 0);
   ASSERT_EQ(empty_transfers.empty(), true);
 
@@ -53,9 +53,9 @@ TEST(TestStation, Transfers) {
   std::shared_ptr<Station> transfer2 = std::make_shared<Station>("Transfer 2");
   test_station->set_transfer(transfer2);
 
-  // Now we should be able to get these transfers
-  std::vector<std::shared_ptr<Station>> test_transfers = test_station->get_transfers();
-  ASSERT_EQ(test_transfers[0], transfer1);
-  ASSERT_EQ(test_transfers[1], transfer2);
-
+  // Now we should be able to get these transfers and check membership
+  std::unordered_set<std::shared_ptr<Station>> test_transfers = test_station->get_transfers();
+  ASSERT_EQ(test_transfers.contains(transfer1), true);
+  ASSERT_EQ(test_transfers.contains(transfer2), true);
+  ASSERT_EQ(test_transfers.contains(test_station), false);
 }

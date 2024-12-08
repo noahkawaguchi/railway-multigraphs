@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 #include <unordered_map>
+#include <unordered_set>
 #include <queue>
 #include <string>
 
@@ -24,6 +25,12 @@ public:
   void new_track(std::shared_ptr<Station> station1,
                  std::shared_ptr<Station> station2,
                  int minutes);
+
+  // Set the two stations as transfers for each other
+  void set_transfer(std::shared_ptr<Station> station1, std::shared_ptr<Station> station2);
+  
+  // Get all adjacent tracks for a given station, including connections to different lines
+  std::unordered_set<std::shared_ptr<Track>> get_adjacent_tracks(std::shared_ptr<Station> station);
   
   // Print a representation of the network
   void print();
@@ -44,7 +51,7 @@ public:
 
 private:
   std::vector<std::shared_ptr<Station>> stations;
-  std::unordered_map<std::shared_ptr<Station>, std::vector<std::shared_ptr<Track>>> tracks;
+  std::unordered_map<std::shared_ptr<Station>, std::unordered_set<std::shared_ptr<Track>>> tracks;
   
 };
 
