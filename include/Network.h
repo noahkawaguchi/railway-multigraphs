@@ -44,7 +44,7 @@ public:
 
 private:
   std::vector<std::shared_ptr<Station>> stations;
-  std::unordered_map<std::string, std::vector<std::shared_ptr<Track>>> tracks;
+  std::unordered_map<std::shared_ptr<Station>, std::vector<std::shared_ptr<Track>>> tracks;
   
 };
 

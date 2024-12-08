@@ -19,15 +19,15 @@ void Network::new_track(std::shared_ptr<Station> station1,
   std::shared_ptr<Track> track_from_1 = std::make_shared<Track>(station2, minutes);
   std::shared_ptr<Track> track_from_2 = std::make_shared<Track>(station1, minutes);
   // Add track to the adjacency list for both stations
-  this->tracks[station1->get_name()].push_back(track_from_1);
-  this->tracks[station2->get_name()].push_back(track_from_2);
+  this->tracks[station1].push_back(track_from_1);
+  this->tracks[station2].push_back(track_from_2);
 }
 
 void Network::print() {
   std::cout << std::endl << std::string(20, '-') << '\n' << std::endl;
   for (const auto& station : this->stations) {
     std::cout << station->get_name() << " connections:\n";
-    for (const auto& track : this->tracks[station->get_name()]) {
+    for (const auto& track : this->tracks[station]) {
       std::cout << "  " << track->minutes << " min to "<< track->other_station->get_name() << '\n';
     }
     std::cout << std::endl; 
@@ -63,7 +63,7 @@ std::shared_ptr<Route> Network::basic_DSP(std::shared_ptr<Station> start,
     if (current_station == destination) { break; }
     
     // Iterate over adjacent stations (via adjacent tracks)
-    for (const auto& adj_track : this->tracks[current_station->get_name()]) {
+    for (const auto& adj_track : this->tracks[current_station]) {
       int track_minutes = adj_track->minutes;
       int alt_path_minutes = current_station->get_path_minutes() + track_minutes;
 
