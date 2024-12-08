@@ -8,7 +8,7 @@ TEST(TestStation, InitStation) {
   // Make sure name is set correctly
   ASSERT_EQ(test_station->get_name(), "Test Station");
   // Make sure default values are set correctly
-  ASSERT_EQ(test_station->get_path_minutes(), 1073741823);
+  ASSERT_EQ(test_station->get_path_distance(), 1.70141173e+38f);
   ASSERT_EQ(test_station->get_path_predecessor()->get_name(), "No Predecessor");
 }
 
@@ -16,11 +16,11 @@ TEST(TestStation, SetPathStats) {
   // Create station
   std::shared_ptr<Station> test_station = std::make_shared<Station>("Test Station");
   // Set shortest path stats
-  test_station->set_path_minutes(15);
+  test_station->set_path_distance(5.3f);
   std::shared_ptr<Station> predecessor_station = std::make_shared<Station>("Predecessor Station");
   test_station->set_path_predecessor(predecessor_station);
   // Make sure shortest path stats are set properly
-  ASSERT_EQ(test_station->get_path_minutes(), 15);
+  ASSERT_EQ(test_station->get_path_distance(), 5.3f);
   ASSERT_EQ(test_station->get_path_predecessor(), predecessor_station);
 }
 
@@ -28,13 +28,13 @@ TEST(TestStation, ResetPathStats) {
   // Create station
   std::shared_ptr<Station> test_station = std::make_shared<Station>("Test Station");
   // Set shortest path stats
-  test_station->set_path_minutes(10);
+  test_station->set_path_distance(10.2f);
   std::shared_ptr<Station> predecessor_station = std::make_shared<Station>("This Should Not Show");
   test_station->set_path_predecessor(predecessor_station);
   // Reset path stats
   test_station->path_reset();
   // Make sure path stats are back to their default values
-  ASSERT_EQ(test_station->get_path_minutes(), 1073741823);
+  ASSERT_EQ(test_station->get_path_distance(), 1.70141173e+38f);
   ASSERT_EQ(test_station->get_path_predecessor()->get_name(), "No Predecessor");
 }
 

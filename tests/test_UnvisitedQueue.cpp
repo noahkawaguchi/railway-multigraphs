@@ -10,10 +10,10 @@ TEST(TestUQ, Top) {
   std::shared_ptr<Station> station4 = std::make_shared<Station>("Station 4");
 
   // Set priorities
-  station1->set_path_minutes(5);
-  station2->set_path_minutes(10);
+  station1->set_path_distance(5);
+  station2->set_path_distance(10);
   // (leave Station 3 as default)
-  station4->set_path_minutes(2);
+  station4->set_path_distance(2);
 
   // Create UnvisitedQueue and insert
   UnvisitedQueue uq;
@@ -41,8 +41,8 @@ TEST(TestUQ, Empty) {
   std::shared_ptr<Station> station3 = std::make_shared<Station>("Station 3");
 
   // Set priorities
-  station1->set_path_minutes(7);
-  station2->set_path_minutes(3);
+  station1->set_path_distance(7);
+  station2->set_path_distance(3);
   // (leave Station 3 as default)
 
   // Insert into queue
@@ -54,7 +54,7 @@ TEST(TestUQ, Empty) {
   ASSERT_EQ(uq.empty(), false);
 
   // Update priority, reinsert, and process, leaving a processed duplicate in the queue
-  station3->set_path_minutes(2);
+  station3->set_path_distance(2);
   uq.push(station3);
   uq.top_unprocessed();
 
@@ -76,7 +76,7 @@ TEST(TestUQ, TopReinsertion) {
   std::shared_ptr<Station> F = std::make_shared<Station>("F");
 
   // Set priority of C, leave the rest as infinity
-  C->set_path_minutes(0);
+  C->set_path_distance(0);
 
   // Create UnvisitedQueue and insert
   UnvisitedQueue uq;
@@ -93,13 +93,13 @@ TEST(TestUQ, TopReinsertion) {
   // Now we should have A,B,D,E,F - all the same priority
 
   // Modify some of the priorities and reinsert, resulting in duplicates
-  D->set_path_minutes(2);
+  D->set_path_distance(2);
   uq.push(D);
-  F->set_path_minutes(14);
+  F->set_path_distance(14);
   uq.push(F);
-  B->set_path_minutes(10);
+  B->set_path_distance(10);
   uq.push(B);
-  E->set_path_minutes(7);
+  E->set_path_distance(7);
   uq.push(E);
 
   // Now we should have D-2, E-7, B-10, F-14, A-inf, along with duplicates

@@ -4,14 +4,16 @@
 #include <memory>
 
 #include "Station.h"
+#include "Line.h"
 
 struct Track {
   std::shared_ptr<Station> other_station;
-  int minutes; // How long it takes to get to the other station
+  float distance; // The number of miles to the other station
+  std::shared_ptr<Line> line; // The line this track belongs to
   
   // Constructor 
-  Track(std::shared_ptr<Station> other_station, int minutes) 
-      : other_station(other_station), minutes(minutes) {}
+  Track(std::shared_ptr<Station> other_station, float distance) 
+      : other_station(other_station), distance(distance) {}
 
 };
 

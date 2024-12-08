@@ -14,10 +14,10 @@ std::shared_ptr<Station> Network::new_station(std::string name) {
 
 void Network::new_track(std::shared_ptr<Station> station1,
                         std::shared_ptr<Station> station2,
-                        int minutes) 
+                        float distance) 
 {
-  std::shared_ptr<Track> track_from_1 = std::make_shared<Track>(station2, minutes);
-  std::shared_ptr<Track> track_from_2 = std::make_shared<Track>(station1, minutes);
+  std::shared_ptr<Track> track_from_1 = std::make_shared<Track>(station2, distance);
+  std::shared_ptr<Track> track_from_2 = std::make_shared<Track>(station1, distance);
   // Add track to the adjacency list for both stations
   this->tracks[station1].insert(track_from_1);
   this->tracks[station2].insert(track_from_2);
@@ -45,7 +45,7 @@ void Network::print() {
   for (const auto& station : this->stations) {
     std::cout << station->get_name() << " connections:\n";
     for (const auto& track : this->tracks[station]) {
-      std::cout << "  " << track->minutes << " min to "<< track->other_station->get_name() << '\n';
+      std::cout << "  " << track->distance << " mi to "<< track->other_station->get_name() << '\n';
     }
     std::cout << std::endl; 
   }
@@ -57,13 +57,13 @@ void Network::print() {
 std::shared_ptr<Route> Network::basic_DSP(std::shared_ptr<Station> start,
                                           std::shared_ptr<Station> destination)
 {
-  // Set all stations' minutes to "infinity," predecessor to dummy predecessor, and processed to false
+  // Set all stations' distance to "infinity" and predecessor to dummy predecessor
   for (const auto& station : this->stations) {
     station->path_reset();
   }
 
-  // Time from start to start is 0
-  start->set_path_minutes(0);
+  // Distance from start to start is 0
+  start->set_path_distance(0.0f);
 
   // Enqueue all stations in unvisited queue
   UnvisitedQueue uq;
@@ -81,13 +81,13 @@ std::shared_ptr<Route> Network::basic_DSP(std::shared_ptr<Station> start,
     
     // Iterate over adjacent stations (via adjacent tracks)
     for (const auto& adj_track : this->tracks[current_station]) {
-      int track_minutes = adj_track->minutes;
-      int alt_path_minutes = current_station->get_path_minutes() + track_minutes;
+      int track_distance = adj_track->distance;
+      int alt_path_distance = current_station->get_path_distance() + track_distance;
 
       // If a shorter path from the starting station to the adjacent station 
-      // is found, update the adjacent station's time and predecessor.
-      if (alt_path_minutes < adj_track->other_station->get_path_minutes()) {
-        adj_track->other_station->set_path_minutes(alt_path_minutes);
+      // is found, update the adjacent station's distance and predecessor.
+      if (alt_path_distance < adj_track->other_station->get_path_distance()) {
+        adj_track->other_station->set_path_distance(alt_path_distance);
         adj_track->other_station->set_path_predecessor(current_station);
         // The station with modified data must be reinserted to maintain sorting
         uq.push(adj_track->other_station);
@@ -125,14 +125,14 @@ void Network::print_basic_DSP(std::shared_ptr<Station> start, std::shared_ptr<St
       std::cout << " -> ";
     }
   }
-  std::cout << "\n  Total time: " << destination->get_path_minutes() << " min\n\n";
+  std::cout << "\n  Total distance: " << destination->get_path_distance() << " mi\n\n";
   std::cout << std::string(20, '-') << '\n' << std::endl;
 }
 
-// Custom comparator for Yen priority queue--orders by the minutes it takes to traverse the path
+// Custom comparator for Yen priority queue
 struct ShorterPath {
   bool operator()(std::shared_ptr<Route>& a, std::shared_ptr<Route>& b) {
-    return a->get_minutes() > b->get_minutes();
+    return a->get_distance() > b->get_distance();
   }
 };
 

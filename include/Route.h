@@ -9,12 +9,12 @@
 struct Route {
   std::vector<std::shared_ptr<Station>> stations;
 
-  // Get the number of minutes it takes to traverse the route
-  int get_minutes() {
+  // Get the distance traveled when traversing the route
+  float get_distance() {
     if (stations.empty()) {
-      return 0;
+      return 0.0f;
     } else {
-      return stations.back()->get_path_minutes();
+      return stations.back()->get_path_distance();
     }
   }
 };

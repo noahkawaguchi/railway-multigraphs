@@ -16,8 +16,8 @@ std::string Station::get_name() {
   return this->name;
 }
 
-int Station::get_path_minutes() {
-  return this->path_minutes;
+float Station::get_path_distance() {
+  return this->path_distance;
 }
 
 std::shared_ptr<Station> Station::get_path_predecessor() {
@@ -28,8 +28,8 @@ std::unordered_set<std::shared_ptr<Station>> Station::get_transfers() {
   return this->transfers;
 }
 
-void Station::set_path_minutes(int minutes) {
-  this->path_minutes = minutes;
+void Station::set_path_distance(float distance) {
+  this->path_distance = distance;
 }
 
 void Station::set_path_predecessor(std::shared_ptr<Station> predecessor) {
@@ -37,7 +37,7 @@ void Station::set_path_predecessor(std::shared_ptr<Station> predecessor) {
 }
 
 void Station::path_reset() {
-  this->path_minutes = std::numeric_limits<int>::max() / 2; // "Infinity"
+  this->path_distance = std::numeric_limits<float>::max() / 2; // "Infinity"
   this->path_predecessor = dummy_predecessor;
 }
 

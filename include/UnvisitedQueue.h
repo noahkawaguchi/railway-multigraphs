@@ -22,7 +22,7 @@ public:
   bool empty();
 
   // Remove the top unprocessed element (the station with the minimum 
-  // path minutes), mark it as processed, and return it
+  // path distance), mark it as processed, and return it
   std::shared_ptr<Station> top_unprocessed();
 
 private:
@@ -32,14 +32,14 @@ private:
     static std::shared_ptr<Station> dummy_station;
 
     std::shared_ptr<Station> station = dummy_station;
-    int minutes = std::numeric_limits<int>::max() / 2; // "Infinity"
+    float distance = std::numeric_limits<float>::max() / 2; // "Infinity"
 
-    QueueStation(std::shared_ptr<Station> station, int minutes)
-                : station(station), minutes(minutes) {}
+    QueueStation(std::shared_ptr<Station> station, float distance)
+                : station(station), distance(distance) {}
     
     // Overload < operator for priority queue comparisons
     bool operator<(const QueueStation& other) const {
-      return this->minutes > other.minutes;
+      return this->distance > other.distance;
     }
   };
 

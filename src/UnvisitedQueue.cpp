@@ -5,7 +5,7 @@ std::shared_ptr<Station> UnvisitedQueue::QueueStation::dummy_station = std::make
 UnvisitedQueue::UnvisitedQueue() {}
 
 void UnvisitedQueue::push(std::shared_ptr<Station> station) {
-  QueueStation qs(station, station->get_path_minutes());
+  QueueStation qs(station, station->get_path_distance());
   this->pq.push(qs);
 }
 
