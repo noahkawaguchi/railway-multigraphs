@@ -4,6 +4,7 @@
 #include <memory>
 #include <limits>
 #include <string>
+#include <vector>
 
 class Station {
 public:
@@ -18,6 +19,9 @@ public:
 
   // Get the predecessor station for shortest path algorithms
   std::shared_ptr<Station> get_path_predecessor();
+
+  // Get stops at the same location by other lines
+  std::vector<std::shared_ptr<Station>> get_transfers();
   
   // Set the minutes from the starting station for shortest path algorithms
   void set_path_minutes(int minutes);
@@ -28,10 +32,14 @@ public:
   // Reset the minutes, predecessor, and processed flag for restarting shortest path algorithms
   void path_reset();
 
+  // Add a stop at the same location by another line
+  void set_transfer(std::shared_ptr<Station> station);
+
 private:
   std::string name;
   int path_minutes = std::numeric_limits<int>::max() / 2; // Initialize to "inifinity"
   std::shared_ptr<Station> path_predecessor;
+  std::vector<std::shared_ptr<Station>> transfers; // Stops at the same location by other lines
 
 };
 
