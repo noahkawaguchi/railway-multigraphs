@@ -14,7 +14,7 @@ struct Route {
     if (stations.empty()) {
       return 0.0f;
     } else {
-      return stations.back()->get_path_distance();
+      return stations.back()->path_distance;
     }
   }
 };

@@ -24,16 +24,15 @@ void Network::new_track(std::shared_ptr<Station> station1,
 }
 
 void Network::set_transfer(std::shared_ptr<Station> station1, std::shared_ptr<Station> station2) {
-  station1->set_transfer(station2);
-  station2->set_transfer(station1);
+  station1->transfers.insert(station2);
+  station2->transfers.insert(station1);
 }
 
 std::unordered_set<std::shared_ptr<Track>> Network::get_adjacent_tracks(std::shared_ptr<Station> station) {
   std::unordered_set<std::shared_ptr<Track>> ret = this->tracks[station]; // Input station's adjacent tracks
-  std::unordered_set<std::shared_ptr<Station>> transfers = station->get_transfers();
-  if (!transfers.empty()) {
+  if (!station->transfers.empty()) {
     // Adjacent tracks from transfers
-    for (const auto& transfer : transfers) {
+    for (const auto& transfer : station->transfers) {
       ret.merge(this->tracks[transfer]);
     }
   }
@@ -43,9 +42,9 @@ std::unordered_set<std::shared_ptr<Track>> Network::get_adjacent_tracks(std::sha
 void Network::print() {
   std::cout << std::endl << std::string(20, '-') << '\n' << std::endl;
   for (const auto& station : this->stations) {
-    std::cout << station->get_name() << " connections:\n";
+    std::cout << station->name << " connections:\n";
     for (const auto& track : this->tracks[station]) {
-      std::cout << "  " << track->distance << " mi to "<< track->other_station->get_name() << '\n';
+      std::cout << "  " << track->distance << " mi to "<< track->other_station->name << '\n';
     }
     std::cout << std::endl; 
   }
@@ -63,12 +62,12 @@ std::shared_ptr<Route> Network::basic_DSP(std::shared_ptr<Station> start,
   }
 
   // Distance from start to start is 0
-  start->set_path_distance(0.0f);
+  start->path_distance = 0.0f;
 
   // Enqueue all stations in unvisited queue
   UnvisitedQueue uq;
   for (const auto& station : this->stations) {
-    uq.push(station, station->get_path_distance());
+    uq.push(station, station->path_distance);
   }
 
   // Visit each of the unvisited stations
@@ -82,15 +81,15 @@ std::shared_ptr<Route> Network::basic_DSP(std::shared_ptr<Station> start,
     // Iterate over adjacent stations (via adjacent tracks)
     for (const auto& adj_track : this->tracks[current_station]) {
       int track_distance = adj_track->distance;
-      int alt_path_distance = current_station->get_path_distance() + track_distance;
+      int alt_path_distance = current_station->path_distance + track_distance;
 
       // If a shorter path from the starting station to the adjacent station 
       // is found, update the adjacent station's distance and predecessor.
-      if (alt_path_distance < adj_track->other_station->get_path_distance()) {
-        adj_track->other_station->set_path_distance(alt_path_distance);
-        adj_track->other_station->set_path_predecessor(current_station);
+      if (alt_path_distance < adj_track->other_station->path_distance) {
+        adj_track->other_station->path_distance = alt_path_distance;
+        adj_track->other_station->path_predecessor = current_station;
         // The station with modified data must be reinserted to maintain sorting
-        uq.push(adj_track->other_station, adj_track->other_station->get_path_distance());
+        uq.push(adj_track->other_station, adj_track->other_station->path_distance);
       }
     }
   }
@@ -100,7 +99,7 @@ std::shared_ptr<Route> Network::basic_DSP(std::shared_ptr<Station> start,
   std::shared_ptr<Station> cursor = destination;
   while (cursor != start) {
     route->stations.push_back(cursor);
-    cursor = cursor->get_path_predecessor();
+    cursor = cursor->path_predecessor;
   }
   route->stations.push_back(start);
   // Reverse to get the stations in the correct order 
@@ -109,23 +108,24 @@ std::shared_ptr<Route> Network::basic_DSP(std::shared_ptr<Station> start,
   return route;
 }
 
-void Network::print_basic_DSP(std::shared_ptr<Station> start, std::shared_ptr<Station> destination) {
-
+void Network::print_basic_DSP(std::shared_ptr<Station> start,
+                              std::shared_ptr<Station> destination)
+{
   // Get the shortest path
   std::shared_ptr<Route> route = basic_DSP(start, destination);
 
   // Print the path from start to destination
   std::cout << std::endl << std::string(20, '-') << std::endl;
-  std::cout << "\nDijkstra's shortest path from " << start->get_name() 
-            << " to " << destination->get_name() << ":\n" << std::endl;
+  std::cout << "\nDijkstra's shortest path from " << start->name 
+            << " to " << destination->name << ":\n" << std::endl;
   std::cout << "  ";
   for (const auto& station : route->stations) {
-    std::cout << station->get_name();
+    std::cout << station->name;
     if (station != route->stations.back()) {
       std::cout << " -> ";
     }
   }
-  std::cout << "\n  Total distance: " << destination->get_path_distance() << " mi\n\n";
+  std::cout << "\n  Total distance: " << destination->path_distance << " mi\n\n";
   std::cout << std::string(20, '-') << '\n' << std::endl;
 }
 
@@ -137,56 +137,7 @@ std::shared_ptr<Route> Network::cost_DSP(std::shared_ptr<Station> start,
 
 
 
-  // // Set all stations' distance to "infinity" and predecessor to dummy predecessor
-  // for (const auto& station : this->stations) {
-  //   station->path_reset();
-  // }
-
-  // // Distance from start to start is 0
-  // start->set_path_distance(0.0f);
-
-  // // Enqueue all stations in unvisited queue
-  // UnvisitedQueue uq;
-  // for (const auto& station : this->stations) {
-  //   uq.push(station, station->get_path_distance());
-  // }
-
-  // // Visit each of the unvisited stations
-  // while (!uq.empty()) {
-  //   // Visit minimum from unvisited queue
-  //   std::shared_ptr<Station> current_station = uq.top_unprocessed();
-
-  //   // Stop early if the destination is found
-  //   if (current_station == destination) { break; }
-    
-  //   // Iterate over adjacent stations (via adjacent tracks)
-  //   for (const auto& adj_track : this->tracks[current_station]) {
-  //     int track_distance = adj_track->distance;
-  //     int alt_path_distance = current_station->get_path_distance() + track_distance;
-
-  //     // If a shorter path from the starting station to the adjacent station 
-  //     // is found, update the adjacent station's distance and predecessor.
-  //     if (alt_path_distance < adj_track->other_station->get_path_distance()) {
-  //       adj_track->other_station->set_path_distance(alt_path_distance);
-  //       adj_track->other_station->set_path_predecessor(current_station);
-  //       // The station with modified data must be reinserted to maintain sorting
-  //       uq.push(adj_track->other_station, adj_track->other_station->get_path_distance());
-  //     }
-  //   }
-  // }
-
-  // // Accumulate the path from start to destination in reverse using the predecessors
-  // std::shared_ptr<Route> route = std::make_shared<Route>();
-  // std::shared_ptr<Station> cursor = destination;
-  // while (cursor != start) {
-  //   route->stations.push_back(cursor);
-  //   cursor = cursor->get_path_predecessor();
-  // }
-  // route->stations.push_back(start);
-  // // Reverse to get the stations in the correct order 
-  // std::reverse(route->stations.begin(), route->stations.end());
-
-  // return route;
+  
 
 
 

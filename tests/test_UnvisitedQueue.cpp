@@ -10,17 +10,17 @@ TEST(TestUQ, Top) {
   std::shared_ptr<Station> station4 = std::make_shared<Station>("Station 4");
 
   // Set priorities
-  station1->set_path_distance(5);
-  station2->set_path_distance(10);
+  station1->path_distance = 5;
+  station2->path_distance = 10;
   // (leave Station 3 as default)
-  station4->set_path_distance(2);
+  station4->path_distance = 2;
 
   // Create UnvisitedQueue and insert
   UnvisitedQueue uq;
-  uq.push(station1, station1->get_path_distance());
-  uq.push(station2, station2->get_path_distance());
-  uq.push(station3, station3->get_path_distance());
-  uq.push(station4, station4->get_path_distance());
+  uq.push(station1, station1->path_distance);
+  uq.push(station2, station2->path_distance);
+  uq.push(station3, station3->path_distance);
+  uq.push(station4, station4->path_distance);
 
   // Make sure top returns the correct station
   ASSERT_EQ(uq.top_unprocessed(), station4);
@@ -41,21 +41,21 @@ TEST(TestUQ, Empty) {
   std::shared_ptr<Station> station3 = std::make_shared<Station>("Station 3");
 
   // Set priorities
-  station1->set_path_distance(7);
-  station2->set_path_distance(3);
+  station1->path_distance = 7;
+  station2->path_distance = 3;
   // (leave Station 3 as default)
 
   // Insert into queue
-  uq.push(station1, station1->get_path_distance());
-  uq.push(station2, station2->get_path_distance());
-  uq.push(station3, station3->get_path_distance());
+  uq.push(station1, station1->path_distance);
+  uq.push(station2, station2->path_distance);
+  uq.push(station3, station3->path_distance);
 
   // Now the queue should not be empty
   ASSERT_EQ(uq.empty(), false);
 
   // Update priority, reinsert, and process, leaving a processed duplicate in the queue
-  station3->set_path_distance(2);
-  uq.push(station3, station3->get_path_distance());
+  station3->path_distance = 2;
+  uq.push(station3, station3->path_distance);
   uq.top_unprocessed();
 
   // Remove both remaining processed stations
@@ -76,16 +76,16 @@ TEST(TestUQ, TopReinsertion) {
   std::shared_ptr<Station> F = std::make_shared<Station>("F");
 
   // Set priority of C, leave the rest as infinity
-  C->set_path_distance(0);
+  C->path_distance = 0;
 
   // Create UnvisitedQueue and insert
   UnvisitedQueue uq;
-  uq.push(A, A->get_path_distance());
-  uq.push(B, B->get_path_distance());
-  uq.push(C, C->get_path_distance());
-  uq.push(D, D->get_path_distance());
-  uq.push(E, E->get_path_distance());
-  uq.push(F, F->get_path_distance());
+  uq.push(A, A->path_distance);
+  uq.push(B, B->path_distance);
+  uq.push(C, C->path_distance);
+  uq.push(D, D->path_distance);
+  uq.push(E, E->path_distance);
+  uq.push(F, F->path_distance);
 
   // Make sure top returns the correct station
   ASSERT_EQ(uq.top_unprocessed(), C);
@@ -93,14 +93,14 @@ TEST(TestUQ, TopReinsertion) {
   // Now we should have A,B,D,E,F - all the same priority
 
   // Modify some of the priorities and reinsert, resulting in duplicates
-  D->set_path_distance(2);
-  uq.push(D, D->get_path_distance());
-  F->set_path_distance(14);
-  uq.push(F, F->get_path_distance());
-  B->set_path_distance(10);
-  uq.push(B, B->get_path_distance());
-  E->set_path_distance(7);
-  uq.push(E, E->get_path_distance());
+  D->path_distance = 2;
+  uq.push(D, D->path_distance);
+  F->path_distance = 14;
+  uq.push(F, F->path_distance);
+  B->path_distance = 10;
+  uq.push(B, B->path_distance);
+  E->path_distance = 7;
+  uq.push(E, E->path_distance);
 
   // Now we should have D-2, E-7, B-10, F-14, A-inf, along with duplicates
 
@@ -112,7 +112,7 @@ TEST(TestUQ, TopReinsertion) {
   ASSERT_EQ(uq.top_unprocessed(), A);
 
   // Any number of further calls should get dummy station
-  ASSERT_EQ(uq.top_unprocessed()->get_name(), "Dummy Station");
-  ASSERT_EQ(uq.top_unprocessed()->get_name(), "Dummy Station");
+  ASSERT_EQ(uq.top_unprocessed()->name, "Dummy Station");
+  ASSERT_EQ(uq.top_unprocessed()->name, "Dummy Station");
 
 }

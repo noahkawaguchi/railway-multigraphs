@@ -11,7 +11,6 @@ include_directories(include)
 # Add the main executable
 add_executable(railway_simulator 
     src/Network.cpp
-    src/Station.cpp
     src/UnvisitedQueue.cpp
     src/main.cpp
 )
@@ -21,12 +20,11 @@ add_subdirectory(external/googletest)
 
 # Add the test executable
 add_executable(tests
-    src/Station.cpp
-    tests/test_Station.cpp
     src/Network.cpp
     tests/test_Network.cpp
     src/UnvisitedQueue.cpp
     tests/test_UnvisitedQueue.cpp
+    tests/test_Station.cpp
     tests/test_Track.cpp
 )
 
