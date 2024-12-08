@@ -4,10 +4,10 @@
 
 TEST(TestUQ, Top) {
   // Create stations 
-  std::shared_ptr<Station> station1 = std::make_shared<Station>("Station 1");
-  std::shared_ptr<Station> station2 = std::make_shared<Station>("Station 2");
-  std::shared_ptr<Station> station3 = std::make_shared<Station>("Station 3");
-  std::shared_ptr<Station> station4 = std::make_shared<Station>("Station 4");
+  auto station1 = std::make_shared<Station>("Station 1");
+  auto station2 = std::make_shared<Station>("Station 2");
+  auto station3 = std::make_shared<Station>("Station 3");
+  auto station4 = std::make_shared<Station>("Station 4");
 
   // Set priorities
   station1->path_distance = 5;
@@ -36,9 +36,9 @@ TEST(TestUQ, Empty) {
   ASSERT_EQ(uq.empty(), true);
 
   // Create stations 
-  std::shared_ptr<Station> station1 = std::make_shared<Station>("Station 1");
-  std::shared_ptr<Station> station2 = std::make_shared<Station>("Station 2");
-  std::shared_ptr<Station> station3 = std::make_shared<Station>("Station 3");
+  auto station1 = std::make_shared<Station>("Station 1");
+  auto station2 = std::make_shared<Station>("Station 2");
+  auto station3 = std::make_shared<Station>("Station 3");
 
   // Set priorities
   station1->path_distance = 7;
@@ -68,12 +68,12 @@ TEST(TestUQ, Empty) {
 
 TEST(TestUQ, TopReinsertion) {
   // Create stations 
-  std::shared_ptr<Station> A = std::make_shared<Station>("A");
-  std::shared_ptr<Station> B = std::make_shared<Station>("B");
-  std::shared_ptr<Station> C = std::make_shared<Station>("C");
-  std::shared_ptr<Station> D = std::make_shared<Station>("D");
-  std::shared_ptr<Station> E = std::make_shared<Station>("E");
-  std::shared_ptr<Station> F = std::make_shared<Station>("F");
+  auto A = std::make_shared<Station>("A");
+  auto B = std::make_shared<Station>("B");
+  auto C = std::make_shared<Station>("C");
+  auto D = std::make_shared<Station>("D");
+  auto E = std::make_shared<Station>("E");
+  auto F = std::make_shared<Station>("F");
 
   // Set priority of C, leave the rest as infinity
   C->path_distance = 0;

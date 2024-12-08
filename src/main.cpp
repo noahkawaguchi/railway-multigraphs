@@ -6,7 +6,7 @@
 int main() {
 
   // Make network
-  std::unique_ptr<Network> basic_network = std::make_unique<Network>();
+  auto basic_network = std::make_unique<Network>();
 
   // Add stations to network
   std::shared_ptr<Station> stationA = basic_network->new_station("Station A");
@@ -29,7 +29,7 @@ int main() {
 
 
   // Make network
-  std::unique_ptr<Network> tiny_city = std::make_unique<Network>();
+  auto tiny_city = std::make_unique<Network>();
 
   // Add stations to network
   std::shared_ptr<Station> hospital = tiny_city->new_station("Hospital");

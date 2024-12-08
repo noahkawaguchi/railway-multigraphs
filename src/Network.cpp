@@ -7,7 +7,7 @@
 Network::Network() {}
 
 std::shared_ptr<Station> Network::new_station(std::string name) {
-  std::shared_ptr<Station> station = std::make_shared<Station>(name);
+  auto station = std::make_shared<Station>(name);
   this->stations.push_back(station);
   return station;
 }
@@ -16,8 +16,8 @@ void Network::new_track(std::shared_ptr<Station> station1,
                         std::shared_ptr<Station> station2,
                         float distance) 
 {
-  std::shared_ptr<Track> track_from_1 = std::make_shared<Track>(station2, distance);
-  std::shared_ptr<Track> track_from_2 = std::make_shared<Track>(station1, distance);
+  auto track_from_1 = std::make_shared<Track>(station2, distance);
+  auto track_from_2 = std::make_shared<Track>(station1, distance);
   // Add track to the adjacency list for both stations
   this->tracks[station1].insert(track_from_1);
   this->tracks[station2].insert(track_from_2);
@@ -95,7 +95,7 @@ std::shared_ptr<Route> Network::basic_DSP(std::shared_ptr<Station> start,
   }
 
   // Accumulate the path from start to destination in reverse using the predecessors
-  std::shared_ptr<Route> route = std::make_shared<Route>();
+  auto route = std::make_shared<Route>();
   std::shared_ptr<Station> cursor = destination;
   while (cursor != start) {
     route->stations.push_back(cursor);
@@ -181,7 +181,7 @@ std::shared_ptr<Route> Network::cost_DSP(std::shared_ptr<Station> start,
   // }
 
   // // Accumulate the path from start to destination in reverse using the predecessors
-  // std::shared_ptr<Route> route = std::make_shared<Route>();
+  // auto route = std::make_shared<Route>();
   // std::shared_ptr<Station> cursor = destination;
   // while (cursor != start) {
   //   route->stations.push_back(cursor);
@@ -204,7 +204,7 @@ std::shared_ptr<Route> Network::cost_DSP(std::shared_ptr<Station> start,
 
 
   // Just to avoid compiler warnings for now
-  std::shared_ptr<Route> dummy_route = std::make_shared<Route>();
+  auto dummy_route = std::make_shared<Route>();
   return dummy_route;
 }
 
@@ -238,7 +238,7 @@ std::vector<std::shared_ptr<Route>> Network::basic_yen(std::shared_ptr<Station> 
 
 
   // Just to avoid compiler warnings for now
-  std::shared_ptr<Route> dummy_route = std::make_shared<Route>();
+  auto dummy_route = std::make_shared<Route>();
   std::vector<std::shared_ptr<Route>> dummy_ret = {dummy_route};
   return dummy_ret;
 }

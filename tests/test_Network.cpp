@@ -4,7 +4,7 @@
 
 TEST(TestNetwork, GetAdjacentTracks) {
   // Create network
-  std::unique_ptr<Network> transfer_network = std::make_unique<Network>();
+  auto transfer_network = std::make_unique<Network>();
 
   // Add Red Line stations to network
   std::shared_ptr<Station> R1 = transfer_network->new_station("R1");
@@ -112,7 +112,7 @@ TEST(TestNetwork, GetAdjacentTracks) {
 
 TEST(BasicDSP, ToyDataABCD) {
   // Make network
-  std::unique_ptr<Network> ABCD = std::make_unique<Network>();
+  auto ABCD = std::make_unique<Network>();
 
   // Add stations to network
   std::shared_ptr<Station> stationA = ABCD->new_station("Station A");
@@ -141,7 +141,7 @@ TEST(BasicDSP, ToyDataABCD) {
 
 TEST(BasicDSP, ToyDataTinyCity) {
   // Make network
-  std::unique_ptr<Network> tiny_city = std::make_unique<Network>();
+  auto tiny_city = std::make_unique<Network>();
 
   // Add stations to network
   std::shared_ptr<Station> hospital = tiny_city->new_station("Hospital");

@@ -4,7 +4,7 @@
 
 TEST(TestStation, InitStation) {
   // Create station
-  std::shared_ptr<Station> test_station = std::make_shared<Station>("Test Station");
+  auto test_station = std::make_shared<Station>("Test Station");
   // Make sure name is set correctly
   ASSERT_EQ(test_station->name, "Test Station");
   // Make sure default values are set correctly
@@ -14,10 +14,10 @@ TEST(TestStation, InitStation) {
 
 TEST(TestStation, SetPathStats) {
   // Create station
-  std::shared_ptr<Station> test_station = std::make_shared<Station>("Test Station");
+  auto test_station = std::make_shared<Station>("Test Station");
   // Set shortest path stats
   test_station->path_distance = 5.3f;
-  std::shared_ptr<Station> predecessor_station = std::make_shared<Station>("Predecessor Station");
+  auto predecessor_station = std::make_shared<Station>("Predecessor Station");
   test_station->path_predecessor = predecessor_station;
   // Make sure shortest path stats are set properly
   ASSERT_EQ(test_station->path_distance, 5.3f);
@@ -26,10 +26,10 @@ TEST(TestStation, SetPathStats) {
 
 TEST(TestStation, ResetPathStats) {
   // Create station
-  std::shared_ptr<Station> test_station = std::make_shared<Station>("Test Station");
+  auto test_station = std::make_shared<Station>("Test Station");
   // Set shortest path stats
   test_station->path_distance = 10.2f;
-  std::shared_ptr<Station> predecessor_station = std::make_shared<Station>("This Should Not Show");
+  auto predecessor_station = std::make_shared<Station>("This Should Not Show");
   test_station->path_predecessor = predecessor_station;
   // Reset path stats
   test_station->path_reset();
@@ -40,16 +40,16 @@ TEST(TestStation, ResetPathStats) {
 
 TEST(TestStation, Transfers) {
   // Create station
-  std::shared_ptr<Station> test_station = std::make_shared<Station>("Test Station");
+  auto test_station = std::make_shared<Station>("Test Station");
 
   // Test getting transfers when there are none
   ASSERT_EQ(test_station->transfers.size(), 0);
   ASSERT_EQ(test_station->transfers.empty(), true);
 
   // Create and add transfers
-  std::shared_ptr<Station> transfer1 = std::make_shared<Station>("Transfer 1");
+  auto transfer1 = std::make_shared<Station>("Transfer 1");
   test_station->transfers.insert(transfer1);
-  std::shared_ptr<Station> transfer2 = std::make_shared<Station>("Transfer 2");
+  auto transfer2 = std::make_shared<Station>("Transfer 2");
   test_station->transfers.insert(transfer2);
 
   // Now we should be able to get these transfers and check membership
