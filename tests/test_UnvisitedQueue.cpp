@@ -17,10 +17,10 @@ TEST(TestUQ, Top) {
 
   // Create UnvisitedQueue and insert
   UnvisitedQueue uq;
-  uq.push(station1);
-  uq.push(station2);
-  uq.push(station3);
-  uq.push(station4);
+  uq.push(station1, station1->get_path_distance());
+  uq.push(station2, station2->get_path_distance());
+  uq.push(station3, station3->get_path_distance());
+  uq.push(station4, station4->get_path_distance());
 
   // Make sure top returns the correct station
   ASSERT_EQ(uq.top_unprocessed(), station4);
@@ -46,16 +46,16 @@ TEST(TestUQ, Empty) {
   // (leave Station 3 as default)
 
   // Insert into queue
-  uq.push(station1);
-  uq.push(station2);
-  uq.push(station3);
+  uq.push(station1, station1->get_path_distance());
+  uq.push(station2, station2->get_path_distance());
+  uq.push(station3, station3->get_path_distance());
 
   // Now the queue should not be empty
   ASSERT_EQ(uq.empty(), false);
 
   // Update priority, reinsert, and process, leaving a processed duplicate in the queue
   station3->set_path_distance(2);
-  uq.push(station3);
+  uq.push(station3, station3->get_path_distance());
   uq.top_unprocessed();
 
   // Remove both remaining processed stations
@@ -80,12 +80,12 @@ TEST(TestUQ, TopReinsertion) {
 
   // Create UnvisitedQueue and insert
   UnvisitedQueue uq;
-  uq.push(A);
-  uq.push(B);
-  uq.push(C);
-  uq.push(D);
-  uq.push(E);
-  uq.push(F);
+  uq.push(A, A->get_path_distance());
+  uq.push(B, B->get_path_distance());
+  uq.push(C, C->get_path_distance());
+  uq.push(D, D->get_path_distance());
+  uq.push(E, E->get_path_distance());
+  uq.push(F, F->get_path_distance());
 
   // Make sure top returns the correct station
   ASSERT_EQ(uq.top_unprocessed(), C);
@@ -94,13 +94,13 @@ TEST(TestUQ, TopReinsertion) {
 
   // Modify some of the priorities and reinsert, resulting in duplicates
   D->set_path_distance(2);
-  uq.push(D);
+  uq.push(D, D->get_path_distance());
   F->set_path_distance(14);
-  uq.push(F);
+  uq.push(F, F->get_path_distance());
   B->set_path_distance(10);
-  uq.push(B);
+  uq.push(B, B->get_path_distance());
   E->set_path_distance(7);
-  uq.push(E);
+  uq.push(E, E->get_path_distance());
 
   // Now we should have D-2, E-7, B-10, F-14, A-inf, along with duplicates
 

@@ -5,8 +5,8 @@
 
 struct Line {
   std::string name = "";
-  double base_cost = 0.0;
-  double cost_per_mile = 0.0;
+  float base_cost = 0.0f;
+  float cost_per_mile = 0.0f;
 };
 
 #endif // LINE_H

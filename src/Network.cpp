@@ -68,7 +68,7 @@ std::shared_ptr<Route> Network::basic_DSP(std::shared_ptr<Station> start,
   // Enqueue all stations in unvisited queue
   UnvisitedQueue uq;
   for (const auto& station : this->stations) {
-    uq.push(station);
+    uq.push(station, station->get_path_distance());
   }
 
   // Visit each of the unvisited stations
@@ -90,7 +90,7 @@ std::shared_ptr<Route> Network::basic_DSP(std::shared_ptr<Station> start,
         adj_track->other_station->set_path_distance(alt_path_distance);
         adj_track->other_station->set_path_predecessor(current_station);
         // The station with modified data must be reinserted to maintain sorting
-        uq.push(adj_track->other_station);
+        uq.push(adj_track->other_station, adj_track->other_station->get_path_distance());
       }
     }
   }
@@ -127,6 +127,80 @@ void Network::print_basic_DSP(std::shared_ptr<Station> start, std::shared_ptr<St
   }
   std::cout << "\n  Total distance: " << destination->get_path_distance() << " mi\n\n";
   std::cout << std::string(20, '-') << '\n' << std::endl;
+}
+
+std::shared_ptr<Route> Network::cost_DSP(std::shared_ptr<Station> start,
+                                         std::shared_ptr<Station> destination)
+{
+
+  // TODO 
+
+
+
+  // // Set all stations' distance to "infinity" and predecessor to dummy predecessor
+  // for (const auto& station : this->stations) {
+  //   station->path_reset();
+  // }
+
+  // // Distance from start to start is 0
+  // start->set_path_distance(0.0f);
+
+  // // Enqueue all stations in unvisited queue
+  // UnvisitedQueue uq;
+  // for (const auto& station : this->stations) {
+  //   uq.push(station, station->get_path_distance());
+  // }
+
+  // // Visit each of the unvisited stations
+  // while (!uq.empty()) {
+  //   // Visit minimum from unvisited queue
+  //   std::shared_ptr<Station> current_station = uq.top_unprocessed();
+
+  //   // Stop early if the destination is found
+  //   if (current_station == destination) { break; }
+    
+  //   // Iterate over adjacent stations (via adjacent tracks)
+  //   for (const auto& adj_track : this->tracks[current_station]) {
+  //     int track_distance = adj_track->distance;
+  //     int alt_path_distance = current_station->get_path_distance() + track_distance;
+
+  //     // If a shorter path from the starting station to the adjacent station 
+  //     // is found, update the adjacent station's distance and predecessor.
+  //     if (alt_path_distance < adj_track->other_station->get_path_distance()) {
+  //       adj_track->other_station->set_path_distance(alt_path_distance);
+  //       adj_track->other_station->set_path_predecessor(current_station);
+  //       // The station with modified data must be reinserted to maintain sorting
+  //       uq.push(adj_track->other_station, adj_track->other_station->get_path_distance());
+  //     }
+  //   }
+  // }
+
+  // // Accumulate the path from start to destination in reverse using the predecessors
+  // std::shared_ptr<Route> route = std::make_shared<Route>();
+  // std::shared_ptr<Station> cursor = destination;
+  // while (cursor != start) {
+  //   route->stations.push_back(cursor);
+  //   cursor = cursor->get_path_predecessor();
+  // }
+  // route->stations.push_back(start);
+  // // Reverse to get the stations in the correct order 
+  // std::reverse(route->stations.begin(), route->stations.end());
+
+  // return route;
+
+
+
+
+
+
+
+
+
+
+
+  // Just to avoid compiler warnings for now
+  std::shared_ptr<Route> dummy_route = std::make_shared<Route>();
+  return dummy_route;
 }
 
 // Custom comparator for Yen priority queue

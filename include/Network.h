@@ -44,6 +44,10 @@ public:
   // Fares are free and transfers are instant.
   void print_basic_DSP(std::shared_ptr<Station> start, std::shared_ptr<Station> destination);
 
+  // Find Dijkstra's shortest path from start to destination, prioritizing cost
+  std::shared_ptr<Route> cost_DSP(std::shared_ptr<Station> start,
+                                  std::shared_ptr<Station> destination);
+
   // Find Yen's K shortest paths. Fares are free and transfers are instant.
   std::vector<std::shared_ptr<Route>> basic_yen(std::shared_ptr<Station> start,
                                                 std::shared_ptr<Station> destination,

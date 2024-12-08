@@ -4,8 +4,8 @@ std::shared_ptr<Station> UnvisitedQueue::QueueStation::dummy_station = std::make
 
 UnvisitedQueue::UnvisitedQueue() {}
 
-void UnvisitedQueue::push(std::shared_ptr<Station> station) {
-  QueueStation qs(station, station->get_path_distance());
+void UnvisitedQueue::push(std::shared_ptr<Station> station, float priority) {
+  QueueStation qs{.station = station, .priority = priority};
   this->pq.push(qs);
 }
 
