@@ -27,12 +27,13 @@ public:
 private:
   // Representation of stations specifically for use in the priority queue
   struct QueueStation {
-    // Dummy station for all instances of QueueStation to point to by default for safety
-    static std::shared_ptr<Station> dummy_station;
+    std::shared_ptr<Station> station;
+    float priority;
 
-    std::shared_ptr<Station> station = dummy_station;
-    float priority = std::numeric_limits<float>::max() / 2; // "Infinity"
-    
+    // 2-arg constructor to ensure data members are not left uninitialized
+    QueueStation(std::shared_ptr<Station> station, float priority)
+                 : station(station), priority(priority) {}
+
     // Overload < operator for priority queue comparisons
     bool operator<(const QueueStation& other) const {
       return this->priority > other.priority;

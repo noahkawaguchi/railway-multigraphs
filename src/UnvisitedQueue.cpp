@@ -1,11 +1,9 @@
 #include "UnvisitedQueue.h"
 
-std::shared_ptr<Station> UnvisitedQueue::QueueStation::dummy_station = std::make_shared<Station>("Dummy Station");
-
 UnvisitedQueue::UnvisitedQueue() {}
 
 void UnvisitedQueue::push(std::shared_ptr<Station> station, float priority) {
-  QueueStation qs{.station = station, .priority = priority};
+  QueueStation qs(station, priority);
   this->pq.push(qs);
 }
 
@@ -20,9 +18,9 @@ bool UnvisitedQueue::empty() {
 }
 
 std::shared_ptr<Station> UnvisitedQueue::top_unprocessed() {
-  // Clear processed stations off the top of the queue. Return the dummy station if this function 
+  // Clear processed stations off the top of the queue. Return a dummy station if this function 
   // has been mistakenly called on an empty queue or one with all processed stations.
-  if (this->empty()) { return UnvisitedQueue::QueueStation::dummy_station; }
+  if (this->empty()) { return std::make_shared<Station>("Dummy Station"); }
 
   // If the function did not return above, the top station must be unprocessed
   QueueStation qs = this->pq.top();
