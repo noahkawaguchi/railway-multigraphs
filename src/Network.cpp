@@ -53,9 +53,7 @@ void Network::print() {
 
 // *** SHORTEST PATH ALGORITHMS *** //
 
-std::shared_ptr<Route> Network::basic_DSP(std::shared_ptr<Station> start,
-                                          std::shared_ptr<Station> destination)
-{
+Route Network::basic_DSP(std::shared_ptr<Station> start, std::shared_ptr<Station> destination) {
   // Set all stations' distance to "infinity" and predecessor to dummy predecessor
   for (const auto& station : this->stations) {
     station->path_reset();
@@ -95,15 +93,15 @@ std::shared_ptr<Route> Network::basic_DSP(std::shared_ptr<Station> start,
   }
 
   // Accumulate the path from start to destination in reverse using the predecessors
-  auto route = std::make_shared<Route>();
+  Route route;
   std::shared_ptr<Station> cursor = destination;
   while (cursor != start) {
-    route->stations.push_back(cursor);
+    route.push_back(cursor);
     cursor = cursor->path_predecessor;
   }
-  route->stations.push_back(start);
+  route.push_back(start);
   // Reverse to get the stations in the correct order 
-  std::reverse(route->stations.begin(), route->stations.end());
+  std::reverse(route.begin(), route.end());
 
   return route;
 }
@@ -112,16 +110,16 @@ void Network::print_basic_DSP(std::shared_ptr<Station> start,
                               std::shared_ptr<Station> destination)
 {
   // Get the shortest path
-  std::shared_ptr<Route> route = basic_DSP(start, destination);
+  Route route = basic_DSP(start, destination);
 
   // Print the path from start to destination
   std::cout << std::endl << std::string(20, '-') << std::endl;
   std::cout << "\nDijkstra's shortest path from " << start->name 
             << " to " << destination->name << ":\n" << std::endl;
   std::cout << "  ";
-  for (const auto& station : route->stations) {
+  for (const auto& station : route) {
     std::cout << station->name;
-    if (station != route->stations.back()) {
+    if (station != route.back()) {
       std::cout << " -> ";
     }
   }
@@ -129,8 +127,7 @@ void Network::print_basic_DSP(std::shared_ptr<Station> start,
   std::cout << std::string(20, '-') << '\n' << std::endl;
 }
 
-std::shared_ptr<Route> Network::cost_DSP(std::shared_ptr<Station> start,
-                                         std::shared_ptr<Station> destination)
+Route Network::cost_DSP(std::shared_ptr<Station> start, std::shared_ptr<Station> destination)
 {
 
   // TODO 
@@ -204,22 +201,22 @@ std::shared_ptr<Route> Network::cost_DSP(std::shared_ptr<Station> start,
 
 
   // Just to avoid compiler warnings for now
-  auto dummy_route = std::make_shared<Route>();
+  Route dummy_route;
   return dummy_route;
 }
 
 // Custom comparator for Yen priority queue
 struct ShorterPath {
   bool operator()(std::shared_ptr<Route>& a, std::shared_ptr<Route>& b) {
-    return a->get_distance() > b->get_distance();
+    return a->back()->path_distance > b->back()->path_distance;
   }
 };
 
-std::vector<std::shared_ptr<Route>> Network::basic_yen(std::shared_ptr<Station> start,
+std::vector<Route> Network::basic_yen(std::shared_ptr<Station> start,
                                                        std::shared_ptr<Station> destination,
                                                        int k)
 {
-  std::vector<std::shared_ptr<Route>> A; // K shortest paths in order of shortest to longest
+  std::vector<Route> A; // K shortest paths in order of shortest to longest
   std::priority_queue<std::shared_ptr<Route>,
                       std::vector<std::shared_ptr<Route>>,
                       ShorterPath> B; // Candidate paths
@@ -238,7 +235,7 @@ std::vector<std::shared_ptr<Route>> Network::basic_yen(std::shared_ptr<Station> 
 
 
   // Just to avoid compiler warnings for now
-  auto dummy_route = std::make_shared<Route>();
-  std::vector<std::shared_ptr<Route>> dummy_ret = {dummy_route};
+  Route dummy_route;
+  std::vector<Route> dummy_ret = {dummy_route};
   return dummy_ret;
 }

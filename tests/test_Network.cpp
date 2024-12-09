@@ -131,14 +131,14 @@ TEST(BasicDSP, ToyDataABCD) {
   ABCD->new_track(stationC, stationD, 2);
 
   // Find the shortest path from A to C
-  std::shared_ptr<Route> AC_route = ABCD->basic_DSP(stationA, stationC);
-  std::vector<std::shared_ptr<Station>> correct_path_AC = {stationA, stationB, stationD, stationC};
-  ASSERT_EQ(AC_route->stations, correct_path_AC);
+  Route AC_route = ABCD->basic_DSP(stationA, stationC);
+  Route correct_path_AC = {stationA, stationB, stationD, stationC};
+  ASSERT_EQ(AC_route, correct_path_AC);
 
   // Find the shortest path from D to A
-  std::shared_ptr<Route> DA_route = ABCD->basic_DSP(stationD, stationA);
-  std::vector<std::shared_ptr<Station>> correct_path_DA = {stationD, stationB, stationA};
-  ASSERT_EQ(DA_route->stations, correct_path_DA);
+  Route DA_route = ABCD->basic_DSP(stationD, stationA);
+  Route correct_path_DA = {stationD, stationB, stationA};
+  ASSERT_EQ(DA_route, correct_path_DA);
 
 }
 
@@ -170,24 +170,18 @@ TEST(BasicDSP, ToyDataTinyCity) {
   tiny_city->new_track(mall, seaport, 8);
 
   // Find the shortest path from the park to the airport
-  std::shared_ptr<Route> park_airport_route = tiny_city->basic_DSP(park, airport);
-  std::vector<std::shared_ptr<Station>> correct_path_park_airport = {
-    park, west_residential, hospital, city_hall, airport
-  };
-  ASSERT_EQ(park_airport_route->stations, correct_path_park_airport);
+  Route park_airport_route = tiny_city->basic_DSP(park, airport);
+  Route correct_path_park_airport = {park, west_residential, hospital, city_hall, airport};
+  ASSERT_EQ(park_airport_route, correct_path_park_airport);
 
   // Find the shortest path from East Residential to West Residential
-  std::shared_ptr<Route> east_west_route = tiny_city->basic_DSP(east_residential, west_residential);
-  std::vector<std::shared_ptr<Station>> correct_path_east_west = {
-    east_residential, airport, city_hall, hospital, west_residential
-  };
-  ASSERT_EQ(east_west_route->stations, correct_path_east_west);
+  Route east_west_route = tiny_city->basic_DSP(east_residential, west_residential);
+  Route correct_path_east_west = {east_residential, airport, city_hall, hospital, west_residential};
+  ASSERT_EQ(east_west_route, correct_path_east_west);
 
   // Find the shortest path from the seaport to the hospital
-  std::shared_ptr<Route> seaport_hospital_route = tiny_city->basic_DSP(seaport, hospital);
-  std::vector<std::shared_ptr<Station>> correct_path_seaport_hospital = {
-    seaport, mall, city_hall, hospital
-  };
-  ASSERT_EQ(seaport_hospital_route->stations, correct_path_seaport_hospital);
+  Route seaport_hospital_route = tiny_city->basic_DSP(seaport, hospital);
+  Route correct_path_seaport_hospital = {seaport, mall, city_hall, hospital};
+  ASSERT_EQ(seaport_hospital_route, correct_path_seaport_hospital);
 
 }

@@ -37,4 +37,7 @@ struct Station {
 
 };
 
+// Type alias for readability in shortest path algorithms
+using Route = std::vector<std::shared_ptr<Station>>;
+
 #endif // STATION_H
