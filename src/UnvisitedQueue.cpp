@@ -20,7 +20,7 @@ bool UnvisitedQueue::empty() {
 std::shared_ptr<Station> UnvisitedQueue::top_unprocessed() {
   // Clear processed stations off the top of the queue. Return a dummy station if this function 
   // has been mistakenly called on an empty queue or one with all processed stations.
-  if (this->empty()) { return std::make_shared<Station>("Dummy Station"); }
+  if (this->empty()) { return std::make_shared<Station>("Dummy Station", nullptr, nullptr); }
 
   // If the function did not return above, the top station must be unprocessed
   QueueStation qs = this->pq.top();

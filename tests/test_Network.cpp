@@ -7,10 +7,11 @@ TEST(TestNetwork, GetAdjacentTracks) {
   auto transfer_network = std::make_unique<Network>();
 
   // Add Red Line stations to network
-  std::shared_ptr<Station> R1 = transfer_network->new_station("R1");
-  std::shared_ptr<Station> R2 = transfer_network->new_station("R2");
-  std::shared_ptr<Station> R3 = transfer_network->new_station("R3");
-  std::shared_ptr<Station> R4 = transfer_network->new_station("R4");
+  auto red_line = std::make_shared<Line>(Line{"Red Line"});
+  std::shared_ptr<Station> R1 = transfer_network->new_station("R1", red_line);
+  std::shared_ptr<Station> R2 = transfer_network->new_station("R2", red_line);
+  std::shared_ptr<Station> R3 = transfer_network->new_station("R3", red_line);
+  std::shared_ptr<Station> R4 = transfer_network->new_station("R4", red_line);
 
   // Connect Red Line stations with tracks
   transfer_network->new_track(R1, R2, 2);
@@ -18,10 +19,11 @@ TEST(TestNetwork, GetAdjacentTracks) {
   transfer_network->new_track(R3, R4, 2);
 
   // Add Blue Line stations to network
-  std::shared_ptr<Station> B1 = transfer_network->new_station("B1");
-  std::shared_ptr<Station> B2 = transfer_network->new_station("B2");
-  std::shared_ptr<Station> B3 = transfer_network->new_station("B3");
-  std::shared_ptr<Station> B4 = transfer_network->new_station("B4");
+  auto blue_line = std::make_shared<Line>(Line{"Blue Line"});
+  std::shared_ptr<Station> B1 = transfer_network->new_station("B1", blue_line);
+  std::shared_ptr<Station> B2 = transfer_network->new_station("B2", blue_line);
+  std::shared_ptr<Station> B3 = transfer_network->new_station("B3", blue_line);
+  std::shared_ptr<Station> B4 = transfer_network->new_station("B4", blue_line);
 
   // Connect Blue Line stations with tracks
   transfer_network->new_track(B1, B2, 4);
@@ -114,11 +116,12 @@ TEST(BasicDSP, ToyDataABCD) {
   // Make network
   auto ABCD = std::make_unique<Network>();
 
-  // Add stations to network
-  std::shared_ptr<Station> stationA = ABCD->new_station("Station A");
-  std::shared_ptr<Station> stationB = ABCD->new_station("Station B");
-  std::shared_ptr<Station> stationC = ABCD->new_station("Station C");
-  std::shared_ptr<Station> stationD = ABCD->new_station("Station D");
+  // Add line and stations to network
+  auto ABCD_line = std::make_shared<Line>(Line{"ABCD Line"});
+  std::shared_ptr<Station> stationA = ABCD->new_station("Station A", ABCD_line);
+  std::shared_ptr<Station> stationB = ABCD->new_station("Station B", ABCD_line);
+  std::shared_ptr<Station> stationC = ABCD->new_station("Station C", ABCD_line);
+  std::shared_ptr<Station> stationD = ABCD->new_station("Station D", ABCD_line);
 
   // Connect stations with tracks
   ABCD->new_track(stationA, stationB, 3);
@@ -143,15 +146,16 @@ TEST(BasicDSP, ToyDataTinyCity) {
   // Make network
   auto tiny_city = std::make_unique<Network>();
 
-  // Add stations to network
-  std::shared_ptr<Station> hospital = tiny_city->new_station("Hospital");
-  std::shared_ptr<Station> airport = tiny_city->new_station("Airport");
-  std::shared_ptr<Station> west_residential = tiny_city->new_station("West Residential");
-  std::shared_ptr<Station> city_hall = tiny_city->new_station("City Hall");
-  std::shared_ptr<Station> east_residential = tiny_city->new_station("East Residential");
-  std::shared_ptr<Station> park = tiny_city->new_station("Park");
-  std::shared_ptr<Station> mall = tiny_city->new_station("Mall");
-  std::shared_ptr<Station> seaport = tiny_city->new_station("Seaport");
+  // Add line and stations to network
+  auto tiny_city_railway = std::make_shared<Line>(Line{"Tiny City Railway"});
+  std::shared_ptr<Station> hospital = tiny_city->new_station("Hospital", tiny_city_railway);
+  std::shared_ptr<Station> airport = tiny_city->new_station("Airport", tiny_city_railway);
+  std::shared_ptr<Station> west_residential = tiny_city->new_station("West Residential", tiny_city_railway);
+  std::shared_ptr<Station> city_hall = tiny_city->new_station("City Hall", tiny_city_railway);
+  std::shared_ptr<Station> east_residential = tiny_city->new_station("East Residential", tiny_city_railway);
+  std::shared_ptr<Station> park = tiny_city->new_station("Park", tiny_city_railway);
+  std::shared_ptr<Station> mall = tiny_city->new_station("Mall", tiny_city_railway);
+  std::shared_ptr<Station> seaport = tiny_city->new_station("Seaport", tiny_city_railway);
 
   // Connect stations with tracks
   tiny_city->new_track(hospital, west_residential, 2);

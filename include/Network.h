@@ -11,14 +11,15 @@
 #include "Station.h"
 #include "Track.h"
 #include "Route.h"
+#include "Line.h"
 
 class Network {
 public:
   Network();
   ~Network() = default;
 
-  // Create and add a station to the network with the given name
-  std::shared_ptr<Station> new_station(std::string name);
+  // Create and add a station to the network with the given name on the given line
+  std::shared_ptr<Station> new_station(std::string name, std::shared_ptr<Line> line);
 
   // Create and add a track to the network, specifying 
   // the distance traveled between the two stations

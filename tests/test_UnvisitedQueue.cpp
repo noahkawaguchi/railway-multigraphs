@@ -3,11 +3,12 @@
 #include "../include/UnvisitedQueue.h"
 
 TEST(TestUQ, Top) {
-  // Create stations 
-  auto station1 = std::make_shared<Station>("Station 1");
-  auto station2 = std::make_shared<Station>("Station 2");
-  auto station3 = std::make_shared<Station>("Station 3");
-  auto station4 = std::make_shared<Station>("Station 4");
+  // Create line and stations
+  auto test_line = std::make_shared<Line>(Line{"Test Line"});
+  auto station1 = std::make_shared<Station>("Station 1", test_line);
+  auto station2 = std::make_shared<Station>("Station 2", test_line);
+  auto station3 = std::make_shared<Station>("Station 3", test_line);
+  auto station4 = std::make_shared<Station>("Station 4", test_line);
 
   // Set priorities
   station1->path_distance = 5;
@@ -35,10 +36,11 @@ TEST(TestUQ, Empty) {
   UnvisitedQueue uq;
   ASSERT_EQ(uq.empty(), true);
 
-  // Create stations 
-  auto station1 = std::make_shared<Station>("Station 1");
-  auto station2 = std::make_shared<Station>("Station 2");
-  auto station3 = std::make_shared<Station>("Station 3");
+  // Create line and stations 
+  auto test_line = std::make_shared<Line>(Line{"Test Line"});
+  auto station1 = std::make_shared<Station>("Station 1", test_line);
+  auto station2 = std::make_shared<Station>("Station 2", test_line);
+  auto station3 = std::make_shared<Station>("Station 3", test_line);
 
   // Set priorities
   station1->path_distance = 7;
@@ -67,13 +69,14 @@ TEST(TestUQ, Empty) {
 }
 
 TEST(TestUQ, TopReinsertion) {
-  // Create stations 
-  auto A = std::make_shared<Station>("A");
-  auto B = std::make_shared<Station>("B");
-  auto C = std::make_shared<Station>("C");
-  auto D = std::make_shared<Station>("D");
-  auto E = std::make_shared<Station>("E");
-  auto F = std::make_shared<Station>("F");
+  // Create line and stations
+  auto test_line = std::make_shared<Line>(Line{"Test Line"});
+  auto A = std::make_shared<Station>("A", test_line);
+  auto B = std::make_shared<Station>("B", test_line);
+  auto C = std::make_shared<Station>("C", test_line);
+  auto D = std::make_shared<Station>("D", test_line);
+  auto E = std::make_shared<Station>("E", test_line);
+  auto F = std::make_shared<Station>("F", test_line);
 
   // Set priority of C, leave the rest as infinity
   C->path_distance = 0;

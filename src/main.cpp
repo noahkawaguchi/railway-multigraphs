@@ -8,11 +8,12 @@ int main() {
   // Make network
   auto basic_network = std::make_unique<Network>();
 
-  // Add stations to network
-  std::shared_ptr<Station> stationA = basic_network->new_station("Station A");
-  std::shared_ptr<Station> stationB = basic_network->new_station("Station B");
-  std::shared_ptr<Station> stationC = basic_network->new_station("Station C");
-  std::shared_ptr<Station> stationD = basic_network->new_station("Station D");
+  // Add line and stations to network
+  auto ABCD_line = std::make_shared<Line>(Line{"ABCD Line"});
+  std::shared_ptr<Station> stationA = basic_network->new_station("Station A", ABCD_line);
+  std::shared_ptr<Station> stationB = basic_network->new_station("Station B", ABCD_line);
+  std::shared_ptr<Station> stationC = basic_network->new_station("Station C", ABCD_line);
+  std::shared_ptr<Station> stationD = basic_network->new_station("Station D", ABCD_line);
 
   // Connect stations with tracks
   basic_network->new_track(stationA, stationB, 3);
@@ -31,15 +32,16 @@ int main() {
   // Make network
   auto tiny_city = std::make_unique<Network>();
 
-  // Add stations to network
-  std::shared_ptr<Station> hospital = tiny_city->new_station("Hospital");
-  std::shared_ptr<Station> airport = tiny_city->new_station("Airport");
-  std::shared_ptr<Station> west_residential = tiny_city->new_station("West Residential");
-  std::shared_ptr<Station> city_hall = tiny_city->new_station("City Hall");
-  std::shared_ptr<Station> east_residential = tiny_city->new_station("East Residential");
-  std::shared_ptr<Station> park = tiny_city->new_station("Park");
-  std::shared_ptr<Station> mall = tiny_city->new_station("Mall");
-  std::shared_ptr<Station> seaport = tiny_city->new_station("Seaport");
+  // Add line and stations to network
+  auto tiny_city_railway = std::make_shared<Line>(Line{"Tiny City Railway"});
+  std::shared_ptr<Station> hospital = tiny_city->new_station("Hospital", tiny_city_railway);
+  std::shared_ptr<Station> airport = tiny_city->new_station("Airport", tiny_city_railway);
+  std::shared_ptr<Station> west_residential = tiny_city->new_station("West Residential", tiny_city_railway);
+  std::shared_ptr<Station> city_hall = tiny_city->new_station("City Hall", tiny_city_railway);
+  std::shared_ptr<Station> east_residential = tiny_city->new_station("East Residential", tiny_city_railway);
+  std::shared_ptr<Station> park = tiny_city->new_station("Park", tiny_city_railway);
+  std::shared_ptr<Station> mall = tiny_city->new_station("Mall", tiny_city_railway);
+  std::shared_ptr<Station> seaport = tiny_city->new_station("Seaport", tiny_city_railway);
 
   // Connect stations with tracks
   tiny_city->new_track(hospital, west_residential, 2);

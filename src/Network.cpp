@@ -6,8 +6,8 @@
 
 Network::Network() {}
 
-std::shared_ptr<Station> Network::new_station(std::string name) {
-  auto station = std::make_shared<Station>(name);
+std::shared_ptr<Station> Network::new_station(std::string name, std::shared_ptr<Line> line) {
+  auto station = std::make_shared<Station>(name, line);
   this->stations.push_back(station);
   return station;
 }
