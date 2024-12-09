@@ -15,11 +15,6 @@ struct Station {
   std::shared_ptr<Station> path_predecessor;
   float path_distance = std::numeric_limits<float>::max() / 2; // "Infinity"
   float path_cost = std::numeric_limits<float>::max() / 2; // "Infinity"
-
-  // Dummy instance of Station with pointers to nullptr to be created 
-  // only once and pointed to by default by all other instances
-  static inline std::shared_ptr<Station> dummy_predecessor 
-    = std::make_shared<Station>("No Predecessor", nullptr, nullptr);
  
   // 2-arg constructor for general use
   Station(std::string name, std::shared_ptr<Line> line) 
@@ -34,6 +29,12 @@ struct Station {
     this->path_distance = std::numeric_limits<float>::max() / 2; // "Infinity"
     this->path_cost = std::numeric_limits<float>::max() / 2; // "Infinity
   }
+  
+private:
+  // Dummy instance of Station with pointers to nullptr to be created 
+  // only once and pointed to by default by all other instances
+  static inline std::shared_ptr<Station> dummy_predecessor 
+    = std::make_shared<Station>("No Predecessor", nullptr, nullptr);
 
 };
 
