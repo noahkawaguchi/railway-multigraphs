@@ -24,17 +24,17 @@ TEST(TestUQ, Top) {
   uq.push(station4, station4->path_distance);
 
   // Make sure top returns the correct station
-  ASSERT_EQ(uq.top_unprocessed(), station4);
-  ASSERT_EQ(uq.top_unprocessed(), station1);
-  ASSERT_EQ(uq.top_unprocessed(), station2);
-  ASSERT_EQ(uq.top_unprocessed(), station3);
+  EXPECT_EQ(uq.top_unprocessed(), station4);
+  EXPECT_EQ(uq.top_unprocessed(), station1);
+  EXPECT_EQ(uq.top_unprocessed(), station2);
+  EXPECT_EQ(uq.top_unprocessed(), station3);
 
 }
 
 TEST(TestUQ, Empty) {
   // Create UnvisitedQueue, which should start empty
   UnvisitedQueue uq;
-  ASSERT_EQ(uq.empty(), true);
+  EXPECT_TRUE(uq.empty());
 
   // Create line and stations 
   auto test_line = std::make_shared<Line>(Line{"Test Line"});
@@ -53,7 +53,7 @@ TEST(TestUQ, Empty) {
   uq.push(station3, station3->path_distance);
 
   // Now the queue should not be empty
-  ASSERT_EQ(uq.empty(), false);
+  EXPECT_FALSE(uq.empty());
 
   // Update priority, reinsert, and process, leaving a processed duplicate in the queue
   station3->path_distance = 2;
@@ -65,7 +65,7 @@ TEST(TestUQ, Empty) {
   uq.top_unprocessed();
 
   // Now it should be empty again
-  ASSERT_EQ(uq.empty(), true);
+  EXPECT_TRUE(uq.empty());
 }
 
 TEST(TestUQ, TopReinsertion) {
@@ -91,7 +91,7 @@ TEST(TestUQ, TopReinsertion) {
   uq.push(F, F->path_distance);
 
   // Make sure top returns the correct station
-  ASSERT_EQ(uq.top_unprocessed(), C);
+  EXPECT_EQ(uq.top_unprocessed(), C);
 
   // Now we should have A,B,D,E,F - all the same priority
 
@@ -108,14 +108,14 @@ TEST(TestUQ, TopReinsertion) {
   // Now we should have D-2, E-7, B-10, F-14, A-inf, along with duplicates
 
   // Make sure top returns the correct station, ignoring already processed stations
-  ASSERT_EQ(uq.top_unprocessed(), D);
-  ASSERT_EQ(uq.top_unprocessed(), E);
-  ASSERT_EQ(uq.top_unprocessed(), B);
-  ASSERT_EQ(uq.top_unprocessed(), F);
-  ASSERT_EQ(uq.top_unprocessed(), A);
+  EXPECT_EQ(uq.top_unprocessed(), D);
+  EXPECT_EQ(uq.top_unprocessed(), E);
+  EXPECT_EQ(uq.top_unprocessed(), B);
+  EXPECT_EQ(uq.top_unprocessed(), F);
+  EXPECT_EQ(uq.top_unprocessed(), A);
 
   // Any number of further calls should get dummy station
-  ASSERT_EQ(uq.top_unprocessed()->name, "Dummy Station");
-  ASSERT_EQ(uq.top_unprocessed()->name, "Dummy Station");
+  EXPECT_EQ(uq.top_unprocessed()->name, "Dummy Station");
+  EXPECT_EQ(uq.top_unprocessed()->name, "Dummy Station");
 
 }

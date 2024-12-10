@@ -49,24 +49,24 @@ TEST(TestNetwork, GetAdjacentTracks) {
   for (const auto& track : R2_adj_tracks) {
     R2_adj_stations.insert(track->other_station);
   }
-  ASSERT_EQ(R2_adj_stations.contains(R1), true);
-  ASSERT_EQ(R2_adj_stations.contains(R3), true);
-  ASSERT_EQ(R2_adj_stations.contains(B2), false);
-  ASSERT_EQ(R2_adj_stations.contains(B4), false);
-  ASSERT_EQ(R2_adj_stations.contains(R4), false);
-  ASSERT_EQ(R2_adj_stations.contains(B1), false);
+  EXPECT_TRUE(R2_adj_stations.contains(R1));
+  EXPECT_TRUE(R2_adj_stations.contains(R3));
+  EXPECT_FALSE(R2_adj_stations.contains(B2));
+  EXPECT_FALSE(R2_adj_stations.contains(B4));
+  EXPECT_FALSE(R2_adj_stations.contains(R4));
+  EXPECT_FALSE(R2_adj_stations.contains(B1));
 
   std::unordered_set<std::shared_ptr<Track>> B2_adj_tracks = transfer_network->get_adjacent_tracks(B2);
   std::unordered_set<std::shared_ptr<Station>> B2_adj_stations;
   for (const auto& track : B2_adj_tracks) {
     B2_adj_stations.insert(track->other_station);
   }
-  ASSERT_EQ(B2_adj_stations.contains(B1), true);
-  ASSERT_EQ(B2_adj_stations.contains(B3), true);
-  ASSERT_EQ(B2_adj_stations.contains(R2), false);
-  ASSERT_EQ(B2_adj_stations.contains(R4), false);
-  ASSERT_EQ(B2_adj_stations.contains(B4), false);
-  ASSERT_EQ(B2_adj_stations.contains(R1), false);
+  EXPECT_TRUE(B2_adj_stations.contains(B1));
+  EXPECT_TRUE(B2_adj_stations.contains(B3));
+  EXPECT_FALSE(B2_adj_stations.contains(R2));
+  EXPECT_FALSE(B2_adj_stations.contains(R4));
+  EXPECT_FALSE(B2_adj_stations.contains(B4));
+  EXPECT_FALSE(B2_adj_stations.contains(R1));
   
   /*
     Now add transfers. The Red Line and the Blue Line run in opposite 
@@ -92,24 +92,24 @@ TEST(TestNetwork, GetAdjacentTracks) {
   for (const auto& track : R2_adj_tracks_tf) {
     R2_adj_stations_tf.insert(track->other_station);
   }
-  ASSERT_EQ(R2_adj_stations_tf.contains(R1), true);
-  ASSERT_EQ(R2_adj_stations_tf.contains(R3), true);
-  ASSERT_EQ(R2_adj_stations_tf.contains(B2), true);
-  ASSERT_EQ(R2_adj_stations_tf.contains(B4), true);
-  ASSERT_EQ(R2_adj_stations_tf.contains(R4), false);
-  ASSERT_EQ(R2_adj_stations_tf.contains(B1), false);
+  EXPECT_TRUE(R2_adj_stations_tf.contains(R1));
+  EXPECT_TRUE(R2_adj_stations_tf.contains(R3));
+  EXPECT_TRUE(R2_adj_stations_tf.contains(B2));
+  EXPECT_TRUE(R2_adj_stations_tf.contains(B4));
+  EXPECT_FALSE(R2_adj_stations_tf.contains(R4));
+  EXPECT_FALSE(R2_adj_stations_tf.contains(B1));
 
   std::unordered_set<std::shared_ptr<Track>> B2_adj_tracks_tf = transfer_network->get_adjacent_tracks(B2);
   std::unordered_set<std::shared_ptr<Station>> B2_adj_stations_tf;
   for (const auto& track : B2_adj_tracks_tf) {
     B2_adj_stations_tf.insert(track->other_station);
   }
-  ASSERT_EQ(B2_adj_stations_tf.contains(B1), true);
-  ASSERT_EQ(B2_adj_stations_tf.contains(B3), true);
-  ASSERT_EQ(B2_adj_stations_tf.contains(R2), true);
-  ASSERT_EQ(B2_adj_stations_tf.contains(R4), true);
-  ASSERT_EQ(B2_adj_stations_tf.contains(B4), false);
-  ASSERT_EQ(B2_adj_stations_tf.contains(R1), false);
+  EXPECT_TRUE(B2_adj_stations_tf.contains(B1));
+  EXPECT_TRUE(B2_adj_stations_tf.contains(B3));
+  EXPECT_TRUE(B2_adj_stations_tf.contains(R2));
+  EXPECT_TRUE(B2_adj_stations_tf.contains(R4));
+  EXPECT_FALSE(B2_adj_stations_tf.contains(B4));
+  EXPECT_FALSE(B2_adj_stations_tf.contains(R1));
 }
 
 TEST(BasicDSP, ToyDataABCD) {
@@ -133,12 +133,12 @@ TEST(BasicDSP, ToyDataABCD) {
   // Find the shortest path from A to C
   Route AC_route = ABCD->basic_DSP(stationA, stationC);
   Route correct_path_AC = {stationA, stationB, stationD, stationC};
-  ASSERT_EQ(AC_route, correct_path_AC);
+  EXPECT_EQ(AC_route, correct_path_AC);
 
   // Find the shortest path from D to A
   Route DA_route = ABCD->basic_DSP(stationD, stationA);
   Route correct_path_DA = {stationD, stationB, stationA};
-  ASSERT_EQ(DA_route, correct_path_DA);
+  EXPECT_EQ(DA_route, correct_path_DA);
 
 }
 
@@ -172,17 +172,17 @@ TEST(BasicDSP, ToyDataTinyCity) {
   // Find the shortest path from the park to the airport
   Route park_airport_route = tiny_city->basic_DSP(park, airport);
   Route correct_path_park_airport = {park, west_residential, hospital, city_hall, airport};
-  ASSERT_EQ(park_airport_route, correct_path_park_airport);
+  EXPECT_EQ(park_airport_route, correct_path_park_airport);
 
   // Find the shortest path from East Residential to West Residential
   Route east_west_route = tiny_city->basic_DSP(east_residential, west_residential);
   Route correct_path_east_west = {east_residential, airport, city_hall, hospital, west_residential};
-  ASSERT_EQ(east_west_route, correct_path_east_west);
+  EXPECT_EQ(east_west_route, correct_path_east_west);
 
   // Find the shortest path from the seaport to the hospital
   Route seaport_hospital_route = tiny_city->basic_DSP(seaport, hospital);
   Route correct_path_seaport_hospital = {seaport, mall, city_hall, hospital};
-  ASSERT_EQ(seaport_hospital_route, correct_path_seaport_hospital);
+  EXPECT_EQ(seaport_hospital_route, correct_path_seaport_hospital);
 
 }
 
