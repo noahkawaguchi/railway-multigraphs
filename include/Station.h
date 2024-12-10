@@ -6,7 +6,11 @@
 #include <string>
 #include <unordered_set>
 
-#include "Line.h"
+struct Line {
+  std::string name = "";
+  float base_cost = 0.0f;
+  float cost_per_mile = 0.0f;
+};
 
 struct Station {
   std::string name;
@@ -23,9 +27,7 @@ struct Station {
           : name(name), line(line), path_predecessor(predecessor) {}
 
   // Set the cost for shortest path algorithms. Automatically rounds to cents.
-  void set_path_cost(float cost) {
-    this->path_cost = round(cost * 100) / 100;
-  }
+  void set_path_cost(float cost) { this->path_cost = round(cost * 100) / 100; }
 
   // Get the cost for shortest path algorithms. Always rounded to cents.
   float get_path_cost() { return this->path_cost; }
