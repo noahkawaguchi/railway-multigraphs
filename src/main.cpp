@@ -8,42 +8,42 @@ int main() {
   // Make network
   auto basic_network = std::make_unique<Network>();
 
-  // Add line and stations to network
+  // Add line and stops to network
   auto ABCD_line = std::make_shared<Line>(Line{"ABCD Line"});
-  std::shared_ptr<Station> stationA = basic_network->new_station("Station A", ABCD_line);
-  std::shared_ptr<Station> stationB = basic_network->new_station("Station B", ABCD_line);
-  std::shared_ptr<Station> stationC = basic_network->new_station("Station C", ABCD_line);
-  std::shared_ptr<Station> stationD = basic_network->new_station("Station D", ABCD_line);
+  std::shared_ptr<Stop> stopA = basic_network->new_stop("Stop A", ABCD_line);
+  std::shared_ptr<Stop> stopB = basic_network->new_stop("Stop B", ABCD_line);
+  std::shared_ptr<Stop> stopC = basic_network->new_stop("Stop C", ABCD_line);
+  std::shared_ptr<Stop> stopD = basic_network->new_stop("Stop D", ABCD_line);
 
-  // Connect stations with tracks
-  basic_network->new_track(stationA, stationB, 3);
-  basic_network->new_track(stationA, stationC, 7);
-  basic_network->new_track(stationB, stationC, 5);
-  basic_network->new_track(stationB, stationD, 1);
-  basic_network->new_track(stationC, stationD, 2);
+  // Connect stops with tracks
+  basic_network->new_track(stopA, stopB, 3);
+  basic_network->new_track(stopA, stopC, 7);
+  basic_network->new_track(stopB, stopC, 5);
+  basic_network->new_track(stopB, stopD, 1);
+  basic_network->new_track(stopC, stopD, 2);
 
   // Print the network
   basic_network->print();
 
-  // Calculate Dijkstra's shortest path from Station A to Station C
-  basic_network->print_route(basic_network->basic_DSP(stationA, stationC));
+  // Calculate Dijkstra's shortest path from Stop A to Stop C
+  basic_network->print_route(basic_network->basic_DSP(stopA, stopC));
 
 
   // Make network
   auto tiny_city = std::make_unique<Network>();
 
-  // Add line and stations to network
+  // Add line and stops to network
   auto tiny_city_railway = std::make_shared<Line>(Line{"Tiny City Railway"});
-  std::shared_ptr<Station> hospital = tiny_city->new_station("Hospital", tiny_city_railway);
-  std::shared_ptr<Station> airport = tiny_city->new_station("Airport", tiny_city_railway);
-  std::shared_ptr<Station> west_residential = tiny_city->new_station("West Residential", tiny_city_railway);
-  std::shared_ptr<Station> city_hall = tiny_city->new_station("City Hall", tiny_city_railway);
-  std::shared_ptr<Station> east_residential = tiny_city->new_station("East Residential", tiny_city_railway);
-  std::shared_ptr<Station> park = tiny_city->new_station("Park", tiny_city_railway);
-  std::shared_ptr<Station> mall = tiny_city->new_station("Mall", tiny_city_railway);
-  std::shared_ptr<Station> seaport = tiny_city->new_station("Seaport", tiny_city_railway);
+  std::shared_ptr<Stop> hospital = tiny_city->new_stop("Hospital", tiny_city_railway);
+  std::shared_ptr<Stop> airport = tiny_city->new_stop("Airport", tiny_city_railway);
+  std::shared_ptr<Stop> west_residential = tiny_city->new_stop("West Residential", tiny_city_railway);
+  std::shared_ptr<Stop> city_hall = tiny_city->new_stop("City Hall", tiny_city_railway);
+  std::shared_ptr<Stop> east_residential = tiny_city->new_stop("East Residential", tiny_city_railway);
+  std::shared_ptr<Stop> park = tiny_city->new_stop("Park", tiny_city_railway);
+  std::shared_ptr<Stop> mall = tiny_city->new_stop("Mall", tiny_city_railway);
+  std::shared_ptr<Stop> seaport = tiny_city->new_stop("Seaport", tiny_city_railway);
 
-  // Connect stations with tracks
+  // Connect stops with tracks
   tiny_city->new_track(hospital, west_residential, 2);
   tiny_city->new_track(hospital, city_hall, 3);
   tiny_city->new_track(airport, city_hall, 10);

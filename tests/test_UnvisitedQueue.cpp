@@ -3,31 +3,31 @@
 #include "../include/UnvisitedQueue.h"
 
 TEST(TestUQ, Top) {
-  // Create line and stations
+  // Create line and stops
   auto test_line = std::make_shared<Line>(Line{"Test Line"});
-  auto station1 = std::make_shared<Station>("Station 1", test_line);
-  auto station2 = std::make_shared<Station>("Station 2", test_line);
-  auto station3 = std::make_shared<Station>("Station 3", test_line);
-  auto station4 = std::make_shared<Station>("Station 4", test_line);
+  auto stop1 = std::make_shared<Stop>("Stop 1", test_line);
+  auto stop2 = std::make_shared<Stop>("Stop 2", test_line);
+  auto stop3 = std::make_shared<Stop>("Stop 3", test_line);
+  auto stop4 = std::make_shared<Stop>("Stop 4", test_line);
 
   // Set priorities
-  station1->path_distance = 5;
-  station2->path_distance = 10;
-  // (leave Station 3 as default)
-  station4->path_distance = 2;
+  stop1->path_distance = 5;
+  stop2->path_distance = 10;
+  // (leave Stop 3 as default)
+  stop4->path_distance = 2;
 
   // Create UnvisitedQueue and insert
   UnvisitedQueue uq;
-  uq.push(station1, station1->path_distance);
-  uq.push(station2, station2->path_distance);
-  uq.push(station3, station3->path_distance);
-  uq.push(station4, station4->path_distance);
+  uq.push(stop1, stop1->path_distance);
+  uq.push(stop2, stop2->path_distance);
+  uq.push(stop3, stop3->path_distance);
+  uq.push(stop4, stop4->path_distance);
 
-  // Make sure top returns the correct station
-  EXPECT_EQ(uq.top_unprocessed(), station4);
-  EXPECT_EQ(uq.top_unprocessed(), station1);
-  EXPECT_EQ(uq.top_unprocessed(), station2);
-  EXPECT_EQ(uq.top_unprocessed(), station3);
+  // Make sure top returns the correct stop
+  EXPECT_EQ(uq.top_unprocessed(), stop4);
+  EXPECT_EQ(uq.top_unprocessed(), stop1);
+  EXPECT_EQ(uq.top_unprocessed(), stop2);
+  EXPECT_EQ(uq.top_unprocessed(), stop3);
 
 }
 
@@ -36,31 +36,31 @@ TEST(TestUQ, Empty) {
   UnvisitedQueue uq;
   EXPECT_TRUE(uq.empty());
 
-  // Create line and stations 
+  // Create line and stops 
   auto test_line = std::make_shared<Line>(Line{"Test Line"});
-  auto station1 = std::make_shared<Station>("Station 1", test_line);
-  auto station2 = std::make_shared<Station>("Station 2", test_line);
-  auto station3 = std::make_shared<Station>("Station 3", test_line);
+  auto stop1 = std::make_shared<Stop>("Stop 1", test_line);
+  auto stop2 = std::make_shared<Stop>("Stop 2", test_line);
+  auto stop3 = std::make_shared<Stop>("Stop 3", test_line);
 
   // Set priorities
-  station1->path_distance = 7;
-  station2->path_distance = 3;
-  // (leave Station 3 as default)
+  stop1->path_distance = 7;
+  stop2->path_distance = 3;
+  // (leave Stop 3 as default)
 
   // Insert into queue
-  uq.push(station1, station1->path_distance);
-  uq.push(station2, station2->path_distance);
-  uq.push(station3, station3->path_distance);
+  uq.push(stop1, stop1->path_distance);
+  uq.push(stop2, stop2->path_distance);
+  uq.push(stop3, stop3->path_distance);
 
   // Now the queue should not be empty
   EXPECT_FALSE(uq.empty());
 
   // Update priority, reinsert, and process, leaving a processed duplicate in the queue
-  station3->path_distance = 2;
-  uq.push(station3, station3->path_distance);
+  stop3->path_distance = 2;
+  uq.push(stop3, stop3->path_distance);
   uq.top_unprocessed();
 
-  // Remove both remaining processed stations
+  // Remove both remaining processed stops
   uq.top_unprocessed();
   uq.top_unprocessed();
 
@@ -69,14 +69,14 @@ TEST(TestUQ, Empty) {
 }
 
 TEST(TestUQ, TopReinsertion) {
-  // Create line and stations
+  // Create line and stops
   auto test_line = std::make_shared<Line>(Line{"Test Line"});
-  auto A = std::make_shared<Station>("A", test_line);
-  auto B = std::make_shared<Station>("B", test_line);
-  auto C = std::make_shared<Station>("C", test_line);
-  auto D = std::make_shared<Station>("D", test_line);
-  auto E = std::make_shared<Station>("E", test_line);
-  auto F = std::make_shared<Station>("F", test_line);
+  auto A = std::make_shared<Stop>("A", test_line);
+  auto B = std::make_shared<Stop>("B", test_line);
+  auto C = std::make_shared<Stop>("C", test_line);
+  auto D = std::make_shared<Stop>("D", test_line);
+  auto E = std::make_shared<Stop>("E", test_line);
+  auto F = std::make_shared<Stop>("F", test_line);
 
   // Set priority of C, leave the rest as infinity
   C->path_distance = 0;
@@ -90,7 +90,7 @@ TEST(TestUQ, TopReinsertion) {
   uq.push(E, E->path_distance);
   uq.push(F, F->path_distance);
 
-  // Make sure top returns the correct station
+  // Make sure top returns the correct stop
   EXPECT_EQ(uq.top_unprocessed(), C);
 
   // Now we should have A,B,D,E,F - all the same priority
@@ -107,15 +107,15 @@ TEST(TestUQ, TopReinsertion) {
 
   // Now we should have D-2, E-7, B-10, F-14, A-inf, along with duplicates
 
-  // Make sure top returns the correct station, ignoring already processed stations
+  // Make sure top returns the correct stop, ignoring already processed stops
   EXPECT_EQ(uq.top_unprocessed(), D);
   EXPECT_EQ(uq.top_unprocessed(), E);
   EXPECT_EQ(uq.top_unprocessed(), B);
   EXPECT_EQ(uq.top_unprocessed(), F);
   EXPECT_EQ(uq.top_unprocessed(), A);
 
-  // Any number of further calls should get dummy station
-  EXPECT_EQ(uq.top_unprocessed()->name, "Dummy Station");
-  EXPECT_EQ(uq.top_unprocessed()->name, "Dummy Station");
+  // Any number of further calls should get dummy stop
+  EXPECT_EQ(uq.top_unprocessed()->name, "Dummy Stop");
+  EXPECT_EQ(uq.top_unprocessed()->name, "Dummy Stop");
 
 }

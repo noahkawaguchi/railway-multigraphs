@@ -3,27 +3,27 @@
 #include "../include/Track.h"
 
 TEST(TestTrack, InitTrack) {
-  // Create a line and the station on the other side
+  // Create a line and the stop on the other side
   auto test_line = std::make_shared<Line>(Line{"Test Line"});
-  auto test_station = std::make_shared<Station>("Test Station", test_line);
+  auto test_stop = std::make_shared<Stop>("Test Stop", test_line);
   // Create track
-  auto test_track = std::make_shared<Track>(test_station, 5.4f);
+  auto test_track = std::make_shared<Track>(test_stop, 5.4f);
   // Make sure data members were set correctly
-  EXPECT_EQ(test_track->other_station, test_station);
+  EXPECT_EQ(test_track->other_stop, test_stop);
   EXPECT_FLOAT_EQ(test_track->distance, 5.4f);
-  EXPECT_EQ(test_track->other_station->line->name, "Test Line");
+  EXPECT_EQ(test_track->other_stop->line->name, "Test Line");
 }
 
 TEST(TestTrack, GetCost) {
-  // Create the Red Line with three stations connected with tracks
+  // Create the Red Line with three stops connected with tracks
   auto red_line = std::make_shared<Line>(Line{"Red Line", 1.60f, 0.32f});
-  auto A = std::make_shared<Station>("A", red_line);
-  auto B = std::make_shared<Station>("B", red_line);
-  auto C = std::make_shared<Station>("C", red_line);
+  auto A = std::make_shared<Stop>("A", red_line);
+  auto B = std::make_shared<Stop>("B", red_line);
+  auto C = std::make_shared<Stop>("C", red_line);
   auto A_B = std::make_shared<Track>(B, 3.2f);
   auto B_C = std::make_shared<Track>(C, 4.9f);
 
-  // Case where all tracks and stations are on the same line
+  // Case where all tracks and stops are on the same line
   A->set_path_cost(0.0f);
   B->set_path_cost(A_B->get_cost_from(A));
   // $1.60 base fare + $0.32 * 3.2 mi, rounded to cents

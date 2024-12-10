@@ -6,7 +6,7 @@
 #include <unordered_set>
 #include <limits>
 
-#include "Station.h"
+#include "Stop.h"
 
 
 class UnvisitedQueue {
@@ -14,34 +14,34 @@ public:
   UnvisitedQueue();
   ~UnvisitedQueue() = default;
 
-  // Initialize a QueueStation and push it into the internal min-heap using the given priority
-  void push(std::shared_ptr<Station> station, float priority);
+  // Initialize a QueueStop and push it into the internal min-heap using the given priority
+  void push(std::shared_ptr<Stop> stop, float priority);
 
-  // Clear any processed stations off the top of the internal priority queue. If no 
-  // stations remain, return true. If an unprocessed station remains, return false.
+  // Clear any processed stops off the top of the internal priority queue. If no 
+  // stops remain, return true. If an unprocessed stop remains, return false.
   bool empty();
 
-  // Remove the top unprocessed station, mark it as processed, and return it
-  std::shared_ptr<Station> top_unprocessed();
+  // Remove the top unprocessed stop, mark it as processed, and return it
+  std::shared_ptr<Stop> top_unprocessed();
 
 private:
-  // Representation of stations specifically for use in the priority queue
-  struct QueueStation {
-    std::shared_ptr<Station> station;
+  // Representation of stops specifically for use in the priority queue
+  struct QueueStop {
+    std::shared_ptr<Stop> stop;
     float priority;
 
     // 2-arg constructor to ensure data members are not left uninitialized
-    QueueStation(std::shared_ptr<Station> station, float priority)
-                 : station(station), priority(priority) {}
+    QueueStop(std::shared_ptr<Stop> stop, float priority)
+                 : stop(stop), priority(priority) {}
 
     // Overload < operator for priority queue comparisons
-    bool operator<(const QueueStation& other) const {
+    bool operator<(const QueueStop& other) const {
       return this->priority > other.priority;
     }
   };
 
-  std::priority_queue<QueueStation> pq;
-  std::unordered_set<std::shared_ptr<Station>> processed;
+  std::priority_queue<QueueStop> pq;
+  std::unordered_set<std::shared_ptr<Stop>> processed;
 
 };
 

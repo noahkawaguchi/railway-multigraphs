@@ -24,7 +24,7 @@ add_executable(tests
     tests/test_Network.cpp
     src/UnvisitedQueue.cpp
     tests/test_UnvisitedQueue.cpp
-    tests/test_Station.cpp
+    tests/test_Stop.cpp
     tests/test_Track.cpp
 )
 
