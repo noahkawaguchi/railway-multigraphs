@@ -63,8 +63,9 @@ void Network::print_route(Route route) {
     }
   }
   std::cout << "\n  Total distance: " << route.back()->path_distance << " mi\n";
-  std::cout << "  Total cost: $" << route.back()->get_path_cost() << "\n\n";
-  std::cout << std::string(20, '-') << '\n' << std::endl;
+  // Always show the cost with cents
+  std::cout << "  Total cost: $" << std::format("{0:.2f}", route.back()->get_path_cost());
+  std::cout << "\n\n" << std::string(20, '-') << '\n' << std::endl;
 }
 
 // *** SHORTEST PATH ALGORITHMS *** //

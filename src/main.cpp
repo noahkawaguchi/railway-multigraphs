@@ -5,6 +5,8 @@
 
 int main() {
 
+  // *** TOY DATA ABCD *** //
+
   // Make network
   auto basic_network = std::make_unique<Network>();
 
@@ -28,6 +30,7 @@ int main() {
   // Calculate Dijkstra's shortest path from Stop A to Stop C
   basic_network->print_route(basic_network->basic_DSP(stopA, stopC));
 
+  // *** TOY DATA TINY CITY *** //
 
   // Make network
   auto tiny_city = std::make_unique<Network>();
@@ -61,7 +64,46 @@ int main() {
   // Calculate Dijkstra's shortest path from the park to the airport
   tiny_city->print_route(tiny_city->basic_DSP(park, airport));
 
+  // *** TOY DATA LONG CHEAP WAY ** //
 
+  // Make a network
+  auto cost_test_railway = std::make_unique<Network>();
+
+  // Make a long, cheap line
+  auto savings_line = std::make_shared<Line>(Line{"Savings Line", 0.75f, 0.12f});
+  std::shared_ptr<Stop> savings_A = cost_test_railway->new_stop("Savings A", savings_line);
+  std::shared_ptr<Stop> savings_B = cost_test_railway->new_stop("Savings B", savings_line);
+  std::shared_ptr<Stop> savings_C = cost_test_railway->new_stop("Savings C", savings_line);
+  std::shared_ptr<Stop> savings_D = cost_test_railway->new_stop("Savings D", savings_line);
+  std::shared_ptr<Stop> savings_E = cost_test_railway->new_stop("Savings E", savings_line);
+  std::shared_ptr<Stop> savings_F = cost_test_railway->new_stop("Savings F", savings_line);
+  cost_test_railway->new_track(savings_A, savings_B, 1.1f);
+  cost_test_railway->new_track(savings_B, savings_C, 3.3f);
+  cost_test_railway->new_track(savings_C, savings_D, 4.1f);
+  cost_test_railway->new_track(savings_D, savings_E, 4.3f);
+  cost_test_railway->new_track(savings_E, savings_F, 0.9f);
+
+  // Make a short, expensive line
+  auto express_line = std::make_shared<Line>(Line{"Express Line", 1.80f, 0.41f});
+  std::shared_ptr<Stop> express_B = cost_test_railway->new_stop("Express B", express_line);
+  std::shared_ptr<Stop> express_D = cost_test_railway->new_stop("Express D", express_line);
+  std::shared_ptr<Stop> express_E = cost_test_railway->new_stop("Express E", express_line);
+  cost_test_railway->new_track(express_B, express_D, 1.9f);
+  cost_test_railway->new_track(express_D, express_E, 2.1f);
+
+  // Set transfers at B, D, and E
+  cost_test_railway->set_transfer(savings_B, express_B);
+  cost_test_railway->set_transfer(savings_D, express_D);
+  cost_test_railway->set_transfer(savings_E, express_E);
+
+  // Print the network
+  cost_test_railway->print();
+
+  // Find the path from A to F with the shortest distance, which is more expensive
+  cost_test_railway->print_route(cost_test_railway->basic_DSP(savings_A, savings_F));
+
+  // Find the cheapest path from A to F, even though it is longer
+  cost_test_railway->print_route(cost_test_railway->cost_DSP(savings_A, savings_F));
 
   return 0;
 }
