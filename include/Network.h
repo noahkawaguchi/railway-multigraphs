@@ -35,13 +35,11 @@ public:
   // Print a representation of the network
   void print();
 
-  // Find Dijkstra's shortest path from start to destination. 
-  // Fares are free and transfers are instant.
-  Route basic_DSP(std::shared_ptr<Station> start, std::shared_ptr<Station> destination);
+  // Print a Route from a shortest path algorithm
+  void print_route(Route route);
 
-  // Print Dijkstra's shortest path from start to destination. 
-  // Fares are free and transfers are instant.
-  void print_basic_DSP(std::shared_ptr<Station> start, std::shared_ptr<Station> destination);
+  // Find Dijkstra's shortest path from start to destination based on the distance between stations
+  Route basic_DSP(std::shared_ptr<Station> start, std::shared_ptr<Station> destination);
 
   // Find Dijkstra's shortest path from start to destination, prioritizing cost
   Route cost_DSP(std::shared_ptr<Station> start, std::shared_ptr<Station> destination);

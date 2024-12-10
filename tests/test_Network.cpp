@@ -185,3 +185,74 @@ TEST(BasicDSP, ToyDataTinyCity) {
   ASSERT_EQ(seaport_hospital_route, correct_path_seaport_hospital);
 
 }
+
+TEST(CostDSP, ToyDataLongCheapWay) {
+  // Make a network
+  auto cost_test_railway = std::make_unique<Network>();
+
+  // Make a long, cheap line
+  auto savings_line = std::make_shared<Line>(Line{"Savings Line", 0.75f, 0.12f});
+  std::shared_ptr<Station> savings_A = cost_test_railway->new_station("Savings A", savings_line);
+  std::shared_ptr<Station> savings_B = cost_test_railway->new_station("Savings B", savings_line);
+  std::shared_ptr<Station> savings_C = cost_test_railway->new_station("Savings C", savings_line);
+  std::shared_ptr<Station> savings_D = cost_test_railway->new_station("Savings D", savings_line);
+  std::shared_ptr<Station> savings_E = cost_test_railway->new_station("Savings E", savings_line);
+  std::shared_ptr<Station> savings_F = cost_test_railway->new_station("Savings F", savings_line);
+  cost_test_railway->new_track(savings_A, savings_B, 1.1f);
+  cost_test_railway->new_track(savings_B, savings_C, 3.3f);
+  cost_test_railway->new_track(savings_C, savings_D, 4.1f);
+  cost_test_railway->new_track(savings_D, savings_E, 4.3f);
+  cost_test_railway->new_track(savings_E, savings_F, 0.9f);
+
+  // Make a short, expensive line
+  auto express_line = std::make_shared<Line>(Line{"Express Line", 1.80f, 0.41f});
+  std::shared_ptr<Station> express_B = cost_test_railway->new_station("Express B", express_line);
+  std::shared_ptr<Station> express_D = cost_test_railway->new_station("Express D", express_line);
+  std::shared_ptr<Station> express_E = cost_test_railway->new_station("Express E", express_line);
+  cost_test_railway->new_track(express_B, express_D, 1.9f);
+  cost_test_railway->new_track(express_D, express_E, 2.1f);
+
+  // Set transfers at B, D, and E
+  cost_test_railway->set_transfer(savings_B, express_B);
+  cost_test_railway->set_transfer(savings_D, express_D);
+  cost_test_railway->set_transfer(savings_E, express_E);
+
+  // Basic DSP should find the path with the shortest distance, which is more expensive
+  Route basic_DSP_route = cost_test_railway->basic_DSP(savings_A, savings_F);
+  Route correct_expensive_route = {savings_A, savings_B, express_D, express_E, savings_F};
+  EXPECT_EQ(basic_DSP_route, correct_expensive_route);
+  // 1.1 + 1.9 + 2.1 + 0.9 = 6 mi
+  EXPECT_FLOAT_EQ(basic_DSP_route.back()->path_distance, 6.0f);
+  /*
+    A->B:
+      $0.75 base fare + $0.12 * 1.1 mi = $0.88 (rounded)
+    B->D:
+      $0.88 previous fare + $1.80 base fare for transfer + $0.41 * 1.9 mi = $3.46 (rounded)
+    D->E:
+      $3.46 previous fare + $0.41 * 2.1 mi = $4.32 (rounded)
+    E->F:
+      $4.32 previous fare + $0.75 base fare for transfer + $0.12 * 0.9 mi = $5.18 (rounded)
+  */
+  EXPECT_FLOAT_EQ(basic_DSP_route.back()->get_path_cost(), 5.18f);
+
+  // Cost DSP should find the cheapest path, even though it is longer
+  Route cost_DSP_route = cost_test_railway->cost_DSP(savings_A, savings_F);
+  Route correct_cheap_route = {savings_A, savings_B, savings_C, savings_D, savings_E, savings_F};
+  EXPECT_EQ(cost_DSP_route, correct_cheap_route);
+  // 1.1 + 3.3 + 4.1 + 4.3 + 0.9 = 13.7 mi
+  EXPECT_FLOAT_EQ(cost_DSP_route.back()->path_distance, 13.7f);
+  /*
+    A->B:
+      $0.75 base fare + $0.12 * 1.1 mi = $0.88 (rounded)
+    B->C:
+      $0.88 previous fare + $0.12 * 3.3 mi = $1.28 (rounded)
+    C->D:
+      $1.28 previous fare + $0.12 * 4.1 mi = $1.77 (rounded)
+    D->E:
+      $1.77 previous fare + $0.12 * 4.3 mi = $2.29 (rounded)
+    E->F:
+      $2.29 previous fare + $0.12 * 0.9 mi = $2.40 (rounded)
+  */
+  EXPECT_FLOAT_EQ(cost_DSP_route.back()->get_path_cost(), 2.40f);
+
+}

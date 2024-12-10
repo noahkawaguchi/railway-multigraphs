@@ -26,7 +26,7 @@ int main() {
   basic_network->print();
 
   // Calculate Dijkstra's shortest path from Station A to Station C
-  basic_network->print_basic_DSP(stationA, stationC);
+  basic_network->print_route(basic_network->basic_DSP(stationA, stationC));
 
 
   // Make network
@@ -59,7 +59,7 @@ int main() {
   tiny_city->print();
 
   // Calculate Dijkstra's shortest path from the park to the airport
-  tiny_city->print_basic_DSP(park, airport);
+  tiny_city->print_route(tiny_city->basic_DSP(park, airport));
 
 
 

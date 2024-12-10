@@ -19,7 +19,9 @@ struct Track {
     // Regular cost to take this section of track
     total_cost += round(this->distance * this->other_station->line->cost_per_mile * 100) / 100;
     // Additional cost to begin a new trip or transfer to a different line
-    if (current_station->path_cost == 0.0f || this->other_station->line != current_station->line) {
+    if (current_station->get_path_cost() == 0.0f 
+        || this->other_station->line != current_station->line) 
+    {
       total_cost += this->other_station->line->base_cost;
     }
     return total_cost;
