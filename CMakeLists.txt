@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(RailwaySimulator)
+project(RailwayMultigraphs)
 
 # Set the C++ standard
 set(CMAKE_CXX_STANDARD 20)
@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 include_directories(include)
 
 # Add the main executable
-add_executable(railway_simulator 
+add_executable(railway_multigraphs 
     src/Network.cpp
     src/UnvisitedQueue.cpp
     src/main.cpp
