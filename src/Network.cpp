@@ -32,7 +32,7 @@ Station Network::new_station(std::string name, std::unordered_set<std::shared_pt
   }
   // Set the station name for all the stops
   for (const auto& stop : stops) { stop->station_name = name; }
-  return Station{name, stops};
+  return Station{stops};
 }
 
 std::unordered_set<std::shared_ptr<Track>> Network::get_adjacent_tracks(std::shared_ptr<Stop> stop) {
@@ -87,7 +87,7 @@ Route Network::basic_DSP(Station start, Station destination) {
   }
 
   // The algorithm works the same starting from any of the stops at the starting station
-  std::shared_ptr<Stop> starting_stop = *start.stops.begin();
+  std::shared_ptr<Stop> starting_stop = *start.begin();
   std::shared_ptr<Stop> destination_stop; // Will be set when found
 
   // Distance and cost from start to start is 0
@@ -106,7 +106,7 @@ Route Network::basic_DSP(Station start, Station destination) {
     std::shared_ptr<Stop> current_stop = uq.top_unprocessed();
 
     // Stop early if the destination is found
-    if (destination.stops.contains(current_stop)) {
+    if (destination.contains(current_stop)) {
       destination_stop = current_stop;
       break;
     }
@@ -147,7 +147,7 @@ Route Network::cost_DSP(Station start, Station destination) {
   }
 
   // The algorithm works the same starting from any of the stops at the starting station
-  std::shared_ptr<Stop> starting_stop = *start.stops.begin();
+  std::shared_ptr<Stop> starting_stop = *start.begin();
   std::shared_ptr<Stop> destination_stop; // Will be set when found
 
   // Distance and cost from start to start is 0
@@ -166,7 +166,7 @@ Route Network::cost_DSP(Station start, Station destination) {
     std::shared_ptr<Stop> current_stop = uq.top_unprocessed();
 
     // Stop early if the destination is found
-    if (destination.stops.contains(current_stop)) {
+    if (destination.contains(current_stop)) {
       destination_stop = current_stop;
       break;
     }

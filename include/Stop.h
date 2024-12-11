@@ -50,10 +50,8 @@ private:
 
 };
 
-struct Station {
-  std::string name = "";
-  std::unordered_set<std::shared_ptr<Stop>> stops; // Stops at this station by all lines
-};
+// Type alias for managing multiple transfer stops
+using Station = std::unordered_set<std::shared_ptr<Stop>>;
 
 // Type alias for readability in shortest path algorithms
 using Route = std::vector<std::shared_ptr<Stop>>;
