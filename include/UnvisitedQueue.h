@@ -4,10 +4,8 @@
 #include <memory>
 #include <queue>
 #include <unordered_set>
-#include <limits>
 
 #include "Stop.h"
-
 
 class UnvisitedQueue {
 public:
@@ -31,8 +29,7 @@ private:
     double priority;
 
     // 2-arg constructor to ensure data members are not left uninitialized
-    QueueStop(std::shared_ptr<Stop> stop, double priority)
-                 : stop(stop), priority(priority) {}
+    QueueStop(std::shared_ptr<Stop> stop, double priority) : stop(stop), priority(priority) {}
 
     // Overload < operator for priority queue comparisons
     bool operator<(const QueueStop& other) const {
@@ -44,6 +41,5 @@ private:
   std::unordered_set<std::shared_ptr<Stop>> processed;
 
 };
-
 
 #endif // UNVISITED_QUEUE_H

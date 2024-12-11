@@ -1,5 +1,4 @@
 #include <memory>
-#include <iostream>
 
 #include "Network.h"
 
@@ -9,9 +8,9 @@ void toy_data_long_cheap_way();
 void toy_data_real_multigraph_city();
 
 int main() {
-  toy_data_ABCD();
-  toy_data_tiny_city();
-  toy_data_long_cheap_way();
+  // toy_data_ABCD();
+  // toy_data_tiny_city();
+  // toy_data_long_cheap_way();
   toy_data_real_multigraph_city();
   return 0;
 }
@@ -193,10 +192,21 @@ void toy_data_real_multigraph_city() {
   // Print the nework
   real_multigraph_city->print();
 
+  // Find the shortest path from Seaport Station to City Center Station
+  real_multigraph_city->print_route(real_multigraph_city->distance_DSP(seaport, city_center));
+
+  // Find the cheapest path from Seaport Station to City Center Station
+  real_multigraph_city->print_route(real_multigraph_city->cost_DSP(seaport, city_center));
+
+  // Find the shortest path from South Station to Airport Station
+  real_multigraph_city->print_route(real_multigraph_city->distance_DSP(south, airport));
+
+  // Find the cheapest path from South Station to Airport Station
+  real_multigraph_city->print_route(real_multigraph_city->cost_DSP(south, airport));
+
   // Find the shortest path from Residential West Station to North Station
   real_multigraph_city->print_route(real_multigraph_city->distance_DSP(residential_west, north));
 
   // Find the cheapest path from Residential West Station to North Station
   real_multigraph_city->print_route(real_multigraph_city->cost_DSP(residential_west, north));
-
 }

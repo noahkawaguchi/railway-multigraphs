@@ -2,7 +2,6 @@
 #define NETWORK_H
 
 #include <memory>
-#include <vector>
 #include <unordered_map>
 #include <unordered_set>
 #include <queue>
@@ -34,7 +33,7 @@ public:
   // Print a Route from a shortest path algorithm
   void print_route(Route route);
 
-  // Find Dijkstra's shortest path from start to destination based on distance (miles)
+  // Find Dijkstra's shortest path from start to destination, prioritizing distance (miles)
   Route distance_DSP(Station start, Station destination);
 
   // Find Dijkstra's shortest path from start to destination, prioritizing cost

@@ -5,6 +5,8 @@
 #include <limits>
 #include <string>
 #include <unordered_set>
+#include <vector>
+#include <cmath>
 
 struct Line {
   std::string name = "";
@@ -28,7 +30,7 @@ struct Stop {
           : id(id), line(line), path_predecessor(predecessor) {}
 
   // Set the cost for shortest path algorithms. Automatically rounds to cents.
-  void set_path_cost(double cost) { this->path_cost = round(cost * 100) / 100; }
+  void set_path_cost(double cost) { this->path_cost = std::round(cost * 100) / 100; }
 
   // Get the cost for shortest path algorithms. Always rounded to cents.
   double get_path_cost() { return this->path_cost; }
