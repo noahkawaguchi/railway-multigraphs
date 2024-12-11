@@ -8,8 +8,8 @@
 
 struct Line {
   std::string name = "";
-  float base_cost = 0.0f;
-  float cost_per_mile = 0.0f;
+  double base_cost = 0.0;
+  double cost_per_mile = 0.0;
 };
 
 struct Stop {
@@ -18,7 +18,7 @@ struct Stop {
   std::shared_ptr<Line> line; // The line this stop belongs to
   std::unordered_set<std::shared_ptr<Stop>> transfers; // Stops at the same station by other lines
   std::shared_ptr<Stop> path_predecessor;
-  float path_distance = std::numeric_limits<float>::max() / 2; // "Infinity"
+  double path_distance = std::numeric_limits<double>::max() / 2; // "Infinity"
  
   // 2-arg constructor for general use
   Stop(std::string id, std::shared_ptr<Line> line) 
@@ -28,20 +28,20 @@ struct Stop {
           : id(id), line(line), path_predecessor(predecessor) {}
 
   // Set the cost for shortest path algorithms. Automatically rounds to cents.
-  void set_path_cost(float cost) { this->path_cost = round(cost * 100) / 100; }
+  void set_path_cost(double cost) { this->path_cost = round(cost * 100) / 100; }
 
   // Get the cost for shortest path algorithms. Always rounded to cents.
-  float get_path_cost() { return this->path_cost; }
+  double get_path_cost() { return this->path_cost; }
 
   // Reset the predecessor, distance, and cost for restarting shortest path algorithms
   void path_reset() {
     this->path_predecessor = dummy_predecessor;
-    this->path_distance = std::numeric_limits<float>::max() / 2; // "Infinity"
-    this->path_cost = std::numeric_limits<float>::max() / 2; // "Infinity
+    this->path_distance = std::numeric_limits<double>::max() / 2; // "Infinity"
+    this->path_cost = std::numeric_limits<double>::max() / 2; // "Infinity
   }
   
 private:
-  float path_cost = std::numeric_limits<float>::max() / 2; // "Infinity"
+  double path_cost = std::numeric_limits<double>::max() / 2; // "Infinity"
 
   // Dummy instance of Stop with pointers to nullptr to be created 
   // only once and pointed to by default by all other instances

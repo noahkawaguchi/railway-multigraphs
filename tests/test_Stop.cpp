@@ -10,7 +10,7 @@ TEST(TestStop, InitStop) {
   EXPECT_EQ(test_stop->id, "Test Stop");
   EXPECT_EQ(test_stop->line->name, "Test Line");
   // Make sure default path values are set correctly
-  EXPECT_EQ(test_stop->path_distance, 1.70141173e+38f);
+  EXPECT_EQ(test_stop->path_distance, 8.988465674311579e+307);
   EXPECT_EQ(test_stop->path_predecessor->id, "No Predecessor");
 }
 
@@ -19,11 +19,11 @@ TEST(TestStop, SetPathStats) {
   auto test_line = std::make_shared<Line>(Line{"Test Line"});
   auto test_stop = std::make_shared<Stop>("Test Stop", test_line);
   // Set shortest path stats
-  test_stop->path_distance = 5.3f;
+  test_stop->path_distance = 5.3;
   auto predecessor_stop = std::make_shared<Stop>("Predecessor Stop", test_line);
   test_stop->path_predecessor = predecessor_stop;
   // Make sure shortest path stats are set properly
-  EXPECT_FLOAT_EQ(test_stop->path_distance, 5.3f);
+  EXPECT_DOUBLE_EQ(test_stop->path_distance, 5.3);
   EXPECT_EQ(test_stop->path_predecessor, predecessor_stop);
 }
 
@@ -32,13 +32,13 @@ TEST(TestStop, ResetPathStats) {
   auto test_line = std::make_shared<Line>(Line{"Test Line"});
   auto test_stop = std::make_shared<Stop>("Test Stop", test_line);
   // Set shortest path stats
-  test_stop->path_distance = 10.2f;
+  test_stop->path_distance = 10.2;
   auto predecessor_stop = std::make_shared<Stop>("This Should Not Show", test_line);
   test_stop->path_predecessor = predecessor_stop;
   // Reset path stats
   test_stop->path_reset();
   // Make sure path stats are back to their default values
-  EXPECT_FLOAT_EQ(test_stop->path_distance, 1.70141173e+38f);
+  EXPECT_DOUBLE_EQ(test_stop->path_distance, 8.988465674311579e+307);
   EXPECT_EQ(test_stop->path_predecessor->id, "No Predecessor");
 }
 

@@ -12,7 +12,7 @@ std::shared_ptr<Stop> Network::new_stop(std::string name, std::shared_ptr<Line> 
   return stop;
 }
 
-void Network::new_track(std::shared_ptr<Stop> stop1, std::shared_ptr<Stop> stop2, float distance) {
+void Network::new_track(std::shared_ptr<Stop> stop1, std::shared_ptr<Stop> stop2, double distance) {
   auto track_from_1 = std::make_shared<Track>(stop2, distance);
   auto track_from_2 = std::make_shared<Track>(stop1, distance);
   // Add track to the adjacency list for both stops
@@ -80,7 +80,7 @@ void Network::print_route(Route route) {
   std::cout << "\n\n" << std::string(20, '-') << '\n' << std::endl;
 }
 
-Route Network::basic_DSP(Station start, Station destination) {
+Route Network::distance_DSP(Station start, Station destination) {
   // Set all stops' distance and cost to "infinity" and predecessor to dummy predecessor
   for (const auto& stop : this->stops) {
     stop->path_reset();
@@ -91,8 +91,8 @@ Route Network::basic_DSP(Station start, Station destination) {
   std::shared_ptr<Stop> destination_stop; // Will be set when found
 
   // Distance and cost from start to start is 0
-  starting_stop->path_distance = 0.0f;
-  starting_stop->set_path_cost(0.0f);
+  starting_stop->path_distance = 0.0;
+  starting_stop->set_path_cost(0.0);
 
   // Enqueue all stops in unvisited queue
   UnvisitedQueue uq;
@@ -113,14 +113,17 @@ Route Network::basic_DSP(Station start, Station destination) {
     
     // Iterate over adjacent stops (via adjacent tracks)
     for (const auto& adj_track : this->get_adjacent_tracks(current_stop)) {
-      float alt_path_distance = current_stop->path_distance + adj_track->distance;
+      double alt_path_distance = current_stop->path_distance + adj_track->distance;
+      double alt_path_cost = current_stop->get_path_cost() + adj_track->get_cost_from(current_stop);
 
       // If a shorter path from the starting stop to the adjacent stop is found, 
-      // update the adjacent stop's distance, cost, and predecessor.
-      if (alt_path_distance < adj_track->other_stop->path_distance) {
+      // or if the path is the same length but cheaper, update the adjacent stop's 
+      // distance, cost, and predecessor.
+      if (alt_path_distance < adj_track->other_stop->path_distance
+          || (alt_path_distance == adj_track->other_stop->path_distance && alt_path_cost < adj_track->other_stop->get_path_cost()))
+      {
         adj_track->other_stop->path_distance = alt_path_distance;
-        adj_track->other_stop->set_path_cost(current_stop->get_path_cost() 
-                                                + adj_track->get_cost_from(current_stop));
+        adj_track->other_stop->set_path_cost(alt_path_cost);
         adj_track->other_stop->path_predecessor = current_stop;
         // The stop with modified data must be reinserted to maintain sorting
         uq.push(adj_track->other_stop, adj_track->other_stop->path_distance);
@@ -151,8 +154,8 @@ Route Network::cost_DSP(Station start, Station destination) {
   std::shared_ptr<Stop> destination_stop; // Will be set when found
 
   // Distance and cost from start to start is 0
-  starting_stop->path_distance = 0.0f;
-  starting_stop->set_path_cost(0.0f);
+  starting_stop->path_distance = 0.0;
+  starting_stop->set_path_cost(0.0);
 
   // Enqueue all stops in unvisited queue
   UnvisitedQueue uq;
@@ -173,11 +176,16 @@ Route Network::cost_DSP(Station start, Station destination) {
 
     // Iterate over adjacent stops (via adjacent tracks)
     for (const auto& adj_track : this->get_adjacent_tracks(current_stop)) {
-      float alt_path_cost = current_stop->get_path_cost() + adj_track->get_cost_from(current_stop);
+      double alt_path_distance = current_stop->path_distance + adj_track->distance;
+      double alt_path_cost = current_stop->get_path_cost() + adj_track->get_cost_from(current_stop);
 
       // If a cheaper path from the starting stop to the adjacent stop is found, 
-      // update the adjacent stop's distance, cost, and predecessor.
-      if (alt_path_cost < adj_track->other_stop->get_path_cost()) {
+      // or if the path is the same price but shorter, update the adjacent stop's 
+      // distance, cost, and predecessor.
+      if (alt_path_cost < adj_track->other_stop->get_path_cost()
+          || (alt_path_cost == adj_track->other_stop->get_path_cost()
+              && alt_path_distance < adj_track->other_stop->path_distance))
+      {
         adj_track->other_stop->path_distance = current_stop->path_distance + adj_track->distance;
         adj_track->other_stop->set_path_cost(alt_path_cost);
         adj_track->other_stop->path_predecessor = current_stop;

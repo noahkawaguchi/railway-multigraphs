@@ -20,7 +20,7 @@ public:
   std::shared_ptr<Stop> new_stop(std::string id, std::shared_ptr<Line> line);
 
   // Create and add a track to the network, specifying the distance traveled between the two stops
-  void new_track(std::shared_ptr<Stop> stop1, std::shared_ptr<Stop> stop2, float distance);
+  void new_track(std::shared_ptr<Stop> stop1, std::shared_ptr<Stop> stop2, double distance);
 
   // Create a new station that has all the provided stops
   Station new_station(std::string name, std::unordered_set<std::shared_ptr<Stop>> stops);
@@ -35,7 +35,7 @@ public:
   void print_route(Route route);
 
   // Find Dijkstra's shortest path from start to destination based on distance (miles)
-  Route basic_DSP(Station start, Station destination);
+  Route distance_DSP(Station start, Station destination);
 
   // Find Dijkstra's shortest path from start to destination, prioritizing cost
   Route cost_DSP(Station start, Station destination);

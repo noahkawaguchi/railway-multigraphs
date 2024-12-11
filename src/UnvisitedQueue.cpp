@@ -2,7 +2,7 @@
 
 UnvisitedQueue::UnvisitedQueue() {}
 
-void UnvisitedQueue::push(std::shared_ptr<Stop> stop, float priority) {
+void UnvisitedQueue::push(std::shared_ptr<Stop> stop, double priority) {
   QueueStop qs(stop, priority);
   this->pq.push(qs);
 }
