@@ -13,18 +13,19 @@ struct Line {
 };
 
 struct Stop {
-  std::string name;
+  std::string id;
+  std::string station_name; // The name of the station this stop is at
   std::shared_ptr<Line> line; // The line this stop belongs to
-  std::unordered_set<std::shared_ptr<Stop>> transfers; // Stops at the same location by other lines
+  std::unordered_set<std::shared_ptr<Stop>> transfers; // Stops at the same station by other lines
   std::shared_ptr<Stop> path_predecessor;
   float path_distance = std::numeric_limits<float>::max() / 2; // "Infinity"
  
   // 2-arg constructor for general use
-  Stop(std::string name, std::shared_ptr<Line> line) 
-          : name(name), line(line), path_predecessor(dummy_predecessor) {}
+  Stop(std::string id, std::shared_ptr<Line> line) 
+          : id(id), line(line), path_predecessor(dummy_predecessor) {}
   // 3-arg constructor to prevent dummy_predecessor from pointing to itself
-  Stop(std::string name, std::shared_ptr<Line> line, std::shared_ptr<Stop> predecessor) 
-          : name(name), line(line), path_predecessor(predecessor) {}
+  Stop(std::string id, std::shared_ptr<Line> line, std::shared_ptr<Stop> predecessor) 
+          : id(id), line(line), path_predecessor(predecessor) {}
 
   // Set the cost for shortest path algorithms. Automatically rounds to cents.
   void set_path_cost(float cost) { this->path_cost = round(cost * 100) / 100; }
@@ -44,9 +45,14 @@ private:
 
   // Dummy instance of Stop with pointers to nullptr to be created 
   // only once and pointed to by default by all other instances
-  static inline std::shared_ptr<Stop> dummy_predecessor 
+  static inline std::shared_ptr<Stop> dummy_predecessor
     = std::make_shared<Stop>("No Predecessor", nullptr, nullptr);
 
+};
+
+struct Station {
+  std::string name = "";
+  std::unordered_set<std::shared_ptr<Stop>> stops; // Stops at this station by all lines
 };
 
 // Type alias for readability in shortest path algorithms

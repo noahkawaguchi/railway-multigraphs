@@ -7,11 +7,11 @@ TEST(TestStop, InitStop) {
   auto test_line = std::make_shared<Line>(Line{"Test Line"});
   auto test_stop = std::make_shared<Stop>("Test Stop", test_line);
   // Make sure names are set correctly
-  EXPECT_EQ(test_stop->name, "Test Stop");
+  EXPECT_EQ(test_stop->id, "Test Stop");
   EXPECT_EQ(test_stop->line->name, "Test Line");
   // Make sure default path values are set correctly
   EXPECT_EQ(test_stop->path_distance, 1.70141173e+38f);
-  EXPECT_EQ(test_stop->path_predecessor->name, "No Predecessor");
+  EXPECT_EQ(test_stop->path_predecessor->id, "No Predecessor");
 }
 
 TEST(TestStop, SetPathStats) {
@@ -39,7 +39,7 @@ TEST(TestStop, ResetPathStats) {
   test_stop->path_reset();
   // Make sure path stats are back to their default values
   EXPECT_FLOAT_EQ(test_stop->path_distance, 1.70141173e+38f);
-  EXPECT_EQ(test_stop->path_predecessor->name, "No Predecessor");
+  EXPECT_EQ(test_stop->path_predecessor->id, "No Predecessor");
 }
 
 TEST(TestStop, Transfers) {

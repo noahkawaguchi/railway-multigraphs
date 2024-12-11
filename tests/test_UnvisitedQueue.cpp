@@ -28,7 +28,6 @@ TEST(TestUQ, Top) {
   EXPECT_EQ(uq.top_unprocessed(), stop1);
   EXPECT_EQ(uq.top_unprocessed(), stop2);
   EXPECT_EQ(uq.top_unprocessed(), stop3);
-
 }
 
 TEST(TestUQ, Empty) {
@@ -115,7 +114,6 @@ TEST(TestUQ, TopReinsertion) {
   EXPECT_EQ(uq.top_unprocessed(), A);
 
   // Any number of further calls should get dummy stop
-  EXPECT_EQ(uq.top_unprocessed()->name, "Dummy Stop");
-  EXPECT_EQ(uq.top_unprocessed()->name, "Dummy Stop");
-
+  EXPECT_EQ(uq.top_unprocessed()->id, "Dummy Stop");
+  EXPECT_EQ(uq.top_unprocessed()->id, "Dummy Stop");
 }

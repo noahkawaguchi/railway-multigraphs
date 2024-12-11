@@ -3,10 +3,18 @@
 
 #include "Network.h"
 
+void toy_data_ABCD();
+void toy_data_tiny_city();
+void toy_data_long_cheap_way();
+
 int main() {
+  toy_data_ABCD();
+  toy_data_tiny_city();
+  toy_data_long_cheap_way();
+  return 0;
+}
 
-  // *** TOY DATA ABCD *** //
-
+void toy_data_ABCD() {
   // Make network
   auto basic_network = std::make_unique<Network>();
 
@@ -24,14 +32,20 @@ int main() {
   basic_network->new_track(stopB, stopD, 1);
   basic_network->new_track(stopC, stopD, 2);
 
+  // Make stations
+  Station stationA = basic_network->new_station("Station A", {stopA});
+  Station stationB = basic_network->new_station("Station B", {stopB});
+  Station stationC = basic_network->new_station("Station C", {stopC});
+  Station stationD = basic_network->new_station("Station D", {stopD});
+
   // Print the network
   basic_network->print();
 
   // Calculate Dijkstra's shortest path from Stop A to Stop C
-  basic_network->print_route(basic_network->basic_DSP(stopA, stopC));
+  basic_network->print_route(basic_network->basic_DSP(stationA, stationC));
+}
 
-  // *** TOY DATA TINY CITY *** //
-
+void toy_data_tiny_city() {
   // Make network
   auto tiny_city = std::make_unique<Network>();
 
@@ -57,15 +71,25 @@ int main() {
   tiny_city->new_track(east_residential, seaport, 8);
   tiny_city->new_track(park, mall, 7);
   tiny_city->new_track(mall, seaport, 8);
+  
+  // Make stations
+  Station hospital_station = tiny_city->new_station("Hospital Station", {hospital});
+  Station airport_station = tiny_city->new_station("Airport Station", {airport});
+  Station west_residential_station = tiny_city->new_station("West Residential Station", {west_residential});
+  Station city_hall_station = tiny_city->new_station("City Hall Station", {city_hall});
+  Station east_residential_station = tiny_city->new_station("East Residential Station", {east_residential});
+  Station park_station = tiny_city->new_station("Park Station", {park});
+  Station mall_station = tiny_city->new_station("Mall Station", {mall});
+  Station seaport_station = tiny_city->new_station("Seaport Station", {seaport});
 
   // Print the network
   tiny_city->print();
 
   // Calculate Dijkstra's shortest path from the park to the airport
-  tiny_city->print_route(tiny_city->basic_DSP(park, airport));
+  tiny_city->print_route(tiny_city->basic_DSP(park_station, airport_station));
+}
 
-  // *** TOY DATA LONG CHEAP WAY ** //
-
+void toy_data_long_cheap_way() {
   // Make a network
   auto cost_test_railway = std::make_unique<Network>();
 
@@ -91,19 +115,20 @@ int main() {
   cost_test_railway->new_track(express_B, express_D, 1.9f);
   cost_test_railway->new_track(express_D, express_E, 2.1f);
 
-  // Set transfers at B, D, and E
-  cost_test_railway->set_transfer(savings_B, express_B);
-  cost_test_railway->set_transfer(savings_D, express_D);
-  cost_test_railway->set_transfer(savings_E, express_E);
+  // Make stations (this sets transfers)
+  Station stationA = cost_test_railway->new_station("Station A", {savings_A});
+  Station stationB = cost_test_railway->new_station("Station B", {savings_B, express_B});
+  Station stationC = cost_test_railway->new_station("Station C", {savings_C});
+  Station stationD = cost_test_railway->new_station("Station D", {savings_D, express_D});
+  Station stationE = cost_test_railway->new_station("Station E", {savings_E, express_E});
+  Station stationF = cost_test_railway->new_station("Station F", {savings_F});
 
   // Print the network
   cost_test_railway->print();
 
   // Find the path from A to F with the shortest distance, which is more expensive
-  cost_test_railway->print_route(cost_test_railway->basic_DSP(savings_A, savings_F));
+  cost_test_railway->print_route(cost_test_railway->basic_DSP(stationA, stationF));
 
   // Find the cheapest path from A to F, even though it is longer
-  cost_test_railway->print_route(cost_test_railway->cost_DSP(savings_A, savings_F));
-
-  return 0;
+  cost_test_railway->print_route(cost_test_railway->cost_DSP(stationA, stationF));
 }

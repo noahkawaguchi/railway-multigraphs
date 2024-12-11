@@ -83,8 +83,8 @@ TEST(TestNetwork, GetAdjacentTracks) {
               B1
 
   */ 
-  transfer_network->set_transfer(R2, B3);
-  transfer_network->set_transfer(R3, B2);
+  transfer_network->new_station("R2-B3", {R2, B3});
+  transfer_network->new_station("R3-B2", {R3, B2});
 
   // Getting adjacent tracks for the transfer stops should now return tracks from both lines
   std::unordered_set<std::shared_ptr<Track>> R2_adj_tracks_tf = transfer_network->get_adjacent_tracks(R2);
@@ -116,12 +116,12 @@ TEST(BasicDSP, ToyDataABCD) {
   // Make network
   auto ABCD = std::make_unique<Network>();
 
-  // Add line and stops to network
+  // Add a line and stops to the network
   auto ABCD_line = std::make_shared<Line>(Line{"ABCD Line"});
-  std::shared_ptr<Stop> stopA = ABCD->new_stop("Station A", ABCD_line);
-  std::shared_ptr<Stop> stopB = ABCD->new_stop("Station B", ABCD_line);
-  std::shared_ptr<Stop> stopC = ABCD->new_stop("Station C", ABCD_line);
-  std::shared_ptr<Stop> stopD = ABCD->new_stop("Station D", ABCD_line);
+  std::shared_ptr<Stop> stopA = ABCD->new_stop("A", ABCD_line);
+  std::shared_ptr<Stop> stopB = ABCD->new_stop("B", ABCD_line);
+  std::shared_ptr<Stop> stopC = ABCD->new_stop("C", ABCD_line);
+  std::shared_ptr<Stop> stopD = ABCD->new_stop("D", ABCD_line);
 
   // Connect stops with tracks
   ABCD->new_track(stopA, stopB, 3);
@@ -130,16 +130,21 @@ TEST(BasicDSP, ToyDataABCD) {
   ABCD->new_track(stopB, stopD, 1);
   ABCD->new_track(stopC, stopD, 2);
 
-  // Find the shortest path from A to C
-  Route AC_route = ABCD->basic_DSP(stopA, stopC);
+  // Make stations
+  Station stationA = ABCD->new_station("Station A", {stopA});
+  Station stationB = ABCD->new_station("Station B", {stopB});
+  Station stationC = ABCD->new_station("Station C", {stopC});
+  Station stationD = ABCD->new_station("Station D", {stopD});
+
+  // Find the shortest path from Station A to Station C
+  Route AC_route = ABCD->basic_DSP(stationA, stationC);
   Route correct_path_AC = {stopA, stopB, stopD, stopC};
   EXPECT_EQ(AC_route, correct_path_AC);
 
-  // Find the shortest path from D to A
-  Route DA_route = ABCD->basic_DSP(stopD, stopA);
+  // Find the shortest path from Station D to Station A
+  Route DA_route = ABCD->basic_DSP(stationD, stationA);
   Route correct_path_DA = {stopD, stopB, stopA};
   EXPECT_EQ(DA_route, correct_path_DA);
-
 }
 
 TEST(BasicDSP, ToyDataTinyCity) {
@@ -169,21 +174,30 @@ TEST(BasicDSP, ToyDataTinyCity) {
   tiny_city->new_track(park, mall, 7);
   tiny_city->new_track(mall, seaport, 8);
 
+  // Make stations
+  Station hospital_station = tiny_city->new_station("Hospital Station", {hospital});
+  Station airport_station = tiny_city->new_station("Airport Station", {airport});
+  Station west_residential_station = tiny_city->new_station("West Residential Station", {west_residential});
+  Station city_hall_station = tiny_city->new_station("City Hall Station", {city_hall});
+  Station east_residential_station = tiny_city->new_station("East Residential Station", {east_residential});
+  Station park_station = tiny_city->new_station("Park Station", {park});
+  Station mall_station = tiny_city->new_station("Mall Station", {mall});
+  Station seaport_station = tiny_city->new_station("Seaport Station", {seaport});
+
   // Find the shortest path from the park to the airport
-  Route park_airport_route = tiny_city->basic_DSP(park, airport);
+  Route park_airport_route = tiny_city->basic_DSP(park_station, airport_station);
   Route correct_path_park_airport = {park, west_residential, hospital, city_hall, airport};
   EXPECT_EQ(park_airport_route, correct_path_park_airport);
 
   // Find the shortest path from East Residential to West Residential
-  Route east_west_route = tiny_city->basic_DSP(east_residential, west_residential);
+  Route east_west_route = tiny_city->basic_DSP(east_residential_station, west_residential_station);
   Route correct_path_east_west = {east_residential, airport, city_hall, hospital, west_residential};
   EXPECT_EQ(east_west_route, correct_path_east_west);
 
   // Find the shortest path from the seaport to the hospital
-  Route seaport_hospital_route = tiny_city->basic_DSP(seaport, hospital);
+  Route seaport_hospital_route = tiny_city->basic_DSP(seaport_station, hospital_station);
   Route correct_path_seaport_hospital = {seaport, mall, city_hall, hospital};
   EXPECT_EQ(seaport_hospital_route, correct_path_seaport_hospital);
-
 }
 
 TEST(CostDSP, ToyDataLongCheapWay) {
@@ -212,13 +226,16 @@ TEST(CostDSP, ToyDataLongCheapWay) {
   cost_test_railway->new_track(express_B, express_D, 1.9f);
   cost_test_railway->new_track(express_D, express_E, 2.1f);
 
-  // Set transfers at B, D, and E
-  cost_test_railway->set_transfer(savings_B, express_B);
-  cost_test_railway->set_transfer(savings_D, express_D);
-  cost_test_railway->set_transfer(savings_E, express_E);
+  // Make stations (this sets transfers)
+  Station stationA = cost_test_railway->new_station("Station A", {savings_A});
+  Station stationB = cost_test_railway->new_station("Station B", {savings_B, express_B});
+  Station stationC = cost_test_railway->new_station("Station C", {savings_C});
+  Station stationD = cost_test_railway->new_station("Station D", {savings_D, express_D});
+  Station stationE = cost_test_railway->new_station("Station E", {savings_E, express_E});
+  Station stationF = cost_test_railway->new_station("Station F", {savings_F});
 
   // Basic DSP should find the path with the shortest distance, which is more expensive
-  Route basic_DSP_route = cost_test_railway->basic_DSP(savings_A, savings_F);
+  Route basic_DSP_route = cost_test_railway->basic_DSP(stationA, stationF);
   Route correct_expensive_route = {savings_A, savings_B, express_D, express_E, savings_F};
   EXPECT_EQ(basic_DSP_route, correct_expensive_route);
   // 1.1 + 1.9 + 2.1 + 0.9 = 6 mi
@@ -236,7 +253,7 @@ TEST(CostDSP, ToyDataLongCheapWay) {
   EXPECT_FLOAT_EQ(basic_DSP_route.back()->get_path_cost(), 5.18f);
 
   // Cost DSP should find the cheapest path, even though it is longer
-  Route cost_DSP_route = cost_test_railway->cost_DSP(savings_A, savings_F);
+  Route cost_DSP_route = cost_test_railway->cost_DSP(stationA, stationF);
   Route correct_cheap_route = {savings_A, savings_B, savings_C, savings_D, savings_E, savings_F};
   EXPECT_EQ(cost_DSP_route, correct_cheap_route);
   // 1.1 + 3.3 + 4.1 + 4.3 + 0.9 = 13.7 mi
@@ -254,5 +271,4 @@ TEST(CostDSP, ToyDataLongCheapWay) {
       $2.29 previous fare + $0.12 * 0.9 mi = $2.40 (rounded)
   */
   EXPECT_FLOAT_EQ(cost_DSP_route.back()->get_path_cost(), 2.40f);
-
 }

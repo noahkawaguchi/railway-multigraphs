@@ -16,14 +16,14 @@ public:
   Network();
   ~Network() = default;
 
-  // Create and add a stop to the network with the given name on the given line
-  std::shared_ptr<Stop> new_stop(std::string name, std::shared_ptr<Line> line);
+  // Create and add a stop to the network
+  std::shared_ptr<Stop> new_stop(std::string id, std::shared_ptr<Line> line);
 
   // Create and add a track to the network, specifying the distance traveled between the two stops
   void new_track(std::shared_ptr<Stop> stop1, std::shared_ptr<Stop> stop2, float distance);
 
-  // Set the two stops as transfers for each other
-  void set_transfer(std::shared_ptr<Stop> stop1, std::shared_ptr<Stop> stop2);
+  // Create a new station that has all the provided stops
+  Station new_station(std::string name, std::unordered_set<std::shared_ptr<Stop>> stops);
   
   // Get all adjacent tracks for a given stop, including connections to different lines
   std::unordered_set<std::shared_ptr<Track>> get_adjacent_tracks(std::shared_ptr<Stop> stop);
@@ -35,15 +35,10 @@ public:
   void print_route(Route route);
 
   // Find Dijkstra's shortest path from start to destination based on distance (miles)
-  Route basic_DSP(std::shared_ptr<Stop> start, std::shared_ptr<Stop> destination);
+  Route basic_DSP(Station start, Station destination);
 
   // Find Dijkstra's shortest path from start to destination, prioritizing cost
-  Route cost_DSP(std::shared_ptr<Stop> start, std::shared_ptr<Stop> destination);
-
-  // Find Yen's K shortest paths. Fares are free and transfers are instant.
-  std::vector<Route> basic_yen(std::shared_ptr<Stop> start,
-                               std::shared_ptr<Stop> destination,
-                               int k);
+  Route cost_DSP(Station start, Station destination);
 
 private:
   std::vector<std::shared_ptr<Stop>> stops;
