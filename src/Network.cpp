@@ -120,7 +120,8 @@ Route Network::distance_DSP(Station start, Station destination) {
       // or if the path is the same length but cheaper, update the adjacent stop's 
       // distance, cost, and predecessor.
       if (alt_path_distance < adj_track->other_stop->path_distance
-          || (alt_path_distance == adj_track->other_stop->path_distance && alt_path_cost < adj_track->other_stop->get_path_cost()))
+          || (alt_path_distance == adj_track->other_stop->path_distance
+              && alt_path_cost < adj_track->other_stop->get_path_cost()))
       {
         adj_track->other_stop->path_distance = alt_path_distance;
         adj_track->other_stop->set_path_cost(alt_path_cost);

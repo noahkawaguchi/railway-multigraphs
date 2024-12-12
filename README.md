@@ -1,6 +1,6 @@
 # Railway Multigraphs
 
-### ⏯️ [Walkthrough Video Here](link here and remove the spaces)
+### ⏯️ [Walkthrough Video Here](https://drive.google.com/file/d/1qoTRlBQVEEgGOc9ejq7KGE4S4ALFrXVR/view?usp=sharing)
 
 ### Data Structure: Multigraph
 
@@ -14,7 +14,7 @@ A multigraph is a graph that can have parallel edges, or in other words, multipl
 
 ### Algorithm: Dijkstra's Shortest Path
 
-Dijkstra's shortest path finds the shortest path from a starting node to all other nodes, or to a specific destination node, as I implement here. In other words, considering the weights of the edges, which path would result in the minimum sum of edge weights. I have both a distance version, where each edge has a fixed weight, and a cost version, where the weight of the edge depends on the fare structure of the rail line and transfers between them.
+Dijkstra's shortest path finds the shortest path from a starting node to all other nodes, or to a specific destination node, as I implement here. In other words, considering the weights of the edges, it finds which path would result in the minimum sum of edge weights. I have both a distance version, where each edge has a fixed weight, and a cost version, where the weight of the edge depends on the fare structure of the rail line and transfers between them.
 
 ### Running the Project
 
@@ -25,8 +25,8 @@ mkdir build
 cd build
 cmake .. -DCMAKE_BUILD_TYPE=Debug # Or just `cmake ..` for no debugging
 make
-./railway_multigraphs # To print some of the toy data results to console
-ctest --verbose # To see the tests pass for more cases than are in the executable
+./railway_multigraphs # To print some of the toy data results
+ctest --verbose # To see the tests pass for more cases than are printed
 ```
 
 ---
