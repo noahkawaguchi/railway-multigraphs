@@ -1,105 +1,106 @@
 # Railway Multigraphs
 
-### ⏯️ [Walkthrough Video Here](https://drive.google.com/file/d/1qoTRlBQVEEgGOc9ejq7KGE4S4ALFrXVR/view?usp=sharing)
+### Introduction
+
+In this project, I use a multigraph and variations of Dijkstra's Shortest Path to model passenger rail networks. In addition to using the standard version of Dijkstra's Algorithm that finds the shortest path by distance, I created a modified version that finds the *cheapest* path, considering multiple railway operators and transfers between them.
 
 ### Data Structure: Multigraph
 
-A multigraph is a graph that can have parallel edges, or in other words, multiple edges that connect the same two nodes. Doing the graph assignment in class, I liked how versatile it seemed, and it reminded me of passenger rail networks. These are the main abstract considerations I had:
+A multigraph is a graph that can have parallel edges, or in other words, multiple edges that connect the same two nodes. These are the main abstract considerations I had in applying it to passenger rail networks:
 
-- Parallel edges (use a multigraph instead of a graph): Different rail lines can connect the same two stations.
-- All weighted edges: The distance traversed between stations is fundamental to creating an itinerary.
-- All undirected edges: While I'm sure single-direction railways exist somewhere, the ones I have in mind always have service in both directions.
-- No self-loops: It wouldn't make sense to leave and come back to the same station.
-- Cyclic: There can be circle routes or other cycles achievable through transfers.
+- **Parallel edges** (use a multigraph instead of a graph): Different rail lines can connect the same two stations.
+- **All weighted edges**: The distance traversed between stations is fundamental to creating an itinerary.
+- **All undirected edges**: While single-direction railways may exist somewhere, I'm assuming there will always be service in both directions in this project.
+- **No self-loops**: It wouldn't make sense to leave and come back to the same station without going to any other stations.
+- **Cyclic**: There can be circle routes or other cycles achievable through transfers.
 
 ### Algorithm: Dijkstra's Shortest Path
 
-Dijkstra's shortest path finds the shortest path from a starting node to all other nodes, or to a specific destination node, as I implement here. In other words, considering the weights of the edges, it finds which path would result in the minimum sum of edge weights. I have both a distance version, where each edge has a fixed weight, and a cost version, where the weight of the edge depends on the fare structure of the rail line and transfers between them.
+Dijkstra's shortest path finds the shortest path from a starting node to all other nodes, or to a specific destination node, as I implement here. In other words, considering the weights of the edges, it finds which path would result in the minimum sum of edge weights. I have both a distance version, where edge weights are fixed, and a cost version, where edge weights are dynamic and depend on the fare structures of the rail lines and transfers between them.
 
-### Running the Project
+### Building, Testing, and Running the Project
 
-Please see the walkthrough video for a more detailed explanation of the project and a recording of me running it myself locally. However, if you want to try to run it as well, this is what works for me. The project requires C++20.
+The project requires C++20. Here is one possible sequence of steps for building, testing, and running it on Mac/Linux. (Slight modifications are necessary on Windows.)
 
 ```zsh
 mkdir build
 cd build
 cmake .. -DCMAKE_BUILD_TYPE=Debug # Or just `cmake ..` for no debugging
 make
-./railway_multigraphs # To print some of the toy data results
+./railway_multigraphs # To print the toy data results
 ctest --verbose # To see the tests pass for more cases than are printed
 ```
 
-### Toy Data Example 
+### Toy Data Example Visualization
 
-I made this visualization using [graphonline.top](https://graphonline.top). The other toy data images can be found in the `toy_data_viz` folder along with `.graphml` files that can be opened and edited on the website.
+Here is one example of the visualizations I made using [graphonline.top](https://graphonline.top). The other toy data images can be found in the `toy_data_viz` folder along with `.graphml` files that can be opened and edited on the website.
 
 ![multigraph_city](./toy_data_viz/real_multigraph_city.png)
 
 ### Terminal Output
 
-Here is the terminal output I show in the video when I run ./railway_multigraphs
+Here is the terminal output printed from main when running `./railway_multigraphs` (or `railway_multigraphs.exe` on Windows):
 
 ```
 
 --------------------
 
-Seaport Station connections:
-  7 mi to South Station
+Here is your route from Station A to Station C:
 
-South Station connections:
-  4.4 mi to North Station
-  7 mi to Seaport Station
+  Start: Station A
+  -> Go to Station B via the ABCD Line
+  -> Go to Station D via the ABCD Line
+  -> Go to Station C via the ABCD Line
 
-North Station connections:
-  3.5 mi to Airport Station
-  4.4 mi to South Station
+  Total distance: 6 mi
 
-Airport Station connections:
-  3.5 mi to North Station
+--------------------
 
-North Station connections:
-  5.2 mi to City Center Station
-  3.1 mi to South Station
 
-South Station connections:
-  4.2 mi to City Center Station
-  3.1 mi to North Station
+--------------------
 
-City Center Station connections:
-  5.2 mi to North Station
-  4.2 mi to South Station
+Here is your route from Park Station to Airport Station:
 
-Residential West Station connections:
-  4.3 mi to Commercial Center Station
+  Start: Park Station
+  -> Go to West Residential Station via the Tiny City Railway
+  -> Go to Hospital Station via the Tiny City Railway
+  -> Go to City Hall Station via the Tiny City Railway
+  -> Go to Airport Station via the Tiny City Railway
 
-Commercial Center Station connections:
-  2.7 mi to Residential East Station
-  4.3 mi to Residential West Station
+  Total distance: 16 mi
 
-Residential East Station connections:
-  2.2 mi to City Center Station
-  2.7 mi to Commercial Center Station
+--------------------
 
-City Center Station connections:
-  6.2 mi to South Station
-  2.2 mi to Residential East Station
 
-South Station connections:
-  6.2 mi to City Center Station
+--------------------
 
-Residential West Station connections:
-  4.3 mi to Commercial Center Station
+Here is your route from Station A to Station F:
 
-Commercial Center Station connections:
-  3.9 mi to City Center Station
-  4.3 mi to Residential West Station
+  Start: Station A
+  -> Go to Station B via the Savings Line
+  -> Go to Station D via the Express Line
+  -> Go to Station E via the Express Line
+  -> Go to Station F via the Savings Line
 
-City Center Station connections:
-  7.5 mi to North Station
-  3.9 mi to Commercial Center Station
+  Total distance: 6 mi
+  Total cost: $5.18
 
-North Station connections:
-  7.5 mi to City Center Station
+--------------------
+
+
+--------------------
+
+Here is your route from Station A to Station F:
+
+  Start: Station A
+  -> Go to Station B via the Savings Line
+  -> Go to Station C via the Savings Line
+  -> Go to Station D via the Savings Line
+  -> Go to Station E via the Savings Line
+  -> Go to Station F via the Savings Line
+
+  Total distance: 13.7 mi
+  Total cost: $2.40
 
 --------------------
 
