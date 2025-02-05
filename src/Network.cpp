@@ -49,18 +49,6 @@ std::unordered_set<std::shared_ptr<Track>> Network::get_adjacent_tracks(std::sha
   return ret;
 }
 
-void Network::print() {
-  std::cout << std::endl << std::string(20, '-') << '\n' << std::endl;
-  for (const auto& stop : this->stops) {
-    std::cout << stop->station_name << " connections:\n";
-    for (const auto& track : this->tracks[stop]) {
-      std::cout << "  " << track->distance << " mi to "<< track->other_stop->station_name << '\n';
-    }
-    std::cout << std::endl; 
-  }
-  std::cout << std::string(20, '-') << '\n' << std::endl;
-}
-
 void Network::print_route(Route route) {
   std::cout << std::endl << std::string(20, '-') << std::endl;
   std::cout << "\nHere is your route from " << route.front()->station_name 

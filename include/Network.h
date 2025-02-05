@@ -26,9 +26,6 @@ public:
   
   // Get all adjacent tracks for a given stop, including connections to different lines
   std::unordered_set<std::shared_ptr<Track>> get_adjacent_tracks(std::shared_ptr<Stop> stop);
-  
-  // Print a representation of the network
-  void print();
 
   // Print a Route from a shortest path algorithm
   void print_route(Route route);

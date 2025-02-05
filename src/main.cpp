@@ -8,9 +8,9 @@ void toy_data_long_cheap_way();
 void toy_data_real_multigraph_city();
 
 int main() {
-  // toy_data_ABCD();
-  // toy_data_tiny_city();
-  // toy_data_long_cheap_way();
+  toy_data_ABCD();
+  toy_data_tiny_city();
+  toy_data_long_cheap_way();
   toy_data_real_multigraph_city();
   return 0;
 }
@@ -38,9 +38,6 @@ void toy_data_ABCD() {
   Station stationB = basic_network->new_station("Station B", {stopB});
   Station stationC = basic_network->new_station("Station C", {stopC});
   Station stationD = basic_network->new_station("Station D", {stopD});
-
-  // Print the network
-  basic_network->print();
 
   // Calculate Dijkstra's shortest path from Stop A to Stop C
   basic_network->print_route(basic_network->distance_DSP(stationA, stationC));
@@ -83,9 +80,6 @@ void toy_data_tiny_city() {
   Station mall_station = tiny_city->new_station("Mall Station", {mall});
   Station seaport_station = tiny_city->new_station("Seaport Station", {seaport});
 
-  // Print the network
-  tiny_city->print();
-
   // Calculate Dijkstra's shortest path from the park to the airport
   tiny_city->print_route(tiny_city->distance_DSP(park_station, airport_station));
 }
@@ -123,9 +117,6 @@ void toy_data_long_cheap_way() {
   Station stationD = cost_test_railway->new_station("Station D", {savings_D, express_D});
   Station stationE = cost_test_railway->new_station("Station E", {savings_E, express_E});
   Station stationF = cost_test_railway->new_station("Station F", {savings_F});
-
-  // Print the network
-  cost_test_railway->print();
 
   // Find the path from A to F with the shortest distance, which is more expensive
   cost_test_railway->print_route(cost_test_railway->distance_DSP(stationA, stationF));
@@ -188,9 +179,6 @@ void toy_data_real_multigraph_city() {
   Station residential_east = real_multigraph_city->new_station("Residential East Station", {L3});
   Station commercial_center = real_multigraph_city->new_station("Commercial Center Station", {L2, S2});
   Station residential_west = real_multigraph_city->new_station("Residential West Station", {L1, S1});
-
-  // Print the nework
-  real_multigraph_city->print();
 
   // Find the shortest path from Seaport Station to City Center Station
   real_multigraph_city->print_route(real_multigraph_city->distance_DSP(seaport, city_center));
