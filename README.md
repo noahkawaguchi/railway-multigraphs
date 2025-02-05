@@ -2,7 +2,7 @@
 
 ### Introduction
 
-In this project, I use a multigraph and variations of Dijkstra's Shortest Path to model passenger rail networks. In addition to using the standard version of Dijkstra's Algorithm that finds the shortest path by distance, I created a modified version that finds the *cheapest* path, considering multiple railway operators and transfers between them.
+In this project, I use multigraphs and variations of Dijkstra's Shortest Path to model passenger rail networks. In addition to using the standard version of Dijkstra's Algorithm that finds the shortest path by distance, I created a modified version that finds the *cheapest* path, considering multiple railway operators and transfers between them.
 
 ### Data Structure: Multigraph
 
@@ -33,9 +33,9 @@ ctest --verbose # To see the tests pass for more cases than are printed
 
 ### Toy Data Example Visualization
 
-Here is one example of the visualizations I made using [graphonline.top](https://graphonline.top). The other toy data images can be found in the `toy_data_viz` folder along with `.graphml` files that can be opened and edited on the website.
+Here is one example of the visualizations I made using [graphonline.top](https://graphonline.top). The other toy data images can be found in [the `toy_data_viz` subdirectory](toy_data_viz/) along with `.graphml` files that can be opened and edited on the website.
 
-![multigraph_city](./toy_data_viz/real_multigraph_city.png)
+![multigraph_city](toy_data_viz/real_multigraph_city.png)
 
 ### Terminal Output
 
