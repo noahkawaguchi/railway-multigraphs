@@ -64,8 +64,11 @@ void Network::print_route(Route route) {
   }
   std::cout << "\n  Total distance: " << route.back()->path_distance << " mi\n";
   // Always show the cost with cents
-  std::cout << "  Total cost: $" << std::format("{0:.2f}", route.back()->get_path_cost());
-  std::cout << "\n\n" << std::string(20, '-') << '\n' << std::endl;
+  double cost = route.back()->get_path_cost();
+  if (cost != 0) {
+    std::cout << "  Total cost: $" << std::format("{0:.2f}", cost) << std::endl;
+  }
+  std::cout << "\n" << std::string(20, '-') << '\n' << std::endl;
 }
 
 Route Network::distance_DSP(Station start, Station destination) {
