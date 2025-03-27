@@ -15,7 +15,7 @@ public:
   // Initialize a QueueStop and push it into the internal min-heap using the given priority
   void push(std::shared_ptr<Stop> stop, double priority);
 
-  // Clear any processed stops off the top of the internal priority queue. If no 
+  // Clear any processed stops off the top of the internal priority queue. If no
   // stops remain, return true. If an unprocessed stop remains, return false.
   bool empty();
 
@@ -32,14 +32,11 @@ private:
     QueueStop(std::shared_ptr<Stop> stop, double priority) : stop(stop), priority(priority) {}
 
     // Overload < operator for priority queue comparisons
-    bool operator<(const QueueStop& other) const {
-      return this->priority > other.priority;
-    }
+    bool operator<(const QueueStop &other) const { return this->priority > other.priority; }
   };
 
   std::priority_queue<QueueStop> pq;
   std::unordered_set<std::shared_ptr<Stop>> processed;
-
 };
 
 #endif // UNVISITED_QUEUE_H

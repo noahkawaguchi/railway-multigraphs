@@ -8,10 +8,10 @@ TEST(TestNetwork, GetAdjacentTracks) {
 
   // Add Red Line stops to network
   auto red_line = std::make_shared<Line>(Line{"Red Line"});
-  std::shared_ptr<Stop> R1 = transfer_network->new_stop("R1", red_line);
-  std::shared_ptr<Stop> R2 = transfer_network->new_stop("R2", red_line);
-  std::shared_ptr<Stop> R3 = transfer_network->new_stop("R3", red_line);
-  std::shared_ptr<Stop> R4 = transfer_network->new_stop("R4", red_line);
+  auto R1 = transfer_network->new_stop("R1", red_line);
+  auto R2 = transfer_network->new_stop("R2", red_line);
+  auto R3 = transfer_network->new_stop("R3", red_line);
+  auto R4 = transfer_network->new_stop("R4", red_line);
 
   // Connect Red Line stops with tracks
   transfer_network->new_track(R1, R2, 2);
@@ -20,10 +20,10 @@ TEST(TestNetwork, GetAdjacentTracks) {
 
   // Add Blue Line stops to network
   auto blue_line = std::make_shared<Line>(Line{"Blue Line"});
-  std::shared_ptr<Stop> B1 = transfer_network->new_stop("B1", blue_line);
-  std::shared_ptr<Stop> B2 = transfer_network->new_stop("B2", blue_line);
-  std::shared_ptr<Stop> B3 = transfer_network->new_stop("B3", blue_line);
-  std::shared_ptr<Stop> B4 = transfer_network->new_stop("B4", blue_line);
+  auto B1 = transfer_network->new_stop("B1", blue_line);
+  auto B2 = transfer_network->new_stop("B2", blue_line);
+  auto B3 = transfer_network->new_stop("B3", blue_line);
+  auto B4 = transfer_network->new_stop("B4", blue_line);
 
   // Connect Blue Line stops with tracks
   transfer_network->new_track(B1, B2, 4);
@@ -32,7 +32,7 @@ TEST(TestNetwork, GetAdjacentTracks) {
 
   /*
     At this point, the only adjacent tracks are those in the same line.
-    
+
                  B4
     R1          /
       \        /
@@ -44,11 +44,9 @@ TEST(TestNetwork, GetAdjacentTracks) {
                  B1
 
   */
-  std::unordered_set<std::shared_ptr<Track>> R2_adj_tracks = transfer_network->get_adjacent_tracks(R2);
+  auto R2_adj_tracks = transfer_network->get_adjacent_tracks(R2);
   std::unordered_set<std::shared_ptr<Stop>> R2_adj_stops;
-  for (const auto& track : R2_adj_tracks) {
-    R2_adj_stops.insert(track->other_stop);
-  }
+  for (const auto &track : R2_adj_tracks) { R2_adj_stops.insert(track->other_stop); }
   EXPECT_TRUE(R2_adj_stops.contains(R1));
   EXPECT_TRUE(R2_adj_stops.contains(R3));
   EXPECT_FALSE(R2_adj_stops.contains(B2));
@@ -56,22 +54,21 @@ TEST(TestNetwork, GetAdjacentTracks) {
   EXPECT_FALSE(R2_adj_stops.contains(R4));
   EXPECT_FALSE(R2_adj_stops.contains(B1));
 
-  std::unordered_set<std::shared_ptr<Track>> B2_adj_tracks = transfer_network->get_adjacent_tracks(B2);
+  std::unordered_set<std::shared_ptr<Track>> B2_adj_tracks =
+      transfer_network->get_adjacent_tracks(B2);
   std::unordered_set<std::shared_ptr<Stop>> B2_adj_stops;
-  for (const auto& track : B2_adj_tracks) {
-    B2_adj_stops.insert(track->other_stop);
-  }
+  for (const auto &track : B2_adj_tracks) { B2_adj_stops.insert(track->other_stop); }
   EXPECT_TRUE(B2_adj_stops.contains(B1));
   EXPECT_TRUE(B2_adj_stops.contains(B3));
   EXPECT_FALSE(B2_adj_stops.contains(R2));
   EXPECT_FALSE(B2_adj_stops.contains(R4));
   EXPECT_FALSE(B2_adj_stops.contains(B4));
   EXPECT_FALSE(B2_adj_stops.contains(R1));
-  
+
   /*
-    Now add transfers. The Red Line and the Blue Line run in opposite 
+    Now add transfers. The Red Line and the Blue Line run in opposite
     directions with their middle two stops overlapping.
-    
+
               B4
     R1       /
       \     /
@@ -82,16 +79,14 @@ TEST(TestNetwork, GetAdjacentTracks) {
     R4       \
               B1
 
-  */ 
+  */
   transfer_network->new_station("R2-B3", {R2, B3});
   transfer_network->new_station("R3-B2", {R3, B2});
 
   // Getting adjacent tracks for the transfer stops should now return tracks from both lines
-  std::unordered_set<std::shared_ptr<Track>> R2_adj_tracks_tf = transfer_network->get_adjacent_tracks(R2);
+  auto R2_adj_tracks_tf = transfer_network->get_adjacent_tracks(R2);
   std::unordered_set<std::shared_ptr<Stop>> R2_adj_stops_tf;
-  for (const auto& track : R2_adj_tracks_tf) {
-    R2_adj_stops_tf.insert(track->other_stop);
-  }
+  for (const auto &track : R2_adj_tracks_tf) { R2_adj_stops_tf.insert(track->other_stop); }
   EXPECT_TRUE(R2_adj_stops_tf.contains(R1));
   EXPECT_TRUE(R2_adj_stops_tf.contains(R3));
   EXPECT_TRUE(R2_adj_stops_tf.contains(B2));
@@ -99,11 +94,9 @@ TEST(TestNetwork, GetAdjacentTracks) {
   EXPECT_FALSE(R2_adj_stops_tf.contains(R4));
   EXPECT_FALSE(R2_adj_stops_tf.contains(B1));
 
-  std::unordered_set<std::shared_ptr<Track>> B2_adj_tracks_tf = transfer_network->get_adjacent_tracks(B2);
+  auto B2_adj_tracks_tf = transfer_network->get_adjacent_tracks(B2);
   std::unordered_set<std::shared_ptr<Stop>> B2_adj_stops_tf;
-  for (const auto& track : B2_adj_tracks_tf) {
-    B2_adj_stops_tf.insert(track->other_stop);
-  }
+  for (const auto &track : B2_adj_tracks_tf) { B2_adj_stops_tf.insert(track->other_stop); }
   EXPECT_TRUE(B2_adj_stops_tf.contains(B1));
   EXPECT_TRUE(B2_adj_stops_tf.contains(B3));
   EXPECT_TRUE(B2_adj_stops_tf.contains(R2));
@@ -118,10 +111,10 @@ TEST(DistanceDSP, ToyDataABCD) {
 
   // Add a line and stops to the network
   auto ABCD_line = std::make_shared<Line>(Line{"ABCD Line"});
-  std::shared_ptr<Stop> stopA = ABCD->new_stop("A", ABCD_line);
-  std::shared_ptr<Stop> stopB = ABCD->new_stop("B", ABCD_line);
-  std::shared_ptr<Stop> stopC = ABCD->new_stop("C", ABCD_line);
-  std::shared_ptr<Stop> stopD = ABCD->new_stop("D", ABCD_line);
+  auto stopA = ABCD->new_stop("A", ABCD_line);
+  auto stopB = ABCD->new_stop("B", ABCD_line);
+  auto stopC = ABCD->new_stop("C", ABCD_line);
+  auto stopD = ABCD->new_stop("D", ABCD_line);
 
   // Connect stops with tracks
   ABCD->new_track(stopA, stopB, 3);
@@ -153,14 +146,14 @@ TEST(DistanceDSP, ToyDataTinyCity) {
 
   // Add line and stops to network
   auto tiny_city_railway = std::make_shared<Line>(Line{"Tiny City Railway"});
-  std::shared_ptr<Stop> hospital = tiny_city->new_stop("Hospital", tiny_city_railway);
-  std::shared_ptr<Stop> airport = tiny_city->new_stop("Airport", tiny_city_railway);
-  std::shared_ptr<Stop> west_residential = tiny_city->new_stop("West Residential", tiny_city_railway);
-  std::shared_ptr<Stop> city_hall = tiny_city->new_stop("City Hall", tiny_city_railway);
-  std::shared_ptr<Stop> east_residential = tiny_city->new_stop("East Residential", tiny_city_railway);
-  std::shared_ptr<Stop> park = tiny_city->new_stop("Park", tiny_city_railway);
-  std::shared_ptr<Stop> mall = tiny_city->new_stop("Mall", tiny_city_railway);
-  std::shared_ptr<Stop> seaport = tiny_city->new_stop("Seaport", tiny_city_railway);
+  auto hospital = tiny_city->new_stop("Hospital", tiny_city_railway);
+  auto airport = tiny_city->new_stop("Airport", tiny_city_railway);
+  auto west_residential = tiny_city->new_stop("West Residential", tiny_city_railway);
+  auto city_hall = tiny_city->new_stop("City Hall", tiny_city_railway);
+  auto east_residential = tiny_city->new_stop("East Residential", tiny_city_railway);
+  auto park = tiny_city->new_stop("Park", tiny_city_railway);
+  auto mall = tiny_city->new_stop("Mall", tiny_city_railway);
+  auto seaport = tiny_city->new_stop("Seaport", tiny_city_railway);
 
   // Connect stops with tracks
   tiny_city->new_track(hospital, west_residential, 2);
@@ -177,9 +170,11 @@ TEST(DistanceDSP, ToyDataTinyCity) {
   // Make stations
   Station hospital_station = tiny_city->new_station("Hospital Station", {hospital});
   Station airport_station = tiny_city->new_station("Airport Station", {airport});
-  Station west_residential_station = tiny_city->new_station("West Residential Station", {west_residential});
+  Station west_residential_station =
+      tiny_city->new_station("West Residential Station", {west_residential});
   Station city_hall_station = tiny_city->new_station("City Hall Station", {city_hall});
-  Station east_residential_station = tiny_city->new_station("East Residential Station", {east_residential});
+  Station east_residential_station =
+      tiny_city->new_station("East Residential Station", {east_residential});
   Station park_station = tiny_city->new_station("Park Station", {park});
   Station mall_station = tiny_city->new_station("Mall Station", {mall});
   Station seaport_station = tiny_city->new_station("Seaport Station", {seaport});
@@ -190,7 +185,8 @@ TEST(DistanceDSP, ToyDataTinyCity) {
   EXPECT_EQ(park_airport_route, correct_path_park_airport);
 
   // Find the shortest path from East Residential to West Residential
-  Route east_west_route = tiny_city->distance_DSP(east_residential_station, west_residential_station);
+  Route east_west_route =
+      tiny_city->distance_DSP(east_residential_station, west_residential_station);
   Route correct_path_east_west = {east_residential, airport, city_hall, hospital, west_residential};
   EXPECT_EQ(east_west_route, correct_path_east_west);
 
@@ -206,12 +202,12 @@ TEST(CostDSP, ToyDataLongCheapWay) {
 
   // Make a long, cheap line
   auto savings_line = std::make_shared<Line>(Line{"Savings Line", 0.75, 0.12});
-  std::shared_ptr<Stop> savings_A = cost_test_railway->new_stop("Savings A", savings_line);
-  std::shared_ptr<Stop> savings_B = cost_test_railway->new_stop("Savings B", savings_line);
-  std::shared_ptr<Stop> savings_C = cost_test_railway->new_stop("Savings C", savings_line);
-  std::shared_ptr<Stop> savings_D = cost_test_railway->new_stop("Savings D", savings_line);
-  std::shared_ptr<Stop> savings_E = cost_test_railway->new_stop("Savings E", savings_line);
-  std::shared_ptr<Stop> savings_F = cost_test_railway->new_stop("Savings F", savings_line);
+  auto savings_A = cost_test_railway->new_stop("Savings A", savings_line);
+  auto savings_B = cost_test_railway->new_stop("Savings B", savings_line);
+  auto savings_C = cost_test_railway->new_stop("Savings C", savings_line);
+  auto savings_D = cost_test_railway->new_stop("Savings D", savings_line);
+  auto savings_E = cost_test_railway->new_stop("Savings E", savings_line);
+  auto savings_F = cost_test_railway->new_stop("Savings F", savings_line);
   cost_test_railway->new_track(savings_A, savings_B, 1.1);
   cost_test_railway->new_track(savings_B, savings_C, 3.3);
   cost_test_railway->new_track(savings_C, savings_D, 4.1);
@@ -220,9 +216,9 @@ TEST(CostDSP, ToyDataLongCheapWay) {
 
   // Make a short, expensive line
   auto express_line = std::make_shared<Line>(Line{"Express Line", 1.80, 0.41});
-  std::shared_ptr<Stop> express_B = cost_test_railway->new_stop("Express B", express_line);
-  std::shared_ptr<Stop> express_D = cost_test_railway->new_stop("Express D", express_line);
-  std::shared_ptr<Stop> express_E = cost_test_railway->new_stop("Express E", express_line);
+  auto express_B = cost_test_railway->new_stop("Express B", express_line);
+  auto express_D = cost_test_railway->new_stop("Express D", express_line);
+  auto express_E = cost_test_railway->new_stop("Express E", express_line);
   cost_test_railway->new_track(express_B, express_D, 1.9);
   cost_test_railway->new_track(express_D, express_E, 2.1);
 
@@ -279,30 +275,30 @@ TEST(CostDSP, ToyDataRealMultigraphCity) {
 
   // Make the Main Line
   auto main_line = std::make_shared<Line>(Line{"Main Line", 1.50, 0.25});
-  std::shared_ptr<Stop> M1 = real_multigraph_city->new_stop("M1", main_line);
-  std::shared_ptr<Stop> M2 = real_multigraph_city->new_stop("M2", main_line);
-  std::shared_ptr<Stop> M3 = real_multigraph_city->new_stop("M3", main_line);
-  std::shared_ptr<Stop> M4 = real_multigraph_city->new_stop("M4", main_line);
+  auto M1 = real_multigraph_city->new_stop("M1", main_line);
+  auto M2 = real_multigraph_city->new_stop("M2", main_line);
+  auto M3 = real_multigraph_city->new_stop("M3", main_line);
+  auto M4 = real_multigraph_city->new_stop("M4", main_line);
   real_multigraph_city->new_track(M1, M2, 7.0);
   real_multigraph_city->new_track(M2, M3, 4.4);
   real_multigraph_city->new_track(M3, M4, 3.5);
 
   // Make the Underground Loop
   auto underground_loop = std::make_shared<Line>(Line{"Underground Loop", 1.75, 0.35});
-  std::shared_ptr<Stop> U1 = real_multigraph_city->new_stop("U1", underground_loop);
-  std::shared_ptr<Stop> U2 = real_multigraph_city->new_stop("U2", underground_loop);
-  std::shared_ptr<Stop> U3 = real_multigraph_city->new_stop("U3", underground_loop);
+  auto U1 = real_multigraph_city->new_stop("U1", underground_loop);
+  auto U2 = real_multigraph_city->new_stop("U2", underground_loop);
+  auto U3 = real_multigraph_city->new_stop("U3", underground_loop);
   real_multigraph_city->new_track(U1, U2, 3.1);
   real_multigraph_city->new_track(U2, U3, 4.2);
   real_multigraph_city->new_track(U3, U1, 5.2);
 
   // Make the Commuter Local
   auto commuter_local = std::make_shared<Line>(Line{"Commuter Local", 1.25, 0.20});
-  std::shared_ptr<Stop> L1 = real_multigraph_city->new_stop("L1", commuter_local);
-  std::shared_ptr<Stop> L2 = real_multigraph_city->new_stop("L2", commuter_local);
-  std::shared_ptr<Stop> L3 = real_multigraph_city->new_stop("L3", commuter_local);
-  std::shared_ptr<Stop> L4 = real_multigraph_city->new_stop("L4", commuter_local);
-  std::shared_ptr<Stop> L5 = real_multigraph_city->new_stop("L5", commuter_local);
+  auto L1 = real_multigraph_city->new_stop("L1", commuter_local);
+  auto L2 = real_multigraph_city->new_stop("L2", commuter_local);
+  auto L3 = real_multigraph_city->new_stop("L3", commuter_local);
+  auto L4 = real_multigraph_city->new_stop("L4", commuter_local);
+  auto L5 = real_multigraph_city->new_stop("L5", commuter_local);
   real_multigraph_city->new_track(L1, L2, 4.3);
   real_multigraph_city->new_track(L2, L3, 2.7);
   real_multigraph_city->new_track(L3, L4, 2.2);
@@ -310,10 +306,10 @@ TEST(CostDSP, ToyDataRealMultigraphCity) {
 
   // Make the Commuter Special
   auto commuter_special = std::make_shared<Line>(Line{"Commuter Special", 2.00, 0.30});
-  std::shared_ptr<Stop> S1 = real_multigraph_city->new_stop("S1", commuter_special);
-  std::shared_ptr<Stop> S2 = real_multigraph_city->new_stop("S2", commuter_special);
-  std::shared_ptr<Stop> S3 = real_multigraph_city->new_stop("S3", commuter_special);
-  std::shared_ptr<Stop> S4 = real_multigraph_city->new_stop("S4", commuter_special);
+  auto S1 = real_multigraph_city->new_stop("S1", commuter_special);
+  auto S2 = real_multigraph_city->new_stop("S2", commuter_special);
+  auto S3 = real_multigraph_city->new_stop("S3", commuter_special);
+  auto S4 = real_multigraph_city->new_stop("S4", commuter_special);
   real_multigraph_city->new_track(S1, S2, 4.3);
   real_multigraph_city->new_track(S2, S3, 3.9);
   real_multigraph_city->new_track(S3, S4, 7.5);
@@ -325,8 +321,10 @@ TEST(CostDSP, ToyDataRealMultigraphCity) {
   Station airport = real_multigraph_city->new_station("Airport Station", {M4});
   Station city_center = real_multigraph_city->new_station("City Center Station", {L4, S3, U3});
   Station residential_east = real_multigraph_city->new_station("Residential East Station", {L3});
-  Station commercial_center = real_multigraph_city->new_station("Commercial Center Station", {L2, S2});
-  Station residential_west = real_multigraph_city->new_station("Residential West Station", {L1, S1});
+  Station commercial_center =
+      real_multigraph_city->new_station("Commercial Center Station", {L2, S2});
+  Station residential_west =
+      real_multigraph_city->new_station("Residential West Station", {L1, S1});
 
   // Find the shortest path from Seaport Station to City Center Station
   Route dist_DSP_sea_center = real_multigraph_city->distance_DSP(seaport, city_center);
@@ -360,7 +358,8 @@ TEST(CostDSP, ToyDataRealMultigraphCity) {
 
   // Find the shortest path from Residential West Station to North Station
   Route dist_DSP_reswest_north = real_multigraph_city->distance_DSP(residential_west, north);
-  EXPECT_TRUE(residential_west.contains(dist_DSP_reswest_north.front())); // Starting Stop is arbitrary
+  // Starting Stop is arbitrary
+  EXPECT_TRUE(residential_west.contains(dist_DSP_reswest_north.front()));
   EXPECT_EQ(dist_DSP_reswest_north[1], S2);
   EXPECT_EQ(dist_DSP_reswest_north[2], S3);
   EXPECT_EQ(dist_DSP_reswest_north[3], U1);
@@ -369,7 +368,8 @@ TEST(CostDSP, ToyDataRealMultigraphCity) {
 
   // Find the cheapest path from Residential West Station to North Station
   Route cost_DSP_reswest_north = real_multigraph_city->cost_DSP(residential_west, north);
-  EXPECT_TRUE(residential_west.contains(cost_DSP_reswest_north.front())); // Starting Stop is arbitrary
+  // Starting Stop is arbitrary
+  EXPECT_TRUE(residential_west.contains(cost_DSP_reswest_north.front()));
   EXPECT_EQ(cost_DSP_reswest_north[1], L2);
   EXPECT_EQ(cost_DSP_reswest_north[2], L3);
   EXPECT_EQ(cost_DSP_reswest_north[3], L4);

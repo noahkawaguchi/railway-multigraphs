@@ -1,18 +1,18 @@
 #ifndef TRACK_H
 #define TRACK_H
 
-#include <memory>
 #include <cmath>
+#include <memory>
 
 #include "Stop.h"
 
 struct Track {
   std::shared_ptr<Stop> other_stop;
   double distance; // The distance to the other stop (miles)
-  
+
   // Define constructor for pointer safety
-  Track(std::shared_ptr<Stop> other_stop, double distance) 
-        : other_stop(other_stop), distance(distance) {}
+  Track(std::shared_ptr<Stop> other_stop, double distance)
+      : other_stop(other_stop), distance(distance) {}
 
   // Calculate the cost to go to the other stop, rounded to cents
   double get_cost_from(std::shared_ptr<Stop> current_stop) {

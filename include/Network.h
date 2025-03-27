@@ -2,10 +2,10 @@
 #define NETWORK_H
 
 #include <memory>
-#include <unordered_map>
-#include <unordered_set>
 #include <queue>
 #include <string>
+#include <unordered_map>
+#include <unordered_set>
 
 #include "Stop.h"
 #include "Track.h"
@@ -23,7 +23,7 @@ public:
 
   // Create a new station that has all the provided stops
   Station new_station(std::string name, std::unordered_set<std::shared_ptr<Stop>> stops);
-  
+
   // Get all adjacent tracks for a given stop, including connections to different lines
   std::unordered_set<std::shared_ptr<Track>> get_adjacent_tracks(std::shared_ptr<Stop> stop);
 
@@ -39,7 +39,6 @@ public:
 private:
   std::vector<std::shared_ptr<Stop>> stops;
   std::unordered_map<std::shared_ptr<Stop>, std::unordered_set<std::shared_ptr<Track>>> tracks;
-  
 };
 
 #endif // NETWORK_H

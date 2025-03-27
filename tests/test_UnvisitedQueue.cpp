@@ -35,7 +35,7 @@ TEST(TestUQ, Empty) {
   UnvisitedQueue uq;
   EXPECT_TRUE(uq.empty());
 
-  // Create line and stops 
+  // Create line and stops
   auto test_line = std::make_shared<Line>(Line{"Test Line"});
   auto stop1 = std::make_shared<Stop>("Stop 1", test_line);
   auto stop2 = std::make_shared<Stop>("Stop 2", test_line);

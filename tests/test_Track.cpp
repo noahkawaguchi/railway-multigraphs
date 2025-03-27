@@ -27,7 +27,7 @@ TEST(TestTrack, GetCost) {
   A->set_path_cost(0.0);
   B->set_path_cost(A_B->get_cost_from(A));
   // $1.60 base fare + $0.32 * 3.2 mi, rounded to cents
-  EXPECT_DOUBLE_EQ(B->get_path_cost(), 2.62); 
+  EXPECT_DOUBLE_EQ(B->get_path_cost(), 2.62);
   C->set_path_cost(B->get_path_cost() + B_C->get_cost_from(B));
   // Previous fare of $2.62 + $0.32 * 4.9 mi (not adding $1.60 base fare again), rounded to cents
   EXPECT_DOUBLE_EQ(C->get_path_cost(), 4.19);
