@@ -52,10 +52,8 @@ Network::get_adjacent_tracks(std::shared_ptr<Stop> stop) {
 
 void Network::print_route(Route route) {
   std::cout << std::endl
-            << std::string(20, '-') << std::endl
-            << "\nHere is your route from " << route.front()->station_name << " to "
-            << route.back()->station_name << ":\n"
-            << std::endl;
+            << std::string(20, '-') << "\n\nHere is your route from " << route.front()->station_name
+            << " to " << route.back()->station_name << ":\n\n";
   for (const auto &stop : route) {
     stop == route.front() ? std::cout << "  Start: " << stop->station_name << std::endl
                           : std::cout << "  -> Go to " << stop->station_name << " via the "
@@ -65,7 +63,7 @@ void Network::print_route(Route route) {
   // Always show the cost with cents
   double cost = route.back()->get_path_cost();
   if (cost != 0) std::cout << std::format("  Total cost: ${0:.2f}\n", cost);
-  std::cout << "\n" << std::string(20, '-') << '\n' << std::endl;
+  std::cout << '\n' << std::string(20, '-') << '\n' << std::endl;
 }
 
 Route Network::distance_DSP(Station start, Station destination) {
