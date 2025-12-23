@@ -1,5 +1,7 @@
+AllowShortBlocksOnASingleLine: Always
+AllowShortFunctionsOnASingleLine: All
+AllowShortIfStatementsOnASingleLine: AllIfsAndElse
+AllowShortLoopsOnASingleLine: true
 ColumnLimit: 100
 IndentWidth: 2
-AllowShortLoopsOnASingleLine: true
-AllowShortIfStatementsOnASingleLine: Always
-AllowShortBlocksOnASingleLine: true
+InsertNewlineAtEOF: true
