@@ -2,8 +2,8 @@
 #include <format>
 #include <iostream>
 
-#include "Network.h"
-#include "UnvisitedQueue.h"
+#include "network.hpp"
+#include "unvisited_queue.hpp"
 
 Network::Network() {}
 
@@ -102,9 +102,9 @@ Route Network::distance_DSP(Station start, Station destination) {
       // If a shorter path from the starting stop to the adjacent stop is found,
       // or if the path is the same length but cheaper, update the adjacent stop's
       // distance, cost, and predecessor.
-      if (alt_path_distance < adj_track->other_stop->path_distance ||
-          (alt_path_distance == adj_track->other_stop->path_distance &&
-           alt_path_cost < adj_track->other_stop->get_path_cost())) {
+      if (alt_path_distance < adj_track->other_stop->path_distance
+          || (alt_path_distance == adj_track->other_stop->path_distance
+              && alt_path_cost < adj_track->other_stop->get_path_cost())) {
         adj_track->other_stop->path_distance = alt_path_distance;
         adj_track->other_stop->set_path_cost(alt_path_cost);
         adj_track->other_stop->path_predecessor = current_stop;
@@ -161,9 +161,9 @@ Route Network::cost_DSP(Station start, Station destination) {
       // If a cheaper path from the starting stop to the adjacent stop is found,
       // or if the path is the same price but shorter, update the adjacent stop's
       // distance, cost, and predecessor.
-      if (alt_path_cost < adj_track->other_stop->get_path_cost() ||
-          (alt_path_cost == adj_track->other_stop->get_path_cost() &&
-           alt_path_distance < adj_track->other_stop->path_distance)) {
+      if (alt_path_cost < adj_track->other_stop->get_path_cost()
+          || (alt_path_cost == adj_track->other_stop->get_path_cost()
+              && alt_path_distance < adj_track->other_stop->path_distance)) {
         adj_track->other_stop->path_distance = current_stop->path_distance + adj_track->distance;
         adj_track->other_stop->set_path_cost(alt_path_cost);
         adj_track->other_stop->path_predecessor = current_stop;

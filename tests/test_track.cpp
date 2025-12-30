@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "../include/Track.h"
+#include "../include/track.hpp"
 
 TEST(TestTrack, InitTrack) {
   // Create a line and the stop on the other side

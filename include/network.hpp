@@ -6,8 +6,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "Stop.h"
-#include "Track.h"
+#include "stop.hpp"
+#include "track.hpp"
 
 class Network {
 public:

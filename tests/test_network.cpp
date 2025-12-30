@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "../include/Network.h"
+#include "../include/network.hpp"
 
 TEST(TestNetwork, GetAdjacentTracks) {
   // Create network

@@ -1,6 +1,6 @@
 #include <memory>
 
-#include "Network.h"
+#include "network.hpp"
 
 void toy_data_ABCD();
 void toy_data_tiny_city();

@@ -13,8 +13,8 @@ include_directories(include)
 
 # Add the main executable
 add_executable(railway-multigraphs
-    src/Network.cpp
-    src/UnvisitedQueue.cpp
+    src/network.cpp
+    src/unvisited_queue.cpp
     src/main.cpp
 )
 
@@ -23,12 +23,12 @@ add_subdirectory(external/googletest)
 
 # Add the test executable
 add_executable(tests
-    src/Network.cpp
-    tests/test_Network.cpp
-    src/UnvisitedQueue.cpp
-    tests/test_UnvisitedQueue.cpp
-    tests/test_Stop.cpp
-    tests/test_Track.cpp
+    src/network.cpp
+    tests/test_network.cpp
+    src/unvisited_queue.cpp
+    tests/test_unvisited_queue.cpp
+    tests/test_stop.cpp
+    tests/test_track.cpp
 )
 
 # Discover and enable tests
