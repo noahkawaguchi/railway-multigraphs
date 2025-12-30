@@ -80,8 +80,8 @@ TEST(TestNetwork, GetAdjacentTracks) {
               B1
 
   */
-  Network::new_station("R2-B3", {r2, b3});
-  Network::new_station("R3-B2", {r3, b2});
+  std::ignore = Network::new_station("R2-B3", {r2, b3});
+  std::ignore = Network::new_station("R3-B2", {r3, b2});
 
   // Getting adjacent tracks for the transfer stops should now return tracks from both lines
   auto r2_adj_tracks_tf = transfer_network->get_adjacent_tracks(r2);

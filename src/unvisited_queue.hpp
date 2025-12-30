@@ -14,10 +14,10 @@ public:
 
   /// Clear any processed stops off the top of the internal priority queue. If no stops remain,
   /// return true. If an unprocessed stop remains, return false.
-  auto empty() -> bool;
+  [[nodiscard]] auto empty() -> bool;
 
   /// Remove the top unprocessed stop, mark it as processed, and return it.
-  auto top_unprocessed() -> std::shared_ptr<Stop>;
+  [[nodiscard]] auto top_unprocessed() -> std::shared_ptr<Stop>;
 
 private:
   /// Representation of stops specifically for use in the priority queue.

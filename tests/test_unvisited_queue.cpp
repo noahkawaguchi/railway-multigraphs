@@ -57,11 +57,11 @@ TEST(TestUQ, Empty) {
   // Update priority, reinsert, and process, leaving a processed duplicate in the queue
   stop3->path_distance = 2;
   uq.push(stop3, stop3->path_distance);
-  uq.top_unprocessed();
+  std::ignore = uq.top_unprocessed();
 
   // Remove both remaining processed stops
-  uq.top_unprocessed();
-  uq.top_unprocessed();
+  std::ignore = uq.top_unprocessed();
+  std::ignore = uq.top_unprocessed();
 
   // Now it should be empty again
   EXPECT_TRUE(uq.empty());
