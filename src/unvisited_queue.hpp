@@ -22,8 +22,14 @@ public:
 private:
   // Representation of stops specifically for use in the priority queue
   struct QueueStop {
+    // NOLINTBEGIN(misc-non-private-member-variables-in-classes,
+    // cppcoreguidelines-non-private-member-variables-in-classes)
+
     std::shared_ptr<Stop> stop;
     double priority;
+
+    // NOLINTEND(misc-non-private-member-variables-in-classes,
+    // cppcoreguidelines-non-private-member-variables-in-classes)
 
     // 2-arg constructor to ensure data members are not left uninitialized
     QueueStop(std::shared_ptr<Stop> stop, double priority)
