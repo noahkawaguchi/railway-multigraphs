@@ -23,7 +23,7 @@ struct Stop {
   std::shared_ptr<Line> line;                          // The line this stop belongs to
   std::unordered_set<std::shared_ptr<Stop>> transfers; // Stops at the same station by other lines
   std::shared_ptr<Stop> path_predecessor;              // The predecessor stop in path algorithms
-  double path_distance = std::numeric_limits<double>::max() / 2; // "Infinity"
+  double path_distance{PATH_INFINITY};
 
   // NOLINTEND(misc-non-private-member-variables-in-classes,
   // cppcoreguidelines-non-private-member-variables-in-classes)
@@ -42,13 +42,16 @@ struct Stop {
   // Reset the predecessor, distance, and cost for restarting shortest path algorithms
   void path_reset() {
     this->path_predecessor = nullptr;
-    this->path_distance = std::numeric_limits<double>::max() / 2; // "Infinity"
-    this->path_cost = std::numeric_limits<double>::max() / 2;     // "Infinity
+    this->path_distance = PATH_INFINITY;
+    this->path_cost = PATH_INFINITY;
   }
 
 private:
+  // A reasonably large value to be used as "infinity" in shortest path algorithms.
+  static constexpr double PATH_INFINITY{std::numeric_limits<double>::max() / 2};
+
   std::string id;
-  double path_cost = std::numeric_limits<double>::max() / 2; // "Infinity"
+  double path_cost{PATH_INFINITY};
 };
 
 // Type alias for managing multiple transfer stops
