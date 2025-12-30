@@ -70,48 +70,48 @@ TEST(TestUQ, Empty) {
 TEST(TestUQ, TopReinsertion) {
   // Create line and stops
   auto test_line = std::make_shared<Line>(Line{.name = "Test Line"});
-  auto A = std::make_shared<Stop>("A", test_line);
-  auto B = std::make_shared<Stop>("B", test_line);
-  auto C = std::make_shared<Stop>("C", test_line);
-  auto D = std::make_shared<Stop>("D", test_line);
-  auto E = std::make_shared<Stop>("E", test_line);
-  auto F = std::make_shared<Stop>("F", test_line);
+  auto a = std::make_shared<Stop>("A", test_line);
+  auto b = std::make_shared<Stop>("B", test_line);
+  auto c = std::make_shared<Stop>("C", test_line);
+  auto d = std::make_shared<Stop>("D", test_line);
+  auto e = std::make_shared<Stop>("E", test_line);
+  auto f = std::make_shared<Stop>("F", test_line);
 
   // Set priority of C, leave the rest as infinity
-  C->path_distance = 0;
+  c->path_distance = 0;
 
   // Create UnvisitedQueue and insert
   UnvisitedQueue uq;
-  uq.push(A, A->path_distance);
-  uq.push(B, B->path_distance);
-  uq.push(C, C->path_distance);
-  uq.push(D, D->path_distance);
-  uq.push(E, E->path_distance);
-  uq.push(F, F->path_distance);
+  uq.push(a, a->path_distance);
+  uq.push(b, b->path_distance);
+  uq.push(c, c->path_distance);
+  uq.push(d, d->path_distance);
+  uq.push(e, e->path_distance);
+  uq.push(f, f->path_distance);
 
   // Make sure top returns the correct stop
-  EXPECT_EQ(uq.top_unprocessed(), C);
+  EXPECT_EQ(uq.top_unprocessed(), c);
 
   // Now we should have A,B,D,E,F - all the same priority
 
   // Modify some of the priorities and reinsert, resulting in duplicates
-  D->path_distance = 2;
-  uq.push(D, D->path_distance);
-  F->path_distance = 14;
-  uq.push(F, F->path_distance);
-  B->path_distance = 10;
-  uq.push(B, B->path_distance);
-  E->path_distance = 7;
-  uq.push(E, E->path_distance);
+  d->path_distance = 2;
+  uq.push(d, d->path_distance);
+  f->path_distance = 14;
+  uq.push(f, f->path_distance);
+  b->path_distance = 10;
+  uq.push(b, b->path_distance);
+  e->path_distance = 7;
+  uq.push(e, e->path_distance);
 
   // Now we should have D-2, E-7, B-10, F-14, A-inf, along with duplicates
 
   // Make sure top returns the correct stop, ignoring already processed stops
-  EXPECT_EQ(uq.top_unprocessed(), D);
-  EXPECT_EQ(uq.top_unprocessed(), E);
-  EXPECT_EQ(uq.top_unprocessed(), B);
-  EXPECT_EQ(uq.top_unprocessed(), F);
-  EXPECT_EQ(uq.top_unprocessed(), A);
+  EXPECT_EQ(uq.top_unprocessed(), d);
+  EXPECT_EQ(uq.top_unprocessed(), e);
+  EXPECT_EQ(uq.top_unprocessed(), b);
+  EXPECT_EQ(uq.top_unprocessed(), f);
+  EXPECT_EQ(uq.top_unprocessed(), a);
 
   // Any number of further calls should get dummy stop
   EXPECT_EQ(uq.top_unprocessed()->get_id(), "Dummy Stop");

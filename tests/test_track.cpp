@@ -18,30 +18,30 @@ TEST(TestTrack, GetCost) {
   // Create the Red Line with three stops connected with tracks
   auto red_line =
       std::make_shared<Line>(Line{.name = "Red Line", .base_cost = 1.60, .cost_per_mile = 0.32});
-  auto A = std::make_shared<Stop>("A", red_line);
-  auto B = std::make_shared<Stop>("B", red_line);
-  auto C = std::make_shared<Stop>("C", red_line);
-  auto A_B = std::make_shared<Track>(B, 3.2);
-  auto B_C = std::make_shared<Track>(C, 4.9);
+  auto a = std::make_shared<Stop>("A", red_line);
+  auto b = std::make_shared<Stop>("B", red_line);
+  auto c = std::make_shared<Stop>("C", red_line);
+  auto a_b = std::make_shared<Track>(b, 3.2);
+  auto b_c = std::make_shared<Track>(c, 4.9);
 
   // Case where all tracks and stops are on the same line
-  A->set_path_cost(0.0);
-  B->set_path_cost(A_B->get_cost_from(A));
+  a->set_path_cost(0.0);
+  b->set_path_cost(a_b->get_cost_from(a));
   // $1.60 base fare + $0.32 * 3.2 mi, rounded to cents
-  EXPECT_DOUBLE_EQ(B->get_path_cost(), 2.62);
-  C->set_path_cost(B->get_path_cost() + B_C->get_cost_from(B));
+  EXPECT_DOUBLE_EQ(b->get_path_cost(), 2.62);
+  c->set_path_cost(b->get_path_cost() + b_c->get_cost_from(b));
   // Previous fare of $2.62 + $0.32 * 4.9 mi (not adding $1.60 base fare again), rounded to cents
-  EXPECT_DOUBLE_EQ(C->get_path_cost(), 4.19);
+  EXPECT_DOUBLE_EQ(c->get_path_cost(), 4.19);
 
   // Case where there is a transfer between lines
   auto blue_line =
       std::make_shared<Line>(Line{.name = "Blue Line", .base_cost = 1.40, .cost_per_mile = 0.38});
-  C->line = blue_line;
+  c->line = blue_line;
 
-  A->set_path_cost(0.0);
-  B->set_path_cost(A_B->get_cost_from(A));
-  EXPECT_DOUBLE_EQ(B->get_path_cost(), 2.62); // Should be the same as above
-  C->set_path_cost(B->get_path_cost() + B_C->get_cost_from(B));
+  a->set_path_cost(0.0);
+  b->set_path_cost(a_b->get_cost_from(a));
+  EXPECT_DOUBLE_EQ(b->get_path_cost(), 2.62); // Should be the same as above
+  c->set_path_cost(b->get_path_cost() + b_c->get_cost_from(b));
   // Previous fare of $2.62 + $1.40 base fare due to transfer + $0.38 * 4.9 mi, rounded to cents
-  EXPECT_DOUBLE_EQ(C->get_path_cost(), 5.88);
+  EXPECT_DOUBLE_EQ(c->get_path_cost(), 5.88);
 }
