@@ -4,23 +4,21 @@
 #include <memory>
 #include <queue>
 #include <unordered_set>
+#include <utility>
 
 #include "stop.hpp"
 
 class UnvisitedQueue {
 public:
-  UnvisitedQueue();
-  ~UnvisitedQueue() = default;
-
   // Initialize a QueueStop and push it into the internal min-heap using the given priority
   void push(std::shared_ptr<Stop> stop, double priority);
 
   // Clear any processed stops off the top of the internal priority queue. If no
   // stops remain, return true. If an unprocessed stop remains, return false.
-  bool empty();
+  auto empty() -> bool;
 
   // Remove the top unprocessed stop, mark it as processed, and return it
-  std::shared_ptr<Stop> top_unprocessed();
+  auto top_unprocessed() -> std::shared_ptr<Stop>;
 
 private:
   // Representation of stops specifically for use in the priority queue
@@ -29,10 +27,11 @@ private:
     double priority;
 
     // 2-arg constructor to ensure data members are not left uninitialized
-    QueueStop(std::shared_ptr<Stop> stop, double priority) : stop(stop), priority(priority) {}
+    QueueStop(std::shared_ptr<Stop> stop, double priority)
+        : stop(std::move(stop)), priority(priority) {}
 
     // Overload < operator for priority queue comparisons
-    bool operator<(const QueueStop &other) const { return this->priority > other.priority; }
+    auto operator<(const QueueStop &other) const -> bool { return this->priority > other.priority; }
   };
 
   std::priority_queue<QueueStop> pq;

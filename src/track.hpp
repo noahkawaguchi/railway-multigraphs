@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <memory>
+#include <utility>
 
 #include "stop.hpp"
 
@@ -12,10 +13,10 @@ struct Track {
 
   // Define constructor for pointer safety
   Track(std::shared_ptr<Stop> other_stop, double distance)
-      : other_stop(other_stop), distance(distance) {}
+      : other_stop(std::move(other_stop)), distance(distance) {}
 
   // Calculate the cost to go to the other stop, rounded to cents
-  double get_cost_from(std::shared_ptr<Stop> current_stop) {
+  auto get_cost_from(const std::shared_ptr<Stop> &current_stop) -> double {
     double total_cost = 0.0;
     // Regular cost to take this section of track
     total_cost += std::round(this->distance * this->other_stop->line->cost_per_mile * 100) / 100;

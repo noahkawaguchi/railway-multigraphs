@@ -1,23 +1,23 @@
 #include "unvisited_queue.hpp"
 
-UnvisitedQueue::UnvisitedQueue() {}
+#include <utility>
 
 void UnvisitedQueue::push(std::shared_ptr<Stop> stop, double priority) {
-  QueueStop qs(stop, priority);
+  QueueStop qs(std::move(stop), priority);
   this->pq.push(qs);
 }
 
-bool UnvisitedQueue::empty() {
+auto UnvisitedQueue::empty() -> bool {
   // Pop any processed stops off the top
-  while (!this->pq.empty() && this->processed.contains(this->pq.top().stop)) this->pq.pop();
+  while (!this->pq.empty() && this->processed.contains(this->pq.top().stop)) { this->pq.pop(); }
   // Now either the top stop is unprocessed, or there are none at all
   return this->pq.empty();
 }
 
-std::shared_ptr<Stop> UnvisitedQueue::top_unprocessed() {
+auto UnvisitedQueue::top_unprocessed() -> std::shared_ptr<Stop> {
   // Clear processed stops off the top of the queue. Return a dummy stop if this function
   // has been mistakenly called on an empty queue or one with all processed stops.
-  if (this->empty()) return std::make_shared<Stop>("Dummy Stop", nullptr, nullptr);
+  if (this->empty()) { return std::make_shared<Stop>("Dummy Stop", nullptr, nullptr); }
 
   // If the function did not return above, the top stop must be unprocessed
   QueueStop qs = this->pq.top();

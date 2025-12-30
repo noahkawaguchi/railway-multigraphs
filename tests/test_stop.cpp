@@ -4,7 +4,7 @@
 
 TEST(TestStop, InitStop) {
   // Create line and stop
-  auto test_line = std::make_shared<Line>(Line{"Test Line"});
+  auto test_line = std::make_shared<Line>(Line{.name = "Test Line"});
   auto test_stop = std::make_shared<Stop>("Test Stop", test_line);
   // Make sure names are set correctly
   EXPECT_EQ(test_stop->id, "Test Stop");
@@ -16,7 +16,7 @@ TEST(TestStop, InitStop) {
 
 TEST(TestStop, SetPathStats) {
   // Create line and stop
-  auto test_line = std::make_shared<Line>(Line{"Test Line"});
+  auto test_line = std::make_shared<Line>(Line{.name = "Test Line"});
   auto test_stop = std::make_shared<Stop>("Test Stop", test_line);
   // Set shortest path stats
   test_stop->path_distance = 5.3;
@@ -29,7 +29,7 @@ TEST(TestStop, SetPathStats) {
 
 TEST(TestStop, ResetPathStats) {
   // Create line and stop
-  auto test_line = std::make_shared<Line>(Line{"Test Line"});
+  auto test_line = std::make_shared<Line>(Line{.name = "Test Line"});
   auto test_stop = std::make_shared<Stop>("Test Stop", test_line);
   // Set shortest path stats
   test_stop->path_distance = 10.2;
@@ -44,7 +44,7 @@ TEST(TestStop, ResetPathStats) {
 
 TEST(TestStop, Transfers) {
   // Create line and stop
-  auto test_line = std::make_shared<Line>(Line{"Test Line"});
+  auto test_line = std::make_shared<Line>(Line{.name = "Test Line"});
   auto test_stop = std::make_shared<Stop>("Test Stop", test_line);
 
   // Test getting transfers when there are none

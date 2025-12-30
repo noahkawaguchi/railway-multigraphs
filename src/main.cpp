@@ -2,24 +2,30 @@
 
 #include "network.hpp"
 
+namespace {
+
 void toy_data_ABCD();
 void toy_data_tiny_city();
 void toy_data_long_cheap_way();
 void toy_data_real_multigraph_city();
 
-int main() {
+} // namespace
+
+auto main() -> int {
   toy_data_ABCD();
   toy_data_tiny_city();
   toy_data_long_cheap_way();
   toy_data_real_multigraph_city();
 }
 
+namespace {
+
 void toy_data_ABCD() {
   // Make network
   auto basic_network = std::make_unique<Network>();
 
   // Add line and stops to network
-  auto ABCD_line = std::make_shared<Line>(Line{"ABCD Line"});
+  auto ABCD_line = std::make_shared<Line>(Line{.name = "ABCD Line"});
   auto stopA = basic_network->new_stop("Stop A", ABCD_line);
   auto stopB = basic_network->new_stop("Stop B", ABCD_line);
   auto stopC = basic_network->new_stop("Stop C", ABCD_line);
@@ -33,13 +39,13 @@ void toy_data_ABCD() {
   basic_network->new_track(stopC, stopD, 2);
 
   // Make stations
-  Station stationA = basic_network->new_station("Station A", {stopA});
-  Station stationB = basic_network->new_station("Station B", {stopB});
-  Station stationC = basic_network->new_station("Station C", {stopC});
-  Station stationD = basic_network->new_station("Station D", {stopD});
+  Station stationA = Network::new_station("Station A", {stopA});
+  Station stationB = Network::new_station("Station B", {stopB});
+  Station stationC = Network::new_station("Station C", {stopC});
+  Station stationD = Network::new_station("Station D", {stopD});
 
   // Calculate Dijkstra's shortest path from Stop A to Stop C
-  basic_network->print_route(basic_network->distance_DSP(stationA, stationC));
+  Network::print_route(basic_network->distance_DSP(stationA, stationC));
 }
 
 void toy_data_tiny_city() {
@@ -47,7 +53,7 @@ void toy_data_tiny_city() {
   auto tiny_city = std::make_unique<Network>();
 
   // Add line and stops to network
-  auto tiny_city_railway = std::make_shared<Line>(Line{"Tiny City Railway"});
+  auto tiny_city_railway = std::make_shared<Line>(Line{.name = "Tiny City Railway"});
   auto hospital = tiny_city->new_stop("Hospital", tiny_city_railway);
   auto airport = tiny_city->new_stop("Airport", tiny_city_railway);
   auto west_residential = tiny_city->new_stop("West Residential", tiny_city_railway);
@@ -70,19 +76,19 @@ void toy_data_tiny_city() {
   tiny_city->new_track(mall, seaport, 8);
 
   // Make stations
-  Station hospital_station = tiny_city->new_station("Hospital Station", {hospital});
-  Station airport_station = tiny_city->new_station("Airport Station", {airport});
+  Station hospital_station = Network::new_station("Hospital Station", {hospital});
+  Station airport_station = Network::new_station("Airport Station", {airport});
   Station west_residential_station =
-      tiny_city->new_station("West Residential Station", {west_residential});
-  Station city_hall_station = tiny_city->new_station("City Hall Station", {city_hall});
+      Network::new_station("West Residential Station", {west_residential});
+  Station city_hall_station = Network::new_station("City Hall Station", {city_hall});
   Station east_residential_station =
-      tiny_city->new_station("East Residential Station", {east_residential});
-  Station park_station = tiny_city->new_station("Park Station", {park});
-  Station mall_station = tiny_city->new_station("Mall Station", {mall});
-  Station seaport_station = tiny_city->new_station("Seaport Station", {seaport});
+      Network::new_station("East Residential Station", {east_residential});
+  Station park_station = Network::new_station("Park Station", {park});
+  Station mall_station = Network::new_station("Mall Station", {mall});
+  Station seaport_station = Network::new_station("Seaport Station", {seaport});
 
   // Calculate Dijkstra's shortest path from the park to the airport
-  tiny_city->print_route(tiny_city->distance_DSP(park_station, airport_station));
+  Network::print_route(tiny_city->distance_DSP(park_station, airport_station));
 }
 
 void toy_data_long_cheap_way() {
@@ -90,7 +96,8 @@ void toy_data_long_cheap_way() {
   auto cost_test_railway = std::make_unique<Network>();
 
   // Make a long, cheap line
-  auto savings_line = std::make_shared<Line>(Line{"Savings Line", 0.75, 0.12});
+  auto savings_line = std::make_shared<Line>(
+      Line{.name = "Savings Line", .base_cost = 0.75, .cost_per_mile = 0.12});
   auto savings_A = cost_test_railway->new_stop("Savings A", savings_line);
   auto savings_B = cost_test_railway->new_stop("Savings B", savings_line);
   auto savings_C = cost_test_railway->new_stop("Savings C", savings_line);
@@ -104,7 +111,8 @@ void toy_data_long_cheap_way() {
   cost_test_railway->new_track(savings_E, savings_F, 0.9);
 
   // Make a short, expensive line
-  auto express_line = std::make_shared<Line>(Line{"Express Line", 1.80, 0.41});
+  auto express_line = std::make_shared<Line>(
+      Line{.name = "Express Line", .base_cost = 1.80, .cost_per_mile = 0.41});
   auto express_B = cost_test_railway->new_stop("Express B", express_line);
   auto express_D = cost_test_railway->new_stop("Express D", express_line);
   auto express_E = cost_test_railway->new_stop("Express E", express_line);
@@ -112,18 +120,18 @@ void toy_data_long_cheap_way() {
   cost_test_railway->new_track(express_D, express_E, 2.1);
 
   // Make stations (this sets transfers)
-  Station stationA = cost_test_railway->new_station("Station A", {savings_A});
-  Station stationB = cost_test_railway->new_station("Station B", {savings_B, express_B});
-  Station stationC = cost_test_railway->new_station("Station C", {savings_C});
-  Station stationD = cost_test_railway->new_station("Station D", {savings_D, express_D});
-  Station stationE = cost_test_railway->new_station("Station E", {savings_E, express_E});
-  Station stationF = cost_test_railway->new_station("Station F", {savings_F});
+  Station stationA = Network::new_station("Station A", {savings_A});
+  Station stationB = Network::new_station("Station B", {savings_B, express_B});
+  Station stationC = Network::new_station("Station C", {savings_C});
+  Station stationD = Network::new_station("Station D", {savings_D, express_D});
+  Station stationE = Network::new_station("Station E", {savings_E, express_E});
+  Station stationF = Network::new_station("Station F", {savings_F});
 
   // Find the path from A to F with the shortest distance, which is more expensive
-  cost_test_railway->print_route(cost_test_railway->distance_DSP(stationA, stationF));
+  Network::print_route(cost_test_railway->distance_DSP(stationA, stationF));
 
   // Find the cheapest path from A to F, even though it is longer
-  cost_test_railway->print_route(cost_test_railway->cost_DSP(stationA, stationF));
+  Network::print_route(cost_test_railway->cost_DSP(stationA, stationF));
 }
 
 void toy_data_real_multigraph_city() {
@@ -131,7 +139,8 @@ void toy_data_real_multigraph_city() {
   auto real_multigraph_city = std::make_unique<Network>();
 
   // Make the Main Line
-  auto main_line = std::make_shared<Line>(Line{"Main Line", 1.50, 0.25});
+  auto main_line =
+      std::make_shared<Line>(Line{.name = "Main Line", .base_cost = 1.50, .cost_per_mile = 0.25});
   auto M1 = real_multigraph_city->new_stop("M1", main_line);
   auto M2 = real_multigraph_city->new_stop("M2", main_line);
   auto M3 = real_multigraph_city->new_stop("M3", main_line);
@@ -141,7 +150,8 @@ void toy_data_real_multigraph_city() {
   real_multigraph_city->new_track(M3, M4, 3.5);
 
   // Make the Underground Loop
-  auto underground_loop = std::make_shared<Line>(Line{"Underground Loop", 1.75, 0.35});
+  auto underground_loop = std::make_shared<Line>(
+      Line{.name = "Underground Loop", .base_cost = 1.75, .cost_per_mile = 0.35});
   auto U1 = real_multigraph_city->new_stop("U1", underground_loop);
   auto U2 = real_multigraph_city->new_stop("U2", underground_loop);
   auto U3 = real_multigraph_city->new_stop("U3", underground_loop);
@@ -150,7 +160,8 @@ void toy_data_real_multigraph_city() {
   real_multigraph_city->new_track(U3, U1, 5.2);
 
   // Make the Commuter Local
-  auto commuter_local = std::make_shared<Line>(Line{"Commuter Local", 1.25, 0.20});
+  auto commuter_local = std::make_shared<Line>(
+      Line{.name = "Commuter Local", .base_cost = 1.25, .cost_per_mile = 0.20});
   auto L1 = real_multigraph_city->new_stop("L1", commuter_local);
   auto L2 = real_multigraph_city->new_stop("L2", commuter_local);
   auto L3 = real_multigraph_city->new_stop("L3", commuter_local);
@@ -162,7 +173,8 @@ void toy_data_real_multigraph_city() {
   real_multigraph_city->new_track(L4, L5, 6.2);
 
   // Make the Commuter Special
-  auto commuter_special = std::make_shared<Line>(Line{"Commuter Special", 2.00, 0.30});
+  auto commuter_special = std::make_shared<Line>(
+      Line{.name = "Commuter Special", .base_cost = 2.00, .cost_per_mile = 0.30});
   auto S1 = real_multigraph_city->new_stop("S1", commuter_special);
   auto S2 = real_multigraph_city->new_stop("S2", commuter_special);
   auto S3 = real_multigraph_city->new_stop("S3", commuter_special);
@@ -172,32 +184,32 @@ void toy_data_real_multigraph_city() {
   real_multigraph_city->new_track(S3, S4, 7.5);
 
   // Make stations (this also sets transfers)
-  Station seaport = real_multigraph_city->new_station("Seaport Station", {M1});
-  Station south = real_multigraph_city->new_station("South Station", {M2, L5, U2});
-  Station north = real_multigraph_city->new_station("North Station", {M3, S4, U1});
-  Station airport = real_multigraph_city->new_station("Airport Station", {M4});
-  Station city_center = real_multigraph_city->new_station("City Center Station", {L4, S3, U3});
-  Station residential_east = real_multigraph_city->new_station("Residential East Station", {L3});
-  Station commercial_center =
-      real_multigraph_city->new_station("Commercial Center Station", {L2, S2});
-  Station residential_west =
-      real_multigraph_city->new_station("Residential West Station", {L1, S1});
+  Station seaport = Network::new_station("Seaport Station", {M1});
+  Station south = Network::new_station("South Station", {M2, L5, U2});
+  Station north = Network::new_station("North Station", {M3, S4, U1});
+  Station airport = Network::new_station("Airport Station", {M4});
+  Station city_center = Network::new_station("City Center Station", {L4, S3, U3});
+  Station residential_east = Network::new_station("Residential East Station", {L3});
+  Station commercial_center = Network::new_station("Commercial Center Station", {L2, S2});
+  Station residential_west = Network::new_station("Residential West Station", {L1, S1});
 
   // Find the shortest path from Seaport Station to City Center Station
-  real_multigraph_city->print_route(real_multigraph_city->distance_DSP(seaport, city_center));
+  Network::print_route(real_multigraph_city->distance_DSP(seaport, city_center));
 
   // Find the cheapest path from Seaport Station to City Center Station
-  real_multigraph_city->print_route(real_multigraph_city->cost_DSP(seaport, city_center));
+  Network::print_route(real_multigraph_city->cost_DSP(seaport, city_center));
 
   // Find the shortest path from South Station to Airport Station
-  real_multigraph_city->print_route(real_multigraph_city->distance_DSP(south, airport));
+  Network::print_route(real_multigraph_city->distance_DSP(south, airport));
 
   // Find the cheapest path from South Station to Airport Station
-  real_multigraph_city->print_route(real_multigraph_city->cost_DSP(south, airport));
+  Network::print_route(real_multigraph_city->cost_DSP(south, airport));
 
   // Find the shortest path from Residential West Station to North Station
-  real_multigraph_city->print_route(real_multigraph_city->distance_DSP(residential_west, north));
+  Network::print_route(real_multigraph_city->distance_DSP(residential_west, north));
 
   // Find the cheapest path from Residential West Station to North Station
-  real_multigraph_city->print_route(real_multigraph_city->cost_DSP(residential_west, north));
+  Network::print_route(real_multigraph_city->cost_DSP(residential_west, north));
 }
+
+} // namespace

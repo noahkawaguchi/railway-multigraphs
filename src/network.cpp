@@ -5,9 +5,7 @@
 #include "network.hpp"
 #include "unvisited_queue.hpp"
 
-Network::Network() {}
-
-std::shared_ptr<Stop> Network::new_stop(std::string name, std::shared_ptr<Line> line) {
+auto Network::new_stop(std::string name, std::shared_ptr<Line> line) -> std::shared_ptr<Stop> {
   auto stop = std::make_shared<Stop>(name, line);
   this->stops.push_back(stop);
   return stop;
@@ -21,7 +19,8 @@ void Network::new_track(std::shared_ptr<Stop> stop1, std::shared_ptr<Stop> stop2
   this->tracks[stop2].insert(track_from_2);
 }
 
-Station Network::new_station(std::string name, std::unordered_set<std::shared_ptr<Stop>> stops) {
+auto Network::new_station(const std::string &name,
+                          const std::unordered_set<std::shared_ptr<Stop>> &stops) -> Station {
   // Set stops as transfers for each other
   for (const auto &stop_outer : stops) {
     for (const auto &stop_inner : stops) {
@@ -32,12 +31,12 @@ Station Network::new_station(std::string name, std::unordered_set<std::shared_pt
     }
   }
   // Set the station name for all the stops
-  for (const auto &stop : stops) stop->station_name = name;
+  for (const auto &stop : stops) { stop->station_name = name; }
   return Station{stops};
 }
 
-std::unordered_set<std::shared_ptr<Track>>
-Network::get_adjacent_tracks(std::shared_ptr<Stop> stop) {
+auto Network::get_adjacent_tracks(const std::shared_ptr<Stop> &stop)
+    -> std::unordered_set<std::shared_ptr<Track>> {
   // Get the stop's adjacent tracks
   auto ret = this->tracks[stop];
   // Get the adjacent tracks from any transfers
@@ -52,24 +51,24 @@ Network::get_adjacent_tracks(std::shared_ptr<Stop> stop) {
 }
 
 void Network::print_route(Route route) {
-  std::cout << std::endl
+  std::cout << '\n'
             << std::string(20, '-') << "\n\nHere is your route from " << route.front()->station_name
             << " to " << route.back()->station_name << ":\n\n";
   for (const auto &stop : route) {
-    stop == route.front() ? std::cout << "  Start: " << stop->station_name << std::endl
+    stop == route.front() ? std::cout << "  Start: " << stop->station_name << '\n'
                           : std::cout << "  -> Go to " << stop->station_name << " via the "
-                                      << stop->line->name << std::endl;
+                                      << stop->line->name << '\n';
   }
   std::cout << "\n  Total distance: " << route.back()->path_distance << " mi\n";
   // Always show the cost with cents
   double cost = route.back()->get_path_cost();
-  if (cost != 0) std::cout << std::format("  Total cost: ${0:.2f}\n", cost);
-  std::cout << '\n' << std::string(20, '-') << '\n' << std::endl;
+  if (cost != 0) { std::cout << std::format("  Total cost: ${0:.2f}\n", cost); }
+  std::cout << '\n' << std::string(20, '-') << '\n' << '\n';
 }
 
-Route Network::distance_DSP(Station start, Station destination) {
+auto Network::distance_DSP(Station start, Station destination) -> Route {
   // Set all stops' distance and cost to "infinity" and predecessor to dummy predecessor
-  for (const auto &stop : this->stops) stop->path_reset();
+  for (const auto &stop : this->stops) { stop->path_reset(); }
 
   // The algorithm works the same starting from any of the stops at the starting station
   auto starting_stop = *start.begin();
@@ -81,7 +80,7 @@ Route Network::distance_DSP(Station start, Station destination) {
 
   // Enqueue all stops in unvisited queue
   UnvisitedQueue uq;
-  for (const auto &stop : this->stops) uq.push(stop, stop->path_distance);
+  for (const auto &stop : this->stops) { uq.push(stop, stop->path_distance); }
 
   // Visit each of the unvisited stops
   while (!uq.empty()) {
@@ -122,13 +121,13 @@ Route Network::distance_DSP(Station start, Station destination) {
   }
   route.push_back(starting_stop);
   // Reverse to get the stops in the correct order
-  std::reverse(route.begin(), route.end());
+  std::ranges::reverse(route);
   return route;
 }
 
-Route Network::cost_DSP(Station start, Station destination) {
+auto Network::cost_DSP(Station start, Station destination) -> Route {
   // Set all stops' distance and cost to "infinity" and predecessor to dummy predecessor
-  for (const auto &stop : this->stops) stop->path_reset();
+  for (const auto &stop : this->stops) { stop->path_reset(); }
 
   // The algorithm works the same starting from any of the stops at the starting station
   auto starting_stop = *start.begin();
@@ -140,7 +139,7 @@ Route Network::cost_DSP(Station start, Station destination) {
 
   // Enqueue all stops in unvisited queue
   UnvisitedQueue uq;
-  for (const auto &stop : this->stops) uq.push(stop, stop->get_path_cost());
+  for (const auto &stop : this->stops) { uq.push(stop, stop->get_path_cost()); }
 
   // Visit each of the unvisited stops
   while (!uq.empty()) {
@@ -181,6 +180,6 @@ Route Network::cost_DSP(Station start, Station destination) {
   }
   route.push_back(starting_stop);
   // Reverse to get the stops in the correct order
-  std::reverse(route.begin(), route.end());
+  std::ranges::reverse(route);
   return route;
 }

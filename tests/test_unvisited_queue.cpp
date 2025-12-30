@@ -4,7 +4,7 @@
 
 TEST(TestUQ, Top) {
   // Create line and stops
-  auto test_line = std::make_shared<Line>(Line{"Test Line"});
+  auto test_line = std::make_shared<Line>(Line{.name = "Test Line"});
   auto stop1 = std::make_shared<Stop>("Stop 1", test_line);
   auto stop2 = std::make_shared<Stop>("Stop 2", test_line);
   auto stop3 = std::make_shared<Stop>("Stop 3", test_line);
@@ -36,7 +36,7 @@ TEST(TestUQ, Empty) {
   EXPECT_TRUE(uq.empty());
 
   // Create line and stops
-  auto test_line = std::make_shared<Line>(Line{"Test Line"});
+  auto test_line = std::make_shared<Line>(Line{.name = "Test Line"});
   auto stop1 = std::make_shared<Stop>("Stop 1", test_line);
   auto stop2 = std::make_shared<Stop>("Stop 2", test_line);
   auto stop3 = std::make_shared<Stop>("Stop 3", test_line);
@@ -69,7 +69,7 @@ TEST(TestUQ, Empty) {
 
 TEST(TestUQ, TopReinsertion) {
   // Create line and stops
-  auto test_line = std::make_shared<Line>(Line{"Test Line"});
+  auto test_line = std::make_shared<Line>(Line{.name = "Test Line"});
   auto A = std::make_shared<Stop>("A", test_line);
   auto B = std::make_shared<Stop>("B", test_line);
   auto C = std::make_shared<Stop>("C", test_line);

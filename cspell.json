@@ -5,6 +5,7 @@
     "ctest",
     "bugprone",
     "cppcoreguidelines",
-    "hicpp"
+    "hicpp",
+    "multigraph"
   ]
 }

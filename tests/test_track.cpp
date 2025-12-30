@@ -4,7 +4,7 @@
 
 TEST(TestTrack, InitTrack) {
   // Create a line and the stop on the other side
-  auto test_line = std::make_shared<Line>(Line{"Test Line"});
+  auto test_line = std::make_shared<Line>(Line{.name = "Test Line"});
   auto test_stop = std::make_shared<Stop>("Test Stop", test_line);
   // Create track
   auto test_track = std::make_shared<Track>(test_stop, 5.4);
@@ -16,7 +16,8 @@ TEST(TestTrack, InitTrack) {
 
 TEST(TestTrack, GetCost) {
   // Create the Red Line with three stops connected with tracks
-  auto red_line = std::make_shared<Line>(Line{"Red Line", 1.60, 0.32});
+  auto red_line =
+      std::make_shared<Line>(Line{.name = "Red Line", .base_cost = 1.60, .cost_per_mile = 0.32});
   auto A = std::make_shared<Stop>("A", red_line);
   auto B = std::make_shared<Stop>("B", red_line);
   auto C = std::make_shared<Stop>("C", red_line);
@@ -33,7 +34,8 @@ TEST(TestTrack, GetCost) {
   EXPECT_DOUBLE_EQ(C->get_path_cost(), 4.19);
 
   // Case where there is a transfer between lines
-  auto blue_line = std::make_shared<Line>(Line{"Blue Line", 1.40, 0.38});
+  auto blue_line =
+      std::make_shared<Line>(Line{.name = "Blue Line", .base_cost = 1.40, .cost_per_mile = 0.38});
   C->line = blue_line;
 
   A->set_path_cost(0.0);

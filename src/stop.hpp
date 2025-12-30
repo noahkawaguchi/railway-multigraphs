@@ -6,10 +6,11 @@
 #include <memory>
 #include <string>
 #include <unordered_set>
+#include <utility>
 #include <vector>
 
 struct Line {
-  std::string name = "";
+  std::string name;
   double base_cost = 0.0;
   double cost_per_mile = 0.0;
 };
@@ -24,16 +25,17 @@ struct Stop {
 
   // 2-arg constructor for general use
   Stop(std::string id, std::shared_ptr<Line> line)
-      : id(id), line(line), path_predecessor(dummy_predecessor) {}
+      : id(std::move(id)), line(std::move(line)), path_predecessor(dummy_predecessor) {}
+
   // 3-arg constructor to prevent dummy_predecessor from pointing to itself
   Stop(std::string id, std::shared_ptr<Line> line, std::shared_ptr<Stop> predecessor)
-      : id(id), line(line), path_predecessor(predecessor) {}
+      : id(std::move(id)), line(std::move(line)), path_predecessor(std::move(predecessor)) {}
 
   // Set the cost for shortest path algorithms. Automatically rounds to cents.
   void set_path_cost(double cost) { this->path_cost = std::round(cost * 100) / 100; }
 
   // Get the cost for shortest path algorithms. Always rounded to cents.
-  double get_path_cost() { return this->path_cost; }
+  auto get_path_cost() const -> double { return this->path_cost; }
 
   // Reset the predecessor, distance, and cost for restarting shortest path algorithms
   void path_reset() {
