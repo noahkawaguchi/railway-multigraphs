@@ -1,5 +1,4 @@
-#ifndef NETWORK_H
-#define NETWORK_H
+#pragma once
 
 #include <memory>
 #include <string>
@@ -38,5 +37,3 @@ private:
   std::vector<std::shared_ptr<Stop>> stops;
   std::unordered_map<std::shared_ptr<Stop>, std::unordered_set<std::shared_ptr<Track>>> tracks;
 };
-
-#endif // NETWORK_H

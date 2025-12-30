@@ -1,5 +1,4 @@
-#ifndef TRACK_H
-#define TRACK_H
+#pragma once
 
 #include <cmath>
 #include <memory>
@@ -27,5 +26,3 @@ struct Track {
     return total_cost;
   }
 };
-
-#endif // TRACK_H

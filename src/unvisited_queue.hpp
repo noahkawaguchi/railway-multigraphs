@@ -1,5 +1,4 @@
-#ifndef UNVISITED_QUEUE_H
-#define UNVISITED_QUEUE_H
+#pragma once
 
 #include <memory>
 #include <queue>
@@ -37,5 +36,3 @@ private:
   std::priority_queue<QueueStop> pq;
   std::unordered_set<std::shared_ptr<Stop>> processed;
 };
-
-#endif // UNVISITED_QUEUE_H

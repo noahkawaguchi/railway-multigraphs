@@ -1,5 +1,4 @@
-#ifndef STOP_H
-#define STOP_H
+#pragma once
 
 #include <cmath>
 #include <limits>
@@ -57,5 +56,3 @@ using Station = std::unordered_set<std::shared_ptr<Stop>>;
 
 // Type alias for readability in shortest path algorithms
 using Route = std::vector<std::shared_ptr<Stop>>;
-
-#endif // STOP_H
