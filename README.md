@@ -20,7 +20,7 @@ Dijkstra's shortest path finds the shortest path from a starting node to all oth
 
 ### Building, Testing, and Running the Project
 
-The project requires C++20. Here is one possible sequence of steps for building, testing, and running it on Mac/Linux. (Slight modifications are necessary on Windows.)
+The project requires C++23. Here is one possible sequence of steps for building, testing, and running it on Mac/Linux. (Slight modifications are necessary on Windows.)
 
 ```zsh
 mkdir build
