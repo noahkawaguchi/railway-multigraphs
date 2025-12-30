@@ -5,15 +5,17 @@
 
 #include "unvisited_queue.hpp"
 
-auto Network::new_stop(std::string name, std::shared_ptr<Line> line) -> std::shared_ptr<Stop> {
-  auto stop = std::make_shared<Stop>(name, line);
+auto Network::new_stop(const std::string &name, std::shared_ptr<const Line> line)
+    -> std::shared_ptr<Stop> {
+  const auto stop = std::make_shared<Stop>(name, line);
   this->stops.push_back(stop);
   return stop;
 }
 
-void Network::new_track(std::shared_ptr<Stop> stop1, std::shared_ptr<Stop> stop2, double distance) {
-  auto track_from_1 = std::make_shared<Track>(stop2, distance);
-  auto track_from_2 = std::make_shared<Track>(stop1, distance);
+void Network::new_track(std::shared_ptr<Stop> stop1, std::shared_ptr<Stop> stop2,
+                        const double distance) {
+  const auto track_from_1 = std::make_shared<Track>(stop2, distance);
+  const auto track_from_2 = std::make_shared<Track>(stop1, distance);
   // Add track to the adjacency list for both stops
   this->tracks[stop1].insert(track_from_1);
   this->tracks[stop2].insert(track_from_2);
@@ -50,7 +52,7 @@ auto Network::get_adjacent_tracks(const std::shared_ptr<Stop> &stop)
   return ret;
 }
 
-void Network::print_route(Route route) {
+void Network::print_route(const Route &route) {
   std::print("\n{}\n\nHere is your route from {} to {}:\n\n", std::string(20, '-'),
              route.front()->station_name, route.back()->station_name);
 
@@ -65,7 +67,7 @@ void Network::print_route(Route route) {
   std::println("\n  Total distance: {:.1f} mi", route.back()->path_distance);
 
   // Always show the cost with cents
-  double cost = route.back()->get_path_cost();
+  const double cost{route.back()->get_path_cost()};
   if (cost != 0) { std::println("  Total cost: ${:.2f}", cost); }
 
   std::print("\n{}\n\n", std::string(20, '-'));
@@ -76,21 +78,21 @@ auto Network::distance_dsp(const StationPair &station_pair) -> Route {
   for (const auto &stop : this->stops) { stop->path_reset(); }
 
   // The algorithm works the same starting from any of the stops at the starting station
-  auto starting_stop = *station_pair.start.begin();
-  std::shared_ptr<Stop> destination_stop; // Will be set when found
+  const auto starting_stop = *station_pair.start.begin();
+  std::shared_ptr<Stop> destination_stop{}; // Will be set when found
 
   // Distance and cost from start to start is 0
   starting_stop->path_distance = 0.0;
   starting_stop->set_path_cost(0.0);
 
   // Enqueue all stops in unvisited queue
-  UnvisitedQueue uq;
+  UnvisitedQueue uq{};
   for (const auto &stop : this->stops) { uq.push(stop, stop->path_distance); }
 
   // Visit each of the unvisited stops
   while (!uq.empty()) {
     // Visit minimum from unvisited queue
-    auto current_stop = uq.top_unprocessed();
+    const auto current_stop = uq.top_unprocessed();
 
     // Stop early if the destination is found
     if (station_pair.dest.contains(current_stop)) {
@@ -100,8 +102,9 @@ auto Network::distance_dsp(const StationPair &station_pair) -> Route {
 
     // Iterate over adjacent stops (via adjacent tracks)
     for (const auto &adj_track : this->get_adjacent_tracks(current_stop)) {
-      double alt_path_distance = current_stop->path_distance + adj_track->get_distance();
-      double alt_path_cost = current_stop->get_path_cost() + adj_track->get_cost_from(current_stop);
+      const double alt_path_distance{current_stop->path_distance + adj_track->get_distance()};
+      const double alt_path_cost{current_stop->get_path_cost()
+                                 + adj_track->get_cost_from(current_stop)};
 
       // If a shorter path from the starting stop to the adjacent stop is found,
       // or if the path is the same length but cheaper, update the adjacent stop's
@@ -118,7 +121,7 @@ auto Network::distance_dsp(const StationPair &station_pair) -> Route {
     }
   }
   // Accumulate the path from start to destination in reverse using the predecessors
-  Route route;
+  Route route{};
   auto cursor = destination_stop;
   while (cursor != starting_stop) {
     route.push_back(cursor);
@@ -135,21 +138,21 @@ auto Network::cost_dsp(const StationPair &station_pair) -> Route {
   for (const auto &stop : this->stops) { stop->path_reset(); }
 
   // The algorithm works the same starting from any of the stops at the starting station
-  auto starting_stop = *station_pair.start.begin();
-  std::shared_ptr<Stop> destination_stop; // Will be set when found
+  const auto starting_stop = *station_pair.start.begin();
+  std::shared_ptr<Stop> destination_stop{}; // Will be set when found
 
   // Distance and cost from start to start is 0
   starting_stop->path_distance = 0.0;
   starting_stop->set_path_cost(0.0);
 
   // Enqueue all stops in unvisited queue
-  UnvisitedQueue uq;
+  UnvisitedQueue uq{};
   for (const auto &stop : this->stops) { uq.push(stop, stop->get_path_cost()); }
 
   // Visit each of the unvisited stops
   while (!uq.empty()) {
     // Visit minimum from unvisited queue
-    auto current_stop = uq.top_unprocessed();
+    const auto current_stop = uq.top_unprocessed();
 
     // Stop early if the destination is found
     if (station_pair.dest.contains(current_stop)) {
@@ -159,8 +162,9 @@ auto Network::cost_dsp(const StationPair &station_pair) -> Route {
 
     // Iterate over adjacent stops (via adjacent tracks)
     for (const auto &adj_track : this->get_adjacent_tracks(current_stop)) {
-      double alt_path_distance = current_stop->path_distance + adj_track->get_distance();
-      double alt_path_cost = current_stop->get_path_cost() + adj_track->get_cost_from(current_stop);
+      const double alt_path_distance{current_stop->path_distance + adj_track->get_distance()};
+      const double alt_path_cost{current_stop->get_path_cost()
+                                 + adj_track->get_cost_from(current_stop)};
 
       // If a cheaper path from the starting stop to the adjacent stop is found,
       // or if the path is the same price but shorter, update the adjacent stop's
@@ -178,7 +182,7 @@ auto Network::cost_dsp(const StationPair &station_pair) -> Route {
     }
   }
   // Accumulate the path from start to destination in reverse using the predecessors
-  Route route;
+  Route route{};
   auto cursor = destination_stop;
   while (cursor != starting_stop) {
     route.push_back(cursor);

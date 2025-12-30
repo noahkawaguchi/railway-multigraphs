@@ -11,7 +11,7 @@
 class Network {
 public:
   /// Create and add a stop to the network.
-  [[nodiscard]] auto new_stop(std::string name, std::shared_ptr<Line> line)
+  [[nodiscard]] auto new_stop(const std::string &name, std::shared_ptr<const Line> line)
       -> std::shared_ptr<Stop>;
 
   /// Create and add a track to the network, specifying the distance traveled between the two stops.
@@ -27,7 +27,7 @@ public:
       -> std::unordered_set<std::shared_ptr<Track>>;
 
   /// Print a Route from a shortest path algorithm.
-  static void print_route(Route route);
+  static void print_route(const Route &route);
 
   /// Find Dijkstra's shortest path from start to destination, prioritizing distance (miles).
   [[nodiscard]] auto distance_dsp(const StationPair &station_pair) -> Route;

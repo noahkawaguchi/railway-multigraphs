@@ -20,7 +20,7 @@ struct Stop {
   // cppcoreguidelines-non-private-member-variables-in-classes)
 
   std::string station_name;                            ///< The name of the station this stop is at.
-  std::shared_ptr<Line> line;                          ///< The line this stop belongs to.
+  std::shared_ptr<const Line> line;                    ///< The line this stop belongs to.
   std::unordered_set<std::shared_ptr<Stop>> transfers; ///< Other lines' stops at the same station.
   std::shared_ptr<Stop> path_predecessor;              ///< The predecessor stop in path algorithms.
   double path_distance{PATH_INFINITY};                 ///< The distance value in path algorithms.
@@ -28,7 +28,8 @@ struct Stop {
   // NOLINTEND(misc-non-private-member-variables-in-classes,
   // cppcoreguidelines-non-private-member-variables-in-classes)
 
-  Stop(std::string id, std::shared_ptr<Line> line) : id(std::move(id)), line(std::move(line)) {}
+  Stop(std::string id, std::shared_ptr<const Line> line)
+      : id(std::move(id)), line(std::move(line)) {}
 
   /// Retrieve the ID of this stop.
   [[nodiscard]] auto get_id() const -> std::string_view { return std::string_view{this->id}; }

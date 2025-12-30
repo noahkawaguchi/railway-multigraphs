@@ -4,11 +4,11 @@
 
 TEST(TestUQ, Top) {
   // Create line and stops
-  auto test_line = std::make_shared<Line>(Line{.name = "Test Line"});
-  auto stop1 = std::make_shared<Stop>("Stop 1", test_line);
-  auto stop2 = std::make_shared<Stop>("Stop 2", test_line);
-  auto stop3 = std::make_shared<Stop>("Stop 3", test_line);
-  auto stop4 = std::make_shared<Stop>("Stop 4", test_line);
+  const auto test_line = std::make_shared<const Line>(Line{.name = "Test Line"});
+  const auto stop1 = std::make_shared<Stop>("Stop 1", test_line);
+  const auto stop2 = std::make_shared<Stop>("Stop 2", test_line);
+  const auto stop3 = std::make_shared<Stop>("Stop 3", test_line);
+  const auto stop4 = std::make_shared<Stop>("Stop 4", test_line);
 
   // Set priorities
   stop1->path_distance = 5;
@@ -17,7 +17,7 @@ TEST(TestUQ, Top) {
   stop4->path_distance = 2;
 
   // Create UnvisitedQueue and insert
-  UnvisitedQueue uq;
+  UnvisitedQueue uq{};
   uq.push(stop1, stop1->path_distance);
   uq.push(stop2, stop2->path_distance);
   uq.push(stop3, stop3->path_distance);
@@ -32,14 +32,14 @@ TEST(TestUQ, Top) {
 
 TEST(TestUQ, Empty) {
   // Create UnvisitedQueue, which should start empty
-  UnvisitedQueue uq;
+  UnvisitedQueue uq{};
   EXPECT_TRUE(uq.empty());
 
   // Create line and stops
-  auto test_line = std::make_shared<Line>(Line{.name = "Test Line"});
-  auto stop1 = std::make_shared<Stop>("Stop 1", test_line);
-  auto stop2 = std::make_shared<Stop>("Stop 2", test_line);
-  auto stop3 = std::make_shared<Stop>("Stop 3", test_line);
+  const auto test_line = std::make_shared<const Line>(Line{.name = "Test Line"});
+  const auto stop1 = std::make_shared<Stop>("Stop 1", test_line);
+  const auto stop2 = std::make_shared<Stop>("Stop 2", test_line);
+  const auto stop3 = std::make_shared<Stop>("Stop 3", test_line);
 
   // Set priorities
   stop1->path_distance = 7;
@@ -69,19 +69,19 @@ TEST(TestUQ, Empty) {
 
 TEST(TestUQ, TopReinsertion) {
   // Create line and stops
-  auto test_line = std::make_shared<Line>(Line{.name = "Test Line"});
-  auto a = std::make_shared<Stop>("A", test_line);
-  auto b = std::make_shared<Stop>("B", test_line);
-  auto c = std::make_shared<Stop>("C", test_line);
-  auto d = std::make_shared<Stop>("D", test_line);
-  auto e = std::make_shared<Stop>("E", test_line);
-  auto f = std::make_shared<Stop>("F", test_line);
+  const auto test_line = std::make_shared<const Line>(Line{.name = "Test Line"});
+  const auto a = std::make_shared<Stop>("A", test_line);
+  const auto b = std::make_shared<Stop>("B", test_line);
+  const auto c = std::make_shared<Stop>("C", test_line);
+  const auto d = std::make_shared<Stop>("D", test_line);
+  const auto e = std::make_shared<Stop>("E", test_line);
+  const auto f = std::make_shared<Stop>("F", test_line);
 
   // Set priority of C, leave the rest as infinity
   c->path_distance = 0;
 
   // Create UnvisitedQueue and insert
-  UnvisitedQueue uq;
+  UnvisitedQueue uq{};
   uq.push(a, a->path_distance);
   uq.push(b, b->path_distance);
   uq.push(c, c->path_distance);

@@ -4,10 +4,10 @@
 
 TEST(TestTrack, InitTrack) {
   // Create a line and the stop on the other side
-  auto test_line = std::make_shared<Line>(Line{.name = "Test Line"});
-  auto test_stop = std::make_shared<Stop>("Test Stop", test_line);
+  const auto test_line = std::make_shared<const Line>(Line{.name = "Test Line"});
+  const auto test_stop = std::make_shared<Stop>("Test Stop", test_line);
   // Create track
-  auto test_track = std::make_shared<Track>(test_stop, 5.4);
+  const auto test_track = std::make_shared<const Track>(test_stop, 5.4);
   // Make sure data members were set correctly
   EXPECT_EQ(test_track->other_stop, test_stop);
   EXPECT_DOUBLE_EQ(test_track->get_distance(), 5.4);
@@ -16,13 +16,13 @@ TEST(TestTrack, InitTrack) {
 
 TEST(TestTrack, GetCost) {
   // Create the Red Line with three stops connected with tracks
-  auto red_line =
-      std::make_shared<Line>(Line{.name = "Red Line", .base_cost = 1.60, .cost_per_mile = 0.32});
-  auto a = std::make_shared<Stop>("A", red_line);
-  auto b = std::make_shared<Stop>("B", red_line);
-  auto c = std::make_shared<Stop>("C", red_line);
-  auto a_b = std::make_shared<Track>(b, 3.2);
-  auto b_c = std::make_shared<Track>(c, 4.9);
+  const auto red_line = std::make_shared<const Line>(
+      Line{.name = "Red Line", .base_cost = 1.60, .cost_per_mile = 0.32});
+  const auto a = std::make_shared<Stop>("A", red_line);
+  const auto b = std::make_shared<Stop>("B", red_line);
+  const auto c = std::make_shared<Stop>("C", red_line);
+  const auto a_b = std::make_shared<Track>(b, 3.2);
+  const auto b_c = std::make_shared<Track>(c, 4.9);
 
   // Case where all tracks and stops are on the same line
   a->set_path_cost(0.0);
@@ -34,8 +34,8 @@ TEST(TestTrack, GetCost) {
   EXPECT_DOUBLE_EQ(c->get_path_cost(), 4.19);
 
   // Case where there is a transfer between lines
-  auto blue_line =
-      std::make_shared<Line>(Line{.name = "Blue Line", .base_cost = 1.40, .cost_per_mile = 0.38});
+  const auto blue_line = std::make_shared<const Line>(
+      Line{.name = "Blue Line", .base_cost = 1.40, .cost_per_mile = 0.38});
   c->line = blue_line;
 
   a->set_path_cost(0.0);

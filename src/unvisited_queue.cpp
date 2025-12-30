@@ -3,8 +3,7 @@
 #include <utility>
 
 void UnvisitedQueue::push(std::shared_ptr<Stop> stop, double priority) {
-  QueueStop qs(std::move(stop), priority);
-  this->pq.push(qs);
+  this->pq.emplace(std::move(stop), priority);
 }
 
 auto UnvisitedQueue::empty() -> bool {
@@ -20,7 +19,7 @@ auto UnvisitedQueue::top_unprocessed() -> std::shared_ptr<Stop> {
   if (this->empty()) { return std::make_shared<Stop>("Dummy Stop", nullptr); }
 
   // If the function did not return above, the top stop must be unprocessed
-  QueueStop qs = this->pq.top();
+  const QueueStop qs{this->pq.top()};
   this->pq.pop();
 
   // Mark the stop as being processed now
