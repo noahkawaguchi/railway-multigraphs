@@ -17,7 +17,7 @@ auto UnvisitedQueue::empty() -> bool {
 auto UnvisitedQueue::top_unprocessed() -> std::shared_ptr<Stop> {
   // Clear processed stops off the top of the queue. Return a dummy stop if this function
   // has been mistakenly called on an empty queue or one with all processed stops.
-  if (this->empty()) { return std::make_shared<Stop>("Dummy Stop", nullptr, nullptr); }
+  if (this->empty()) { return std::make_shared<Stop>("Dummy Stop", nullptr); }
 
   // If the function did not return above, the top stop must be unprocessed
   QueueStop qs = this->pq.top();

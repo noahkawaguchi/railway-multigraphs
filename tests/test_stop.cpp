@@ -11,7 +11,7 @@ TEST(TestStop, InitStop) {
   EXPECT_EQ(test_stop->line->name, "Test Line");
   // Make sure default path values are set correctly
   EXPECT_EQ(test_stop->path_distance, 8.988465674311579e+307);
-  EXPECT_EQ(test_stop->path_predecessor->id, "No Predecessor");
+  EXPECT_EQ(test_stop->path_predecessor, nullptr);
 }
 
 TEST(TestStop, SetPathStats) {
@@ -39,7 +39,7 @@ TEST(TestStop, ResetPathStats) {
   test_stop->path_reset();
   // Make sure path stats are back to their default values
   EXPECT_DOUBLE_EQ(test_stop->path_distance, 8.988465674311579e+307);
-  EXPECT_EQ(test_stop->path_predecessor->id, "No Predecessor");
+  EXPECT_EQ(test_stop->path_predecessor, nullptr);
 }
 
 TEST(TestStop, Transfers) {
