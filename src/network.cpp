@@ -95,7 +95,7 @@ auto Network::distance_DSP(const StationPair &station_pair) -> Route {
 
     // Iterate over adjacent stops (via adjacent tracks)
     for (const auto &adj_track : this->get_adjacent_tracks(current_stop)) {
-      double alt_path_distance = current_stop->path_distance + adj_track->distance;
+      double alt_path_distance = current_stop->path_distance + adj_track->get_distance();
       double alt_path_cost = current_stop->get_path_cost() + adj_track->get_cost_from(current_stop);
 
       // If a shorter path from the starting stop to the adjacent stop is found,
@@ -154,7 +154,7 @@ auto Network::cost_DSP(const StationPair &station_pair) -> Route {
 
     // Iterate over adjacent stops (via adjacent tracks)
     for (const auto &adj_track : this->get_adjacent_tracks(current_stop)) {
-      double alt_path_distance = current_stop->path_distance + adj_track->distance;
+      double alt_path_distance = current_stop->path_distance + adj_track->get_distance();
       double alt_path_cost = current_stop->get_path_cost() + adj_track->get_cost_from(current_stop);
 
       // If a cheaper path from the starting stop to the adjacent stop is found,
@@ -163,7 +163,8 @@ auto Network::cost_DSP(const StationPair &station_pair) -> Route {
       if (alt_path_cost < adj_track->other_stop->get_path_cost()
           || (alt_path_cost == adj_track->other_stop->get_path_cost()
               && alt_path_distance < adj_track->other_stop->path_distance)) {
-        adj_track->other_stop->path_distance = current_stop->path_distance + adj_track->distance;
+        adj_track->other_stop->path_distance =
+            current_stop->path_distance + adj_track->get_distance();
         adj_track->other_stop->set_path_cost(alt_path_cost);
         adj_track->other_stop->path_predecessor = current_stop;
         // The stop with modified data must be reinserted to maintain sorting

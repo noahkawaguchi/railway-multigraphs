@@ -10,7 +10,7 @@ TEST(TestTrack, InitTrack) {
   auto test_track = std::make_shared<Track>(test_stop, 5.4);
   // Make sure data members were set correctly
   EXPECT_EQ(test_track->other_stop, test_stop);
-  EXPECT_DOUBLE_EQ(test_track->distance, 5.4);
+  EXPECT_DOUBLE_EQ(test_track->get_distance(), 5.4);
   EXPECT_EQ(test_track->other_stop->line->name, "Test Line");
 }
 

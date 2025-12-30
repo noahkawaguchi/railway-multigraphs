@@ -7,15 +7,22 @@
 #include "stop.hpp"
 
 struct Track {
-  std::shared_ptr<Stop> other_stop;
-  double distance; // The distance to the other stop (miles)
+  // NOLINTBEGIN(misc-non-private-member-variables-in-classes,
+  // cppcoreguidelines-non-private-member-variables-in-classes)
 
-  // Define constructor for pointer safety
+  std::shared_ptr<Stop> other_stop;
+
+  // NOLINTEND(misc-non-private-member-variables-in-classes,
+  // cppcoreguidelines-non-private-member-variables-in-classes)
+
+  // Constructor for pointer safety
   Track(std::shared_ptr<Stop> other_stop, double distance)
       : other_stop(std::move(other_stop)), distance(distance) {}
 
+  [[nodiscard]] auto get_distance() const -> double { return this->distance; }
+
   // Calculate the cost to go to the other stop, rounded to cents
-  auto get_cost_from(const std::shared_ptr<Stop> &current_stop) -> double {
+  [[nodiscard]] auto get_cost_from(const std::shared_ptr<Stop> &current_stop) -> double {
     double total_cost = 0.0;
     // Regular cost to take this section of track
     total_cost += std::round(this->distance * this->other_stop->line->cost_per_mile * 100) / 100;
@@ -25,4 +32,7 @@ struct Track {
     }
     return total_cost;
   }
+
+private:
+  double distance; // The distance to the other stop (miles)
 };
