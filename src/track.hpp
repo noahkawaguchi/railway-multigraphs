@@ -15,13 +15,12 @@ struct Track {
   // NOLINTEND(misc-non-private-member-variables-in-classes,
   // cppcoreguidelines-non-private-member-variables-in-classes)
 
-  // Constructor for pointer safety
   Track(std::shared_ptr<Stop> other_stop, double distance)
       : other_stop(std::move(other_stop)), distance(distance) {}
 
   [[nodiscard]] auto get_distance() const -> double { return this->distance; }
 
-  // Calculate the cost to go to the other stop, rounded to cents
+  /// Calculate the cost to go to the other stop, rounded to cents.
   [[nodiscard]] auto get_cost_from(const std::shared_ptr<Stop> &current_stop) -> double {
     double total_cost = 0.0;
     // Regular cost to take this section of track
@@ -34,5 +33,5 @@ struct Track {
   }
 
 private:
-  double distance; // The distance to the other stop (miles)
+  double distance; ///< The distance to the other stop (in miles).
 };
