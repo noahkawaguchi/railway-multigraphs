@@ -7,7 +7,7 @@ TEST(TestStop, InitStop) {
   auto test_line = std::make_shared<Line>(Line{.name = "Test Line"});
   auto test_stop = std::make_shared<Stop>("Test Stop", test_line);
   // Make sure names are set correctly
-  EXPECT_EQ(test_stop->id, "Test Stop");
+  EXPECT_EQ(test_stop->get_id(), "Test Stop");
   EXPECT_EQ(test_stop->line->name, "Test Line");
   // Make sure default path values are set correctly
   EXPECT_EQ(test_stop->path_distance, 8.988465674311579e+307);
