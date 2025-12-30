@@ -8,9 +8,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Generate compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# Include the "include" directory for public headers
-include_directories(include)
-
 # Add the main executable
 add_executable(railway-multigraphs
     src/network.cpp
