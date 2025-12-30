@@ -1,6 +1,5 @@
 #include <algorithm>
-#include <format>
-#include <iostream>
+#include <print>
 
 #include "network.hpp"
 #include "unvisited_queue.hpp"
@@ -51,19 +50,24 @@ auto Network::get_adjacent_tracks(const std::shared_ptr<Stop> &stop)
 }
 
 void Network::print_route(Route route) {
-  std::cout << '\n'
-            << std::string(20, '-') << "\n\nHere is your route from " << route.front()->station_name
-            << " to " << route.back()->station_name << ":\n\n";
+  std::print("\n{}\n\nHere is your route from {} to {}:\n\n", std::string(20, '-'),
+             route.front()->station_name, route.back()->station_name);
+
   for (const auto &stop : route) {
-    stop == route.front() ? std::cout << "  Start: " << stop->station_name << '\n'
-                          : std::cout << "  -> Go to " << stop->station_name << " via the "
-                                      << stop->line->name << '\n';
+    if (stop == route.front()) {
+      std::println("  Start: {}", stop->station_name);
+    } else {
+      std::println("  -> Go to {} via the {}", stop->station_name, stop->line->name);
+    }
   }
-  std::cout << "\n  Total distance: " << route.back()->path_distance << " mi\n";
+
+  std::println("\n  Total distance: {:.1f} mi", route.back()->path_distance);
+
   // Always show the cost with cents
   double cost = route.back()->get_path_cost();
-  if (cost != 0) { std::cout << std::format("  Total cost: ${0:.2f}\n", cost); }
-  std::cout << '\n' << std::string(20, '-') << '\n' << '\n';
+  if (cost != 0) { std::println("  Total cost: ${:.2f}", cost); }
+
+  std::print("\n{}\n\n", std::string(20, '-'));
 }
 
 auto Network::distance_DSP(const StationPair &station_pair) -> Route {
