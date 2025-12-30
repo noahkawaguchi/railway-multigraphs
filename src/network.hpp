@@ -30,10 +30,10 @@ public:
   static void print_route(Route route);
 
   /// Find Dijkstra's shortest path from start to destination, prioritizing distance (miles).
-  [[nodiscard]] auto distance_DSP(const StationPair &station_pair) -> Route;
+  [[nodiscard]] auto distance_dsp(const StationPair &station_pair) -> Route;
 
   /// Find Dijkstra's shortest path from start to destination, prioritizing cost.
-  [[nodiscard]] auto cost_DSP(const StationPair &station_pair) -> Route;
+  [[nodiscard]] auto cost_dsp(const StationPair &station_pair) -> Route;
 
 private:
   std::vector<std::shared_ptr<Stop>> stops;

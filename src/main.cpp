@@ -45,7 +45,7 @@ void toy_data_abcd() {
   Station stationD = Network::new_station("Station D", {stopD});
 
   // Calculate Dijkstra's shortest path from Stop A to Stop C
-  Network::print_route(basic_network->distance_DSP({.start = stationA, .dest = stationC}));
+  Network::print_route(basic_network->distance_dsp({.start = stationA, .dest = stationC}));
 }
 
 void toy_data_tiny_city() {
@@ -88,7 +88,7 @@ void toy_data_tiny_city() {
   Station seaport_station = Network::new_station("Seaport Station", {seaport});
 
   // Calculate Dijkstra's shortest path from the park to the airport
-  Network::print_route(tiny_city->distance_DSP({.start = park_station, .dest = airport_station}));
+  Network::print_route(tiny_city->distance_dsp({.start = park_station, .dest = airport_station}));
 }
 
 void toy_data_long_cheap_way() {
@@ -128,10 +128,10 @@ void toy_data_long_cheap_way() {
   Station stationF = Network::new_station("Station F", {savings_F});
 
   // Find the path from A to F with the shortest distance, which is more expensive
-  Network::print_route(cost_test_railway->distance_DSP({.start = stationA, .dest = stationF}));
+  Network::print_route(cost_test_railway->distance_dsp({.start = stationA, .dest = stationF}));
 
   // Find the cheapest path from A to F, even though it is longer
-  Network::print_route(cost_test_railway->cost_DSP({.start = stationA, .dest = stationF}));
+  Network::print_route(cost_test_railway->cost_dsp({.start = stationA, .dest = stationF}));
 }
 
 void toy_data_real_multigraph_city() {
@@ -194,23 +194,23 @@ void toy_data_real_multigraph_city() {
   Station residential_west = Network::new_station("Residential West Station", {c1, s1});
 
   // Find the shortest path from Seaport Station to City Center Station
-  Network::print_route(real_multigraph_city->distance_DSP({.start = seaport, .dest = city_center}));
+  Network::print_route(real_multigraph_city->distance_dsp({.start = seaport, .dest = city_center}));
 
   // Find the cheapest path from Seaport Station to City Center Station
-  Network::print_route(real_multigraph_city->cost_DSP({.start = seaport, .dest = city_center}));
+  Network::print_route(real_multigraph_city->cost_dsp({.start = seaport, .dest = city_center}));
 
   // Find the shortest path from South Station to Airport Station
-  Network::print_route(real_multigraph_city->distance_DSP({.start = south, .dest = airport}));
+  Network::print_route(real_multigraph_city->distance_dsp({.start = south, .dest = airport}));
 
   // Find the cheapest path from South Station to Airport Station
-  Network::print_route(real_multigraph_city->cost_DSP({.start = south, .dest = airport}));
+  Network::print_route(real_multigraph_city->cost_dsp({.start = south, .dest = airport}));
 
   // Find the shortest path from Residential West Station to North Station
   Network::print_route(
-      real_multigraph_city->distance_DSP({.start = residential_west, .dest = north}));
+      real_multigraph_city->distance_dsp({.start = residential_west, .dest = north}));
 
   // Find the cheapest path from Residential West Station to North Station
-  Network::print_route(real_multigraph_city->cost_DSP({.start = residential_west, .dest = north}));
+  Network::print_route(real_multigraph_city->cost_dsp({.start = residential_west, .dest = north}));
 }
 
 } // namespace

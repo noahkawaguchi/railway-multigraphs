@@ -71,7 +71,7 @@ void Network::print_route(Route route) {
   std::print("\n{}\n\n", std::string(20, '-'));
 }
 
-auto Network::distance_DSP(const StationPair &station_pair) -> Route {
+auto Network::distance_dsp(const StationPair &station_pair) -> Route {
   // Set all stops' distance and cost to "infinity" and predecessor to dummy predecessor
   for (const auto &stop : this->stops) { stop->path_reset(); }
 
@@ -130,7 +130,7 @@ auto Network::distance_DSP(const StationPair &station_pair) -> Route {
   return route;
 }
 
-auto Network::cost_DSP(const StationPair &station_pair) -> Route {
+auto Network::cost_dsp(const StationPair &station_pair) -> Route {
   // Set all stops' distance and cost to "infinity" and predecessor to dummy predecessor
   for (const auto &stop : this->stops) { stop->path_reset(); }
 
