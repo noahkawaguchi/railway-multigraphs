@@ -1,3 +1,10 @@
 {
-  "words": ["DCMAKE", "multigraphs", "ctest"]
+  "words": [
+    "DCMAKE",
+    "multigraphs",
+    "ctest",
+    "bugprone",
+    "cppcoreguidelines",
+    "hicpp"
+  ]
 }
