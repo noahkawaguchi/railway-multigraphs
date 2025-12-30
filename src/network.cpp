@@ -66,12 +66,12 @@ void Network::print_route(Route route) {
   std::cout << '\n' << std::string(20, '-') << '\n' << '\n';
 }
 
-auto Network::distance_DSP(Station start, Station destination) -> Route {
+auto Network::distance_DSP(const StationPair &station_pair) -> Route {
   // Set all stops' distance and cost to "infinity" and predecessor to dummy predecessor
   for (const auto &stop : this->stops) { stop->path_reset(); }
 
   // The algorithm works the same starting from any of the stops at the starting station
-  auto starting_stop = *start.begin();
+  auto starting_stop = *station_pair.start.begin();
   std::shared_ptr<Stop> destination_stop; // Will be set when found
 
   // Distance and cost from start to start is 0
@@ -88,7 +88,7 @@ auto Network::distance_DSP(Station start, Station destination) -> Route {
     auto current_stop = uq.top_unprocessed();
 
     // Stop early if the destination is found
-    if (destination.contains(current_stop)) {
+    if (station_pair.dest.contains(current_stop)) {
       destination_stop = current_stop;
       break;
     }
@@ -125,12 +125,12 @@ auto Network::distance_DSP(Station start, Station destination) -> Route {
   return route;
 }
 
-auto Network::cost_DSP(Station start, Station destination) -> Route {
+auto Network::cost_DSP(const StationPair &station_pair) -> Route {
   // Set all stops' distance and cost to "infinity" and predecessor to dummy predecessor
   for (const auto &stop : this->stops) { stop->path_reset(); }
 
   // The algorithm works the same starting from any of the stops at the starting station
-  auto starting_stop = *start.begin();
+  auto starting_stop = *station_pair.start.begin();
   std::shared_ptr<Stop> destination_stop; // Will be set when found
 
   // Distance and cost from start to start is 0
@@ -147,7 +147,7 @@ auto Network::cost_DSP(Station start, Station destination) -> Route {
     auto current_stop = uq.top_unprocessed();
 
     // Stop early if the destination is found
-    if (destination.contains(current_stop)) {
+    if (station_pair.dest.contains(current_stop)) {
       destination_stop = current_stop;
       break;
     }

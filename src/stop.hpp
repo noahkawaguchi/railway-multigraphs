@@ -44,5 +44,10 @@ private:
 // Type alias for managing multiple transfer stops
 using Station = std::unordered_set<std::shared_ptr<Stop>>;
 
+// Struct for managing a pair of start and destination stations
+struct StationPair {
+  Station start, dest;
+};
+
 // Type alias for readability in shortest path algorithms
 using Route = std::vector<std::shared_ptr<Stop>>;
