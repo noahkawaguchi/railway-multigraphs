@@ -1,7 +1,8 @@
+#include "network.hpp"
+
 #include <algorithm>
 #include <print>
 
-#include "network.hpp"
 #include "unvisited_queue.hpp"
 
 auto Network::new_stop(std::string name, std::shared_ptr<Line> line) -> std::shared_ptr<Stop> {

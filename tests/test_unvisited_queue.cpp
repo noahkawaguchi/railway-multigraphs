@@ -1,6 +1,6 @@
-#include <gtest/gtest.h>
-
 #include "../src/unvisited_queue.hpp"
+
+#include <gtest/gtest.h>
 
 TEST(TestUQ, Top) {
   // Create line and stops

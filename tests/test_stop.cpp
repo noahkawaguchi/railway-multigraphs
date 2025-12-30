@@ -1,6 +1,6 @@
-#include <gtest/gtest.h>
-
 #include "../src/stop.hpp"
+
+#include <gtest/gtest.h>
 
 TEST(TestStop, InitStop) {
   // Create line and stop
