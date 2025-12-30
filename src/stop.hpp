@@ -16,22 +16,28 @@ struct Line {
 };
 
 struct Stop {
+  // NOLINTBEGIN(misc-non-private-member-variables-in-classes,
+  // cppcoreguidelines-non-private-member-variables-in-classes)
+
   std::string station_name;                            // The name of the station this stop is at
   std::shared_ptr<Line> line;                          // The line this stop belongs to
   std::unordered_set<std::shared_ptr<Stop>> transfers; // Stops at the same station by other lines
-  std::shared_ptr<Stop> path_predecessor{nullptr};
+  std::shared_ptr<Stop> path_predecessor;              // The predecessor stop in path algorithms
   double path_distance = std::numeric_limits<double>::max() / 2; // "Infinity"
+
+  // NOLINTEND(misc-non-private-member-variables-in-classes,
+  // cppcoreguidelines-non-private-member-variables-in-classes)
 
   Stop(std::string id, std::shared_ptr<Line> line) : id(std::move(id)), line(std::move(line)) {}
 
   // Retrieve the ID of this stop.
-  auto get_id() const -> std::string_view { return std::string_view{this->id}; }
+  [[nodiscard]] auto get_id() const -> std::string_view { return std::string_view{this->id}; }
 
   // Set the cost for shortest path algorithms. Automatically rounds to cents.
   void set_path_cost(double cost) { this->path_cost = std::round(cost * 100) / 100; }
 
   // Get the cost for shortest path algorithms. Always rounded to cents.
-  auto get_path_cost() const -> double { return this->path_cost; }
+  [[nodiscard]] auto get_path_cost() const -> double { return this->path_cost; }
 
   // Reset the predecessor, distance, and cost for restarting shortest path algorithms
   void path_reset() {
