@@ -20,15 +20,24 @@ Dijkstra's shortest path finds the shortest path from a starting node to all oth
 
 ### Building, Testing, and Running the Project
 
-The project requires C++20. Here is one possible sequence of steps for building, testing, and running it on Mac/Linux. (Slight modifications are necessary on Windows.)
+The project requires a C++23 compiler such as GCC 14+ or Clang 18+ (tested with GCC 14 and 15) and CMake 3.25+. The project also uses GoogleTest as a Git submodule.
 
-```zsh
-mkdir build
-cd build
-cmake .. -DCMAKE_BUILD_TYPE=Debug # Or just `cmake ..` for no debugging
-make
-./railway_multigraphs # To print the toy data results
-ctest --verbose # To see the tests pass for more cases than are printed
+Using the command runner [just](https://github.com/casey/just):
+
+```bash
+just rebuild
+just test
+just run
+```
+
+Or running the same commands manually:
+
+```bash
+rm -rf build
+cmake -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build
+ctest --test-dir build --output-on-failure --verbose
+./build/railway-multigraphs
 ```
 
 ### Toy Data Example Visualization
@@ -39,10 +48,9 @@ Here is one example of the visualizations I made using [graphonline.top](https:/
 
 ### Terminal Output
 
-Here is the terminal output printed from main when running `./railway_multigraphs` (or `railway_multigraphs.exe` on Windows):
+Here is the terminal output printed when running the main executable:
 
 ```
-
 --------------------
 
 Here is your route from Station A to Station C:
@@ -52,7 +60,7 @@ Here is your route from Station A to Station C:
   -> Go to Station D via the ABCD Line
   -> Go to Station C via the ABCD Line
 
-  Total distance: 6 mi
+  Total distance: 6.0 mi
 
 --------------------
 
@@ -67,7 +75,7 @@ Here is your route from Park Station to Airport Station:
   -> Go to City Hall Station via the Tiny City Railway
   -> Go to Airport Station via the Tiny City Railway
 
-  Total distance: 16 mi
+  Total distance: 16.0 mi
 
 --------------------
 
@@ -82,7 +90,7 @@ Here is your route from Station A to Station F:
   -> Go to Station E via the Express Line
   -> Go to Station F via the Savings Line
 
-  Total distance: 6 mi
+  Total distance: 6.0 mi
   Total cost: $5.18
 
 --------------------
@@ -190,5 +198,4 @@ Here is your route from Residential West Station to North Station:
   Total cost: $6.66
 
 --------------------
-
 ```

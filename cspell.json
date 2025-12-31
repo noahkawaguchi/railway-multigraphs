@@ -1,0 +1,15 @@
+{
+  "useGitignore": true,
+  "ignorePaths": ["external"],
+  "words": [
+    "DCMAKE",
+    "multigraphs",
+    "ctest",
+    "bugprone",
+    "cppcoreguidelines",
+    "hicpp",
+    "multigraph",
+    "graphonline",
+    "graphml"
+  ]
+}

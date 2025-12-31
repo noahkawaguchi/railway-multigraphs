@@ -1,20 +1,15 @@
-cmake_minimum_required(VERSION 3.16)
-project(RailwayMultigraphs)
+cmake_minimum_required(VERSION 3.25)
+project(railway-multigraphs)
 
-# Set the C++ standard
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Generate compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# Include the "include" directory for public headers
-include_directories(include)
-
 # Add the main executable
-add_executable(railway_multigraphs
-    src/Network.cpp
-    src/UnvisitedQueue.cpp
+add_executable(railway-multigraphs
+    src/network.cpp
+    src/unvisited_queue.cpp
     src/main.cpp
 )
 
@@ -23,12 +18,12 @@ add_subdirectory(external/googletest)
 
 # Add the test executable
 add_executable(tests
-    src/Network.cpp
-    tests/test_Network.cpp
-    src/UnvisitedQueue.cpp
-    tests/test_UnvisitedQueue.cpp
-    tests/test_Stop.cpp
-    tests/test_Track.cpp
+    src/network.cpp
+    tests/test_network.cpp
+    src/unvisited_queue.cpp
+    tests/test_unvisited_queue.cpp
+    tests/test_stop.cpp
+    tests/test_track.cpp
 )
 
 # Discover and enable tests
