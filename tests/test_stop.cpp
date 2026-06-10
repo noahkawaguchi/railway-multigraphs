@@ -1,5 +1,7 @@
 #include "../src/stop.hpp"
 
+#include <memory>
+
 #include <gtest/gtest.h>
 
 TEST(TestStop, InitStop) {

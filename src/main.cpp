@@ -1,6 +1,7 @@
 #include <memory>
 
 #include "network.hpp"
+#include "stop.hpp"
 
 namespace {
 

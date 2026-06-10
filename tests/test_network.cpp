@@ -1,6 +1,12 @@
 #include "../src/network.hpp"
 
+#include <memory>
+#include <tuple>
+#include <unordered_set>
+
 #include <gtest/gtest.h>
+
+#include "../src/stop.hpp"
 
 TEST(TestNetwork, GetAdjacentTracks) {
   // Create network

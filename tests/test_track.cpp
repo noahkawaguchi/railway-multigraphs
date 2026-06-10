@@ -1,6 +1,10 @@
 #include "../src/track.hpp"
 
+#include <memory>
+
 #include <gtest/gtest.h>
+
+#include "../src/stop.hpp"
 
 TEST(TestTrack, InitTrack) {
   // Create a line and the stop on the other side

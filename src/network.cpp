@@ -1,8 +1,13 @@
 #include "network.hpp"
 
 #include <algorithm>
+#include <memory>
 #include <print>
+#include <string>
+#include <unordered_set>
 
+#include "stop.hpp"
+#include "track.hpp"
 #include "unvisited_queue.hpp"
 
 auto Network::new_stop(const std::string &name, std::shared_ptr<const Line> line)

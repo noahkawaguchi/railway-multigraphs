@@ -1,6 +1,11 @@
 #include "../src/unvisited_queue.hpp"
 
+#include <memory>
+#include <tuple>
+
 #include <gtest/gtest.h>
+
+#include "../src/stop.hpp"
 
 TEST(TestUQ, Top) {
   // Create line and stops
