@@ -12,11 +12,12 @@
 class Network {
 public:
   /// Create and add a stop to the network.
-  [[nodiscard]] auto new_stop(const std::string &name, std::shared_ptr<const Line> line)
-      -> std::shared_ptr<Stop>;
+  [[nodiscard]] auto new_stop(const std::string &name, const std::shared_ptr<const Line> &line)
+    -> std::shared_ptr<Stop>;
 
   /// Create and add a track to the network, specifying the distance traveled between the two stops.
-  void new_track(std::shared_ptr<Stop> stop1, std::shared_ptr<Stop> stop2, double distance);
+  void new_track(const std::shared_ptr<Stop> &stop1, const std::shared_ptr<Stop> &stop2,
+                 double distance);
 
   /// Create a new station that has all the provided stops.
   [[nodiscard]] static auto new_station(const std::string &name,

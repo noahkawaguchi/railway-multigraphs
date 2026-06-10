@@ -10,14 +10,14 @@
 #include "track.hpp"
 #include "unvisited_queue.hpp"
 
-auto Network::new_stop(const std::string &name, std::shared_ptr<const Line> line)
-    -> std::shared_ptr<Stop> {
+auto Network::new_stop(const std::string &name, const std::shared_ptr<const Line> &line)
+  -> std::shared_ptr<Stop> {
   const auto stop = std::make_shared<Stop>(name, line);
   this->stops.push_back(stop);
   return stop;
 }
 
-void Network::new_track(std::shared_ptr<Stop> stop1, std::shared_ptr<Stop> stop2,
+void Network::new_track(const std::shared_ptr<Stop> &stop1, const std::shared_ptr<Stop> &stop2,
                         const double distance) {
   const auto track_from_1 = std::make_shared<Track>(stop2, distance);
   const auto track_from_2 = std::make_shared<Track>(stop1, distance);
