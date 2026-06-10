@@ -11,19 +11,19 @@
 
 struct Line {
   std::string name;
-  double base_cost = 0.0;
-  double cost_per_mile = 0.0;
+  double      base_cost     = 0.0;
+  double      cost_per_mile = 0.0;
 };
 
 struct Stop {
   // NOLINTBEGIN(misc-non-private-member-variables-in-classes,
   // cppcoreguidelines-non-private-member-variables-in-classes)
 
-  std::string station_name;                            ///< The name of the station this stop is at.
+  std::string                 station_name;            ///< The name of the station this stop is at.
   std::shared_ptr<const Line> line;                    ///< The line this stop belongs to.
   std::unordered_set<std::shared_ptr<Stop>> transfers; ///< Other lines' stops at the same station.
   std::shared_ptr<Stop> path_predecessor;              ///< The predecessor stop in path algorithms.
-  double path_distance{PATH_INFINITY};                 ///< The distance value in path algorithms.
+  double                path_distance{PATH_INFINITY};  ///< The distance value in path algorithms.
 
   // NOLINTEND(misc-non-private-member-variables-in-classes,
   // cppcoreguidelines-non-private-member-variables-in-classes)
@@ -43,8 +43,8 @@ struct Stop {
   /// Reset the predecessor, distance, and cost for restarting shortest path algorithms.
   void path_reset() {
     this->path_predecessor = nullptr;
-    this->path_distance = PATH_INFINITY;
-    this->path_cost = PATH_INFINITY;
+    this->path_distance    = PATH_INFINITY;
+    this->path_cost        = PATH_INFINITY;
   }
 
 private:
@@ -52,7 +52,7 @@ private:
   static constexpr double PATH_INFINITY{std::numeric_limits<double>::max() / 2};
 
   std::string id;
-  double path_cost{PATH_INFINITY};
+  double      path_cost{PATH_INFINITY};
 };
 
 /// Type alias for managing multiple transfer stops.

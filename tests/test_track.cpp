@@ -21,10 +21,10 @@ TEST(TestTrack, InitTrack) {
 TEST(TestTrack, GetCost) {
   // Create the Red Line with three stops connected with tracks
   const auto red_line = std::make_shared<const Line>(
-      Line{.name = "Red Line", .base_cost = 1.60, .cost_per_mile = 0.32});
-  const auto a = std::make_shared<Stop>("A", red_line);
-  const auto b = std::make_shared<Stop>("B", red_line);
-  const auto c = std::make_shared<Stop>("C", red_line);
+    Line{.name = "Red Line", .base_cost = 1.60, .cost_per_mile = 0.32});
+  const auto a   = std::make_shared<Stop>("A", red_line);
+  const auto b   = std::make_shared<Stop>("B", red_line);
+  const auto c   = std::make_shared<Stop>("C", red_line);
   const auto a_b = std::make_shared<Track>(b, 3.2);
   const auto b_c = std::make_shared<Track>(c, 4.9);
 
@@ -39,7 +39,7 @@ TEST(TestTrack, GetCost) {
 
   // Case where there is a transfer between lines
   const auto blue_line = std::make_shared<const Line>(
-      Line{.name = "Blue Line", .base_cost = 1.40, .cost_per_mile = 0.38});
+    Line{.name = "Blue Line", .base_cost = 1.40, .cost_per_mile = 0.38});
   c->line = blue_line;
 
   a->set_path_cost(0.0);

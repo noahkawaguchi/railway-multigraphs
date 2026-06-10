@@ -21,7 +21,7 @@ TEST(TestStop, SetPathStats) {
   const auto test_line = std::make_shared<const Line>(Line{.name = "Test Line"});
   const auto test_stop = std::make_shared<Stop>("Test Stop", test_line);
   // Set shortest path stats
-  test_stop->path_distance = 5.3;
+  test_stop->path_distance    = 5.3;
   const auto predecessor_stop = std::make_shared<Stop>("Predecessor Stop", test_line);
   test_stop->path_predecessor = predecessor_stop;
   // Make sure shortest path stats are set properly
@@ -34,7 +34,7 @@ TEST(TestStop, ResetPathStats) {
   const auto test_line = std::make_shared<const Line>(Line{.name = "Test Line"});
   const auto test_stop = std::make_shared<Stop>("Test Stop", test_line);
   // Set shortest path stats
-  test_stop->path_distance = 10.2;
+  test_stop->path_distance    = 10.2;
   const auto predecessor_stop = std::make_shared<Stop>("This Should Not Show", test_line);
   test_stop->path_predecessor = predecessor_stop;
   // Reset path stats

@@ -20,13 +20,13 @@ public:
                  double distance);
 
   /// Create a new station that has all the provided stops.
-  [[nodiscard]] static auto new_station(const std::string &name,
+  [[nodiscard]] static auto new_station(const std::string                               &name,
                                         const std::unordered_set<std::shared_ptr<Stop>> &stops)
-      -> Station;
+    -> Station;
 
   /// Get all adjacent tracks for a given stop, including connections to different lines.
   [[nodiscard]] auto get_adjacent_tracks(const std::shared_ptr<Stop> &stop)
-      -> std::unordered_set<std::shared_ptr<Track>>;
+    -> std::unordered_set<std::shared_ptr<Track>>;
 
   /// Print a Route from a shortest path algorithm.
   static void print_route(const Route &route);
@@ -38,6 +38,6 @@ public:
   [[nodiscard]] auto cost_dsp(const StationPair &station_pair) -> Route;
 
 private:
-  std::vector<std::shared_ptr<Stop>> stops;
+  std::vector<std::shared_ptr<Stop>>                                                    stops;
   std::unordered_map<std::shared_ptr<Stop>, std::unordered_set<std::shared_ptr<Track>>> tracks;
 };
