@@ -21,7 +21,7 @@ struct Track {
   [[nodiscard]] auto get_distance() const -> double { return this->distance; }
 
   /// Calculate the cost to go to the other stop, rounded to cents.
-  [[nodiscard]] auto get_cost_from(const std::shared_ptr<Stop> &current_stop) -> double {
+  [[nodiscard]] auto get_cost_from(const std::shared_ptr<const Stop> &current_stop) -> double {
     double total_cost{0.0};
     // Regular cost to take this section of track
     total_cost += std::round(this->distance * this->other_stop->line->cost_per_mile * 100) / 100;

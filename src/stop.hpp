@@ -35,7 +35,7 @@ struct Stop {
   [[nodiscard]] auto get_id() const -> std::string_view { return std::string_view{this->id}; }
 
   /// Set the cost for shortest path algorithms. Automatically rounds to cents.
-  void set_path_cost(double cost) { this->path_cost = std::round(cost * 100) / 100; }
+  void set_path_cost(const double cost) { this->path_cost = std::round(cost * 100) / 100; }
 
   /// Get the cost for shortest path algorithms. Always rounded to cents.
   [[nodiscard]] auto get_path_cost() const -> double { return this->path_cost; }
