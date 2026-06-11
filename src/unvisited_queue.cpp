@@ -1,8 +1,11 @@
 #include "unvisited_queue.hpp"
 
+#include <memory>
 #include <utility>
 
-void UnvisitedQueue::push(std::shared_ptr<Stop> stop, double priority) {
+#include "stop.hpp"
+
+void UnvisitedQueue::push(std::shared_ptr<Stop> stop, const double priority) {
   this->pq.emplace(std::move(stop), priority);
 }
 

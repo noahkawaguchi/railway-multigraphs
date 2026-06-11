@@ -26,7 +26,7 @@ private:
     // cppcoreguidelines-non-private-member-variables-in-classes)
 
     std::shared_ptr<Stop> stop;
-    double priority;
+    double                priority;
 
     // NOLINTEND(misc-non-private-member-variables-in-classes,
     // cppcoreguidelines-non-private-member-variables-in-classes)
@@ -38,6 +38,6 @@ private:
     auto operator<(const QueueStop &other) const -> bool { return this->priority > other.priority; }
   };
 
-  std::priority_queue<QueueStop> pq;
+  std::priority_queue<QueueStop>            pq;
   std::unordered_set<std::shared_ptr<Stop>> processed;
 };

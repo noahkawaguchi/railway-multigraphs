@@ -1,18 +1,23 @@
 #include "network.hpp"
 
 #include <algorithm>
+#include <memory>
 #include <print>
+#include <string>
+#include <unordered_set>
 
+#include "stop.hpp"
+#include "track.hpp"
 #include "unvisited_queue.hpp"
 
-auto Network::new_stop(const std::string &name, std::shared_ptr<const Line> line)
-    -> std::shared_ptr<Stop> {
+auto Network::new_stop(const std::string &name, const std::shared_ptr<const Line> &line)
+  -> std::shared_ptr<Stop> {
   const auto stop = std::make_shared<Stop>(name, line);
   this->stops.push_back(stop);
   return stop;
 }
 
-void Network::new_track(std::shared_ptr<Stop> stop1, std::shared_ptr<Stop> stop2,
+void Network::new_track(const std::shared_ptr<Stop> &stop1, const std::shared_ptr<Stop> &stop2,
                         const double distance) {
   const auto track_from_1 = std::make_shared<Track>(stop2, distance);
   const auto track_from_2 = std::make_shared<Track>(stop1, distance);
@@ -21,7 +26,7 @@ void Network::new_track(std::shared_ptr<Stop> stop1, std::shared_ptr<Stop> stop2
   this->tracks[stop2].insert(track_from_2);
 }
 
-auto Network::new_station(const std::string &name,
+auto Network::new_station(const std::string                               &name,
                           const std::unordered_set<std::shared_ptr<Stop>> &stops) -> Station {
   // Set stops as transfers for each other
   for (const auto &stop_outer : stops) {
@@ -38,7 +43,7 @@ auto Network::new_station(const std::string &name,
 }
 
 auto Network::get_adjacent_tracks(const std::shared_ptr<Stop> &stop)
-    -> std::unordered_set<std::shared_ptr<Track>> {
+  -> std::unordered_set<std::shared_ptr<Track>> {
   // Get the stop's adjacent tracks
   auto ret = this->tracks[stop];
   // Get the adjacent tracks from any transfers
@@ -78,7 +83,7 @@ auto Network::distance_dsp(const StationPair &station_pair) -> Route {
   for (const auto &stop : this->stops) { stop->path_reset(); }
 
   // The algorithm works the same starting from any of the stops at the starting station
-  const auto starting_stop = *station_pair.start.begin();
+  const auto            starting_stop = *station_pair.start.begin();
   std::shared_ptr<Stop> destination_stop{}; // Will be set when found
 
   // Distance and cost from start to start is 0
@@ -122,7 +127,7 @@ auto Network::distance_dsp(const StationPair &station_pair) -> Route {
   }
   // Accumulate the path from start to destination in reverse using the predecessors
   Route route{};
-  auto cursor = destination_stop;
+  auto  cursor = destination_stop;
   while (cursor != starting_stop) {
     route.push_back(cursor);
     cursor = cursor->path_predecessor;
@@ -138,7 +143,7 @@ auto Network::cost_dsp(const StationPair &station_pair) -> Route {
   for (const auto &stop : this->stops) { stop->path_reset(); }
 
   // The algorithm works the same starting from any of the stops at the starting station
-  const auto starting_stop = *station_pair.start.begin();
+  const auto            starting_stop = *station_pair.start.begin();
   std::shared_ptr<Stop> destination_stop{}; // Will be set when found
 
   // Distance and cost from start to start is 0
@@ -173,7 +178,7 @@ auto Network::cost_dsp(const StationPair &station_pair) -> Route {
           || (alt_path_cost == adj_track->other_stop->get_path_cost()
               && alt_path_distance < adj_track->other_stop->path_distance)) {
         adj_track->other_stop->path_distance =
-            current_stop->path_distance + adj_track->get_distance();
+          current_stop->path_distance + adj_track->get_distance();
         adj_track->other_stop->set_path_cost(alt_path_cost);
         adj_track->other_stop->path_predecessor = current_stop;
         // The stop with modified data must be reinserted to maintain sorting
@@ -183,7 +188,7 @@ auto Network::cost_dsp(const StationPair &station_pair) -> Route {
   }
   // Accumulate the path from start to destination in reverse using the predecessors
   Route route{};
-  auto cursor = destination_stop;
+  auto  cursor = destination_stop;
   while (cursor != starting_stop) {
     route.push_back(cursor);
     cursor = cursor->path_predecessor;

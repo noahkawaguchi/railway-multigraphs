@@ -1,14 +1,19 @@
 #include "../src/unvisited_queue.hpp"
 
+#include <memory>
+#include <tuple>
+
 #include <gtest/gtest.h>
+
+#include "../src/stop.hpp"
 
 TEST(TestUQ, Top) {
   // Create line and stops
   const auto test_line = std::make_shared<const Line>(Line{.name = "Test Line"});
-  const auto stop1 = std::make_shared<Stop>("Stop 1", test_line);
-  const auto stop2 = std::make_shared<Stop>("Stop 2", test_line);
-  const auto stop3 = std::make_shared<Stop>("Stop 3", test_line);
-  const auto stop4 = std::make_shared<Stop>("Stop 4", test_line);
+  const auto stop1     = std::make_shared<Stop>("Stop 1", test_line);
+  const auto stop2     = std::make_shared<Stop>("Stop 2", test_line);
+  const auto stop3     = std::make_shared<Stop>("Stop 3", test_line);
+  const auto stop4     = std::make_shared<Stop>("Stop 4", test_line);
 
   // Set priorities
   stop1->path_distance = 5;
@@ -37,9 +42,9 @@ TEST(TestUQ, Empty) {
 
   // Create line and stops
   const auto test_line = std::make_shared<const Line>(Line{.name = "Test Line"});
-  const auto stop1 = std::make_shared<Stop>("Stop 1", test_line);
-  const auto stop2 = std::make_shared<Stop>("Stop 2", test_line);
-  const auto stop3 = std::make_shared<Stop>("Stop 3", test_line);
+  const auto stop1     = std::make_shared<Stop>("Stop 1", test_line);
+  const auto stop2     = std::make_shared<Stop>("Stop 2", test_line);
+  const auto stop3     = std::make_shared<Stop>("Stop 3", test_line);
 
   // Set priorities
   stop1->path_distance = 7;
@@ -70,12 +75,12 @@ TEST(TestUQ, Empty) {
 TEST(TestUQ, TopReinsertion) {
   // Create line and stops
   const auto test_line = std::make_shared<const Line>(Line{.name = "Test Line"});
-  const auto a = std::make_shared<Stop>("A", test_line);
-  const auto b = std::make_shared<Stop>("B", test_line);
-  const auto c = std::make_shared<Stop>("C", test_line);
-  const auto d = std::make_shared<Stop>("D", test_line);
-  const auto e = std::make_shared<Stop>("E", test_line);
-  const auto f = std::make_shared<Stop>("F", test_line);
+  const auto a         = std::make_shared<Stop>("A", test_line);
+  const auto b         = std::make_shared<Stop>("B", test_line);
+  const auto c         = std::make_shared<Stop>("C", test_line);
+  const auto d         = std::make_shared<Stop>("D", test_line);
+  const auto e         = std::make_shared<Stop>("E", test_line);
+  const auto f         = std::make_shared<Stop>("F", test_line);
 
   // Set priority of C, leave the rest as infinity
   c->path_distance = 0;

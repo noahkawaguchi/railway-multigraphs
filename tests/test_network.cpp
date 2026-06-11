@@ -1,6 +1,12 @@
 #include "../src/network.hpp"
 
+#include <memory>
+#include <tuple>
+#include <unordered_set>
+
 #include <gtest/gtest.h>
+
+#include "../src/stop.hpp"
 
 TEST(TestNetwork, GetAdjacentTracks) {
   // Create network
@@ -8,10 +14,10 @@ TEST(TestNetwork, GetAdjacentTracks) {
 
   // Add Red Line stops to network
   const auto red_line = std::make_shared<const Line>(Line{.name = "Red Line"});
-  const auto r1 = transfer_network->new_stop("R1", red_line);
-  const auto r2 = transfer_network->new_stop("R2", red_line);
-  const auto r3 = transfer_network->new_stop("R3", red_line);
-  const auto r4 = transfer_network->new_stop("R4", red_line);
+  const auto r1       = transfer_network->new_stop("R1", red_line);
+  const auto r2       = transfer_network->new_stop("R2", red_line);
+  const auto r3       = transfer_network->new_stop("R3", red_line);
+  const auto r4       = transfer_network->new_stop("R4", red_line);
 
   // Connect Red Line stops with tracks
   transfer_network->new_track(r1, r2, 2);
@@ -20,10 +26,10 @@ TEST(TestNetwork, GetAdjacentTracks) {
 
   // Add Blue Line stops to network
   const auto blue_line = std::make_shared<const Line>(Line{.name = "Blue Line"});
-  const auto b1 = transfer_network->new_stop("B1", blue_line);
-  const auto b2 = transfer_network->new_stop("B2", blue_line);
-  const auto b3 = transfer_network->new_stop("B3", blue_line);
-  const auto b4 = transfer_network->new_stop("B4", blue_line);
+  const auto b1        = transfer_network->new_stop("B1", blue_line);
+  const auto b2        = transfer_network->new_stop("B2", blue_line);
+  const auto b3        = transfer_network->new_stop("B3", blue_line);
+  const auto b4        = transfer_network->new_stop("B4", blue_line);
 
   // Connect Blue Line stops with tracks
   transfer_network->new_track(b1, b2, 4);
@@ -110,10 +116,10 @@ TEST(DistanceDSP, ToyDataABCD) {
 
   // Add a line and stops to the network
   const auto abcd_line = std::make_shared<const Line>(Line{.name = "ABCD Line"});
-  const auto stopA = abcd->new_stop("A", abcd_line);
-  const auto stopB = abcd->new_stop("B", abcd_line);
-  const auto stopC = abcd->new_stop("C", abcd_line);
-  const auto stopD = abcd->new_stop("D", abcd_line);
+  const auto stopA     = abcd->new_stop("A", abcd_line);
+  const auto stopB     = abcd->new_stop("B", abcd_line);
+  const auto stopC     = abcd->new_stop("C", abcd_line);
+  const auto stopD     = abcd->new_stop("D", abcd_line);
 
   // Connect stops with tracks
   abcd->new_track(stopA, stopB, 3);
@@ -145,14 +151,14 @@ TEST(DistanceDSP, ToyDataTinyCity) {
 
   // Add line and stops to network
   const auto tiny_city_railway = std::make_shared<const Line>(Line{.name = "Tiny City Railway"});
-  const auto hospital = tiny_city->new_stop("Hospital", tiny_city_railway);
-  const auto airport = tiny_city->new_stop("Airport", tiny_city_railway);
-  const auto west_residential = tiny_city->new_stop("West Residential", tiny_city_railway);
-  const auto city_hall = tiny_city->new_stop("City Hall", tiny_city_railway);
-  const auto east_residential = tiny_city->new_stop("East Residential", tiny_city_railway);
-  const auto park = tiny_city->new_stop("Park", tiny_city_railway);
-  const auto mall = tiny_city->new_stop("Mall", tiny_city_railway);
-  const auto seaport = tiny_city->new_stop("Seaport", tiny_city_railway);
+  const auto hospital          = tiny_city->new_stop("Hospital", tiny_city_railway);
+  const auto airport           = tiny_city->new_stop("Airport", tiny_city_railway);
+  const auto west_residential  = tiny_city->new_stop("West Residential", tiny_city_railway);
+  const auto city_hall         = tiny_city->new_stop("City Hall", tiny_city_railway);
+  const auto east_residential  = tiny_city->new_stop("East Residential", tiny_city_railway);
+  const auto park              = tiny_city->new_stop("Park", tiny_city_railway);
+  const auto mall              = tiny_city->new_stop("Mall", tiny_city_railway);
+  const auto seaport           = tiny_city->new_stop("Seaport", tiny_city_railway);
 
   // Connect stops with tracks
   tiny_city->new_track(hospital, west_residential, 2);
@@ -170,30 +176,30 @@ TEST(DistanceDSP, ToyDataTinyCity) {
   const Station hospital_station{Network::new_station("Hospital Station", {hospital})};
   const Station airport_station{Network::new_station("Airport Station", {airport})};
   const Station west_residential_station{
-      Network::new_station("West Residential Station", {west_residential})};
+    Network::new_station("West Residential Station", {west_residential})};
   const Station city_hall_station{Network::new_station("City Hall Station", {city_hall})};
   const Station east_residential_station{
-      Network::new_station("East Residential Station", {east_residential})};
+    Network::new_station("East Residential Station", {east_residential})};
   const Station park_station{Network::new_station("Park Station", {park})};
   const Station mall_station{Network::new_station("Mall Station", {mall})};
   const Station seaport_station{Network::new_station("Seaport Station", {seaport})};
 
   // Find the shortest path from the park to the airport
   const Route park_airport_route{
-      tiny_city->distance_dsp({.start = park_station, .dest = airport_station})};
+    tiny_city->distance_dsp({.start = park_station, .dest = airport_station})};
   const Route correct_path_park_airport{park, west_residential, hospital, city_hall, airport};
   EXPECT_EQ(park_airport_route, correct_path_park_airport);
 
   // Find the shortest path from East Residential to West Residential
-  const Route east_west_route{tiny_city->distance_dsp(
-      {.start = east_residential_station, .dest = west_residential_station})};
+  const Route east_west_route{
+    tiny_city->distance_dsp({.start = east_residential_station, .dest = west_residential_station})};
   const Route correct_path_east_west{east_residential, airport, city_hall, hospital,
                                      west_residential};
   EXPECT_EQ(east_west_route, correct_path_east_west);
 
   // Find the shortest path from the seaport to the hospital
   const Route seaport_hospital_route{
-      tiny_city->distance_dsp({.start = seaport_station, .dest = hospital_station})};
+    tiny_city->distance_dsp({.start = seaport_station, .dest = hospital_station})};
   const Route correct_path_seaport_hospital{seaport, mall, city_hall, hospital};
   EXPECT_EQ(seaport_hospital_route, correct_path_seaport_hospital);
 }
@@ -204,7 +210,7 @@ TEST(CostDSP, ToyDataLongCheapWay) {
 
   // Make a long, cheap line
   const auto savings_line = std::make_shared<const Line>(
-      Line{.name = "Savings Line", .base_cost = 0.75, .cost_per_mile = 0.12});
+    Line{.name = "Savings Line", .base_cost = 0.75, .cost_per_mile = 0.12});
   const auto savings_A = cost_test_railway->new_stop("Savings A", savings_line);
   const auto savings_B = cost_test_railway->new_stop("Savings B", savings_line);
   const auto savings_C = cost_test_railway->new_stop("Savings C", savings_line);
@@ -219,7 +225,7 @@ TEST(CostDSP, ToyDataLongCheapWay) {
 
   // Make a short, expensive line
   const auto express_line = std::make_shared<const Line>(
-      Line{.name = "Express Line", .base_cost = 1.80, .cost_per_mile = 0.41});
+    Line{.name = "Express Line", .base_cost = 1.80, .cost_per_mile = 0.41});
   const auto express_B = cost_test_railway->new_stop("Express B", express_line);
   const auto express_D = cost_test_railway->new_stop("Express D", express_line);
   const auto express_E = cost_test_railway->new_stop("Express E", express_line);
@@ -236,7 +242,7 @@ TEST(CostDSP, ToyDataLongCheapWay) {
 
   // Distance DSP should find the path with the shortest distance, which is more expensive
   const Route distance_dsp_route{
-      cost_test_railway->distance_dsp({.start = stationA, .dest = stationF})};
+    cost_test_railway->distance_dsp({.start = stationA, .dest = stationF})};
   const Route correct_expensive_route{savings_A, savings_B, express_D, express_E, savings_F};
   EXPECT_EQ(distance_dsp_route, correct_expensive_route);
   // 1.1 + 1.9 + 2.1 + 0.9 = 6 mi
@@ -280,7 +286,7 @@ TEST(CostDSP, ToyDataRealMultigraphCity) {
 
   // Make the Main Line
   const auto main_line = std::make_shared<const Line>(
-      Line{.name = "Main Line", .base_cost = 1.50, .cost_per_mile = 0.25});
+    Line{.name = "Main Line", .base_cost = 1.50, .cost_per_mile = 0.25});
   const auto m1 = real_multigraph_city->new_stop("M1", main_line);
   const auto m2 = real_multigraph_city->new_stop("M2", main_line);
   const auto m3 = real_multigraph_city->new_stop("M3", main_line);
@@ -291,7 +297,7 @@ TEST(CostDSP, ToyDataRealMultigraphCity) {
 
   // Make the Underground Loop
   const auto underground_loop = std::make_shared<const Line>(
-      Line{.name = "Underground Loop", .base_cost = 1.75, .cost_per_mile = 0.35});
+    Line{.name = "Underground Loop", .base_cost = 1.75, .cost_per_mile = 0.35});
   const auto u1 = real_multigraph_city->new_stop("U1", underground_loop);
   const auto u2 = real_multigraph_city->new_stop("U2", underground_loop);
   const auto u3 = real_multigraph_city->new_stop("U3", underground_loop);
@@ -301,7 +307,7 @@ TEST(CostDSP, ToyDataRealMultigraphCity) {
 
   // Make the Commuter Local
   const auto commuter_local = std::make_shared<const Line>(
-      Line{.name = "Commuter Local", .base_cost = 1.25, .cost_per_mile = 0.20});
+    Line{.name = "Commuter Local", .base_cost = 1.25, .cost_per_mile = 0.20});
   const auto l1 = real_multigraph_city->new_stop("L1", commuter_local);
   const auto l2 = real_multigraph_city->new_stop("L2", commuter_local);
   const auto l3 = real_multigraph_city->new_stop("L3", commuter_local);
@@ -314,7 +320,7 @@ TEST(CostDSP, ToyDataRealMultigraphCity) {
 
   // Make the Commuter Special
   const auto commuter_special = std::make_shared<const Line>(
-      Line{.name = "Commuter Special", .base_cost = 2.00, .cost_per_mile = 0.30});
+    Line{.name = "Commuter Special", .base_cost = 2.00, .cost_per_mile = 0.30});
   const auto s1 = real_multigraph_city->new_stop("S1", commuter_special);
   const auto s2 = real_multigraph_city->new_stop("S2", commuter_special);
   const auto s3 = real_multigraph_city->new_stop("S3", commuter_special);
@@ -335,7 +341,7 @@ TEST(CostDSP, ToyDataRealMultigraphCity) {
 
   // Find the shortest path from Seaport Station to City Center Station
   const Route dist_dsp_sea_center{
-      real_multigraph_city->distance_dsp({.start = seaport, .dest = city_center})};
+    real_multigraph_city->distance_dsp({.start = seaport, .dest = city_center})};
   const Route correct_sea_center_dist{m1, m2, u3};
   EXPECT_EQ(dist_dsp_sea_center, correct_sea_center_dist);
   EXPECT_DOUBLE_EQ(dist_dsp_sea_center.back()->path_distance, 11.2);
@@ -343,7 +349,7 @@ TEST(CostDSP, ToyDataRealMultigraphCity) {
 
   // Find the cheapest path from Seaport Station to City Center Station
   const Route cost_dsp_sea_center{
-      real_multigraph_city->cost_dsp({.start = seaport, .dest = city_center})};
+    real_multigraph_city->cost_dsp({.start = seaport, .dest = city_center})};
   const Route correct_sea_center_cost{m1, m2, l4};
   EXPECT_EQ(cost_dsp_sea_center, correct_sea_center_cost);
   EXPECT_DOUBLE_EQ(cost_dsp_sea_center.back()->path_distance, 13.2);
@@ -351,7 +357,7 @@ TEST(CostDSP, ToyDataRealMultigraphCity) {
 
   // Find the shortest path from South Station to Airport Station
   const Route dist_dsp_south_air{
-      real_multigraph_city->distance_dsp({.start = south, .dest = airport})};
+    real_multigraph_city->distance_dsp({.start = south, .dest = airport})};
   EXPECT_TRUE(south.contains(dist_dsp_south_air.front())); // Starting Stop is arbitrary
   EXPECT_EQ(dist_dsp_south_air[1], u1);
   EXPECT_EQ(dist_dsp_south_air[2], m4);
@@ -368,7 +374,7 @@ TEST(CostDSP, ToyDataRealMultigraphCity) {
 
   // Find the shortest path from Residential West Station to North Station
   const Route dist_dsp_res_west_north{
-      real_multigraph_city->distance_dsp({.start = residential_west, .dest = north})};
+    real_multigraph_city->distance_dsp({.start = residential_west, .dest = north})};
   // Starting Stop is arbitrary
   EXPECT_TRUE(residential_west.contains(dist_dsp_res_west_north.front()));
   EXPECT_EQ(dist_dsp_res_west_north[1], s2);
@@ -379,7 +385,7 @@ TEST(CostDSP, ToyDataRealMultigraphCity) {
 
   // Find the cheapest path from Residential West Station to North Station
   const Route cost_dsp_res_west_north{
-      real_multigraph_city->cost_dsp({.start = residential_west, .dest = north})};
+    real_multigraph_city->cost_dsp({.start = residential_west, .dest = north})};
   // Starting Stop is arbitrary
   EXPECT_TRUE(residential_west.contains(cost_dsp_res_west_north.front()));
   EXPECT_EQ(cost_dsp_res_west_north[1], l2);

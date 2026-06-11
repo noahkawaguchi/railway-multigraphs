@@ -1,0 +1,17 @@
+words = [
+    "CXX",
+    "DCMAKE",
+    "DSP",
+    "EOF",
+    "Werror",
+    "bugprone",
+    "cmake",
+    "cppcoreguidelines",
+    "ctest",
+    "graphml",
+    "gtest",
+    "hicpp",
+    "multigraph",
+    "multigraphs",
+]
+ignore_paths = ["external/**/*"]
