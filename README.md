@@ -20,25 +20,24 @@ Dijkstra's shortest path finds the shortest path from a starting node to all oth
 
 ### Building, Testing, and Running the Project
 
-The project requires a C++23 compiler such as GCC 14+ or Clang 18+ (tested with GCC 14 and 15) and CMake 3.25+. The project also uses GoogleTest as a Git submodule.
-
-Using the command runner [just](https://github.com/casey/just):
-
-```bash
-just rebuild
-just test
-just run
-```
-
-Or running the same commands manually:
+- For [Nix](https://github.com/NixOS/nix) users, the toolchain is included as a flake.
+- Otherwise, the following toolchain must be installed:
+  - C++23 compiler such as GCC 14+ or Clang 18+ (tested with GCC 15 and Clang 21 in CI)
+  - CMake 3.25+
+  - Conan 2.x
+  - The command runner [Just](https://github.com/casey/just)
+  - `clang-tidy` and `clang-format` (only if linting/formatting)
 
 ```bash
-rm -rf build
-cmake -B build -DCMAKE_BUILD_TYPE=Release
-cmake --build build
-ctest --test-dir build --output-on-failure --verbose
-./build/railway-multigraphs
+just test       # Build and run tests with GoogleTest
+just run        # Build and run the main executable
+just lint       # Lint with Clang-Tidy
+just fmt-check  # Check formatting with Clang-Format
 ```
+
+### CI
+
+Tests, linting, format checking, and spell checking run via GitHub Actions on pushes and pull requests to main (as defined in [`.github/workflows/ci.yml`](.github/workflows/ci.yml)) and must all pass before a branch can be merged into main.
 
 ### Toy Data Example Visualization
 
