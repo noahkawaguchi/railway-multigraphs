@@ -1,3 +1,5 @@
 /build/
 Testing/Temporary
 .cache/
+.direnv/
+CMakeUserPresets.json
