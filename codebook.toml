@@ -6,12 +6,21 @@ words = [
     "Werror",
     "bugprone",
     "cmake",
+    "conanfile",
     "cppcoreguidelines",
+    "cppstd",
     "ctest",
+    "direnv",
+    "envrc",
     "graphml",
     "gtest",
     "hicpp",
+    "libcxx",
+    "lifecycle",
     "multigraph",
     "multigraphs",
+    "nixbuild",
+    "nixpkgs",
+    "pkgs",
 ]
-ignore_paths = ["external/**/*"]
+ignore_paths = ["flake.lock"]
