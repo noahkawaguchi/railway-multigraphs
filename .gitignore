@@ -2,3 +2,4 @@
 Testing/Temporary
 .cache/
 .direnv/
+CMakeUserPresets.json
