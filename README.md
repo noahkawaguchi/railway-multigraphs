@@ -37,7 +37,7 @@ just fmt-check  # Check formatting with Clang-Format
 
 ### CI
 
-Tests, linting, format checking, and spell checking run via GitHub Actions on pushes and pull requests to main (as defined in [`.github/workflows/ci.yml`](.github/workflows/ci.yml)) and must all pass before a branch can be merged into main.
+Tests, linting, format checking, and spell checking run via GitHub Actions on pushes and pull requests to `main` (as defined in [`.github/workflows/ci.yml`](.github/workflows/ci.yml)) and must all pass before a branch can be merged into `main`.
 
 ### Toy Data Example Visualization
 
@@ -47,7 +47,9 @@ Here is one example of the visualizations I made using [graphonline.top](https:/
 
 ### Terminal Output
 
-Here is the terminal output printed when running the main executable:
+<details>
+<summary><i>Terminal output when running the main executable (click to expand)</i></summary>
+<br />
 
 ```
 --------------------
@@ -198,3 +200,5 @@ Here is your route from Residential West Station to North Station:
 
 --------------------
 ```
+
+</details>
