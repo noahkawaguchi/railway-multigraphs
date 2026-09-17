@@ -47,7 +47,9 @@ Here is one example of the visualizations I made using [graphonline.top](https:/
 
 ### Terminal Output
 
-Here is the terminal output printed when running the main executable:
+<details>
+<summary><i>Terminal output when running the main executable (click to expand)</i></summary>
+<br />
 
 ```
 --------------------
@@ -198,3 +200,5 @@ Here is your route from Residential West Station to North Station:
 
 --------------------
 ```
+
+</details>
