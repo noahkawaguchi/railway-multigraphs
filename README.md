@@ -1,5 +1,7 @@
 # Railway Multigraphs
 
+[![CI](https://github.com/noahkawaguchi/railway-multigraphs/actions/workflows/ci.yml/badge.svg)](https://github.com/noahkawaguchi/railway-multigraphs/actions/workflows/ci.yml)
+
 ### Introduction
 
 In this project, I use multigraphs and variations of Dijkstra's Shortest Path to model passenger rail networks. In addition to using the standard version of Dijkstra's Algorithm that finds the shortest path by distance, I created a modified version that finds the _cheapest_ path, considering multiple railway operators and transfers between them.
@@ -22,7 +24,7 @@ Dijkstra's shortest path finds the shortest path from a starting node to all oth
 
 - For [Nix](https://github.com/NixOS/nix) users, the toolchain is included as a flake.
 - Otherwise, the following toolchain must be installed:
-  - C++23 compiler such as GCC 14+ or Clang 18+ (tested with GCC 15 and Clang 21 in CI)
+  - C++23 compiler such as GCC 14+ or Clang 18+ (tested with GCC 16 and Clang 21 in CI)
   - CMake 3.25+
   - Conan 2.x
   - The command runner [Just](https://github.com/casey/just)

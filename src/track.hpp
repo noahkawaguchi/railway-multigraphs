@@ -16,7 +16,7 @@ struct Track {
   // cppcoreguidelines-non-private-member-variables-in-classes)
 
   Track(std::shared_ptr<Stop> other_stop, double distance)
-      : other_stop(std::move(other_stop)), distance(distance) {}
+    : other_stop(std::move(other_stop)), distance(distance) {}
 
   [[nodiscard]] auto get_distance() const -> double { return this->distance; }
 

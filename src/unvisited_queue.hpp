@@ -32,7 +32,7 @@ private:
     // cppcoreguidelines-non-private-member-variables-in-classes)
 
     QueueStop(std::shared_ptr<Stop> stop, double priority)
-        : stop(std::move(stop)), priority(priority) {}
+      : stop(std::move(stop)), priority(priority) {}
 
     /// Overload the < operator for priority queue comparisons.
     auto operator<(const QueueStop &other) const -> bool { return this->priority > other.priority; }

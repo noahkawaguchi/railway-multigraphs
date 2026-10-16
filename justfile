@@ -28,7 +28,7 @@ rebuild: clean build
 
 # Remove build artifacts
 clean:
-    rm -rf build
+    -test -d build && du -sh build && rm -rf build && echo 'cleaned'
 
 ####################################################################################################
 # Testing and quality
@@ -50,6 +50,10 @@ lint: build
 fmt-check:
     git ls-files -z '*.cpp' '*.hpp' | xargs -0 clang-format --dry-run --Werror \
         && echo 'Formatting check passed'
+
+# Apply Clang-Format changes
+fmt:
+    git ls-files -z '*.cpp' '*.hpp' | xargs -0 clang-format -i
 
 # Check spelling with Codebook
 spell-check:

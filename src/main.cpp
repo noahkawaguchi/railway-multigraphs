@@ -80,10 +80,12 @@ void toy_data_tiny_city() {
   const Station hospital_station{Network::new_station("Hospital Station", {hospital})};
   const Station airport_station{Network::new_station("Airport Station", {airport})};
   const Station west_residential_station{
-    Network::new_station("West Residential Station", {west_residential})};
+    Network::new_station("West Residential Station", {west_residential})
+  };
   const Station city_hall_station{Network::new_station("City Hall Station", {city_hall})};
   const Station east_residential_station{
-    Network::new_station("East Residential Station", {east_residential})};
+    Network::new_station("East Residential Station", {east_residential})
+  };
   const Station park_station{Network::new_station("Park Station", {park})};
   const Station mall_station{Network::new_station("Mall Station", {mall})};
   const Station seaport_station{Network::new_station("Seaport Station", {seaport})};
@@ -98,7 +100,8 @@ void toy_data_long_cheap_way() {
 
   // Make a long, cheap line
   const auto savings_line = std::make_shared<const Line>(
-    Line{.name = "Savings Line", .base_cost = 0.75, .cost_per_mile = 0.12});
+    Line{.name = "Savings Line", .base_cost = 0.75, .cost_per_mile = 0.12}
+  );
   const auto savings_A = cost_test_railway->new_stop("Savings A", savings_line);
   const auto savings_B = cost_test_railway->new_stop("Savings B", savings_line);
   const auto savings_C = cost_test_railway->new_stop("Savings C", savings_line);
@@ -113,7 +116,8 @@ void toy_data_long_cheap_way() {
 
   // Make a short, expensive line
   const auto express_line = std::make_shared<const Line>(
-    Line{.name = "Express Line", .base_cost = 1.80, .cost_per_mile = 0.41});
+    Line{.name = "Express Line", .base_cost = 1.80, .cost_per_mile = 0.41}
+  );
   const auto express_B = cost_test_railway->new_stop("Express B", express_line);
   const auto express_D = cost_test_railway->new_stop("Express D", express_line);
   const auto express_E = cost_test_railway->new_stop("Express E", express_line);
@@ -141,7 +145,8 @@ void toy_data_real_multigraph_city() {
 
   // Make the Main Line
   const auto main_line = std::make_shared<const Line>(
-    Line{.name = "Main Line", .base_cost = 1.50, .cost_per_mile = 0.25});
+    Line{.name = "Main Line", .base_cost = 1.50, .cost_per_mile = 0.25}
+  );
   const auto m1 = real_multigraph_city->new_stop("M1", main_line);
   const auto m2 = real_multigraph_city->new_stop("M2", main_line);
   const auto m3 = real_multigraph_city->new_stop("M3", main_line);
@@ -152,7 +157,8 @@ void toy_data_real_multigraph_city() {
 
   // Make the Underground Loop
   const auto underground_loop = std::make_shared<const Line>(
-    Line{.name = "Underground Loop", .base_cost = 1.75, .cost_per_mile = 0.35});
+    Line{.name = "Underground Loop", .base_cost = 1.75, .cost_per_mile = 0.35}
+  );
   const auto u1 = real_multigraph_city->new_stop("U1", underground_loop);
   const auto u2 = real_multigraph_city->new_stop("U2", underground_loop);
   const auto u3 = real_multigraph_city->new_stop("U3", underground_loop);
@@ -162,7 +168,8 @@ void toy_data_real_multigraph_city() {
 
   // Make the Commuter Local
   const auto commuter_local = std::make_shared<const Line>(
-    Line{.name = "Commuter Local", .base_cost = 1.25, .cost_per_mile = 0.20});
+    Line{.name = "Commuter Local", .base_cost = 1.25, .cost_per_mile = 0.20}
+  );
   const auto c1 = real_multigraph_city->new_stop("L1", commuter_local);
   const auto c2 = real_multigraph_city->new_stop("L2", commuter_local);
   const auto c3 = real_multigraph_city->new_stop("L3", commuter_local);
@@ -175,7 +182,8 @@ void toy_data_real_multigraph_city() {
 
   // Make the Commuter Special
   const auto commuter_special = std::make_shared<const Line>(
-    Line{.name = "Commuter Special", .base_cost = 2.00, .cost_per_mile = 0.30});
+    Line{.name = "Commuter Special", .base_cost = 2.00, .cost_per_mile = 0.30}
+  );
   const auto s1 = real_multigraph_city->new_stop("S1", commuter_special);
   const auto s2 = real_multigraph_city->new_stop("S2", commuter_special);
   const auto s3 = real_multigraph_city->new_stop("S3", commuter_special);
@@ -207,8 +215,8 @@ void toy_data_real_multigraph_city() {
   Network::print_route(real_multigraph_city->cost_dsp({.start = south, .dest = airport}));
 
   // Find the shortest path from Residential West Station to North Station
-  Network::print_route(
-    real_multigraph_city->distance_dsp({.start = residential_west, .dest = north}));
+  Network::print_route(real_multigraph_city
+                         ->distance_dsp({.start = residential_west, .dest = north}));
 
   // Find the cheapest path from Residential West Station to North Station
   Network::print_route(real_multigraph_city->cost_dsp({.start = residential_west, .dest = north}));

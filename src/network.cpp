@@ -17,8 +17,11 @@ auto Network::new_stop(const std::string &name, const std::shared_ptr<const Line
   return stop;
 }
 
-void Network::new_track(const std::shared_ptr<Stop> &stop1, const std::shared_ptr<Stop> &stop2,
-                        const double distance) {
+void Network::new_track(
+  const std::shared_ptr<Stop> &stop1,
+  const std::shared_ptr<Stop> &stop2,
+  const double                 distance
+) {
   const auto track_from_1 = std::make_shared<Track>(stop2, distance);
   const auto track_from_2 = std::make_shared<Track>(stop1, distance);
   // Add track to the adjacency list for both stops
@@ -26,8 +29,10 @@ void Network::new_track(const std::shared_ptr<Stop> &stop1, const std::shared_pt
   this->tracks[stop2].insert(track_from_2);
 }
 
-auto Network::new_station(const std::string                               &name,
-                          const std::unordered_set<std::shared_ptr<Stop>> &stops) -> Station {
+auto Network::new_station(
+  const std::string                               &name,
+  const std::unordered_set<std::shared_ptr<Stop>> &stops
+) -> Station {
   // Set stops as transfers for each other
   for (const auto &stop_outer : stops) {
     for (const auto &stop_inner : stops) {
@@ -58,8 +63,12 @@ auto Network::get_adjacent_tracks(const std::shared_ptr<Stop> &stop)
 }
 
 void Network::print_route(const Route &route) {
-  std::print("\n{}\n\nHere is your route from {} to {}:\n\n", std::string(20, '-'),
-             route.front()->station_name, route.back()->station_name);
+  std::print(
+    "\n{}\n\nHere is your route from {} to {}:\n\n",
+    std::string(20, '-'),
+    route.front()->station_name,
+    route.back()->station_name
+  );
 
   for (const auto &stop : route) {
     if (stop == route.front()) {
@@ -108,8 +117,9 @@ auto Network::distance_dsp(const StationPair &station_pair) -> Route {
     // Iterate over adjacent stops (via adjacent tracks)
     for (const auto &adj_track : this->get_adjacent_tracks(current_stop)) {
       const double alt_path_distance{current_stop->path_distance + adj_track->get_distance()};
-      const double alt_path_cost{current_stop->get_path_cost()
-                                 + adj_track->get_cost_from(current_stop)};
+      const double alt_path_cost{
+        current_stop->get_path_cost() + adj_track->get_cost_from(current_stop)
+      };
 
       // If a shorter path from the starting stop to the adjacent stop is found,
       // or if the path is the same length but cheaper, update the adjacent stop's
@@ -168,8 +178,9 @@ auto Network::cost_dsp(const StationPair &station_pair) -> Route {
     // Iterate over adjacent stops (via adjacent tracks)
     for (const auto &adj_track : this->get_adjacent_tracks(current_stop)) {
       const double alt_path_distance{current_stop->path_distance + adj_track->get_distance()};
-      const double alt_path_cost{current_stop->get_path_cost()
-                                 + adj_track->get_cost_from(current_stop)};
+      const double alt_path_cost{
+        current_stop->get_path_cost() + adj_track->get_cost_from(current_stop)
+      };
 
       // If a cheaper path from the starting stop to the adjacent stop is found,
       // or if the path is the same price but shorter, update the adjacent stop's
@@ -177,8 +188,8 @@ auto Network::cost_dsp(const StationPair &station_pair) -> Route {
       if (alt_path_cost < adj_track->other_stop->get_path_cost()
           || (alt_path_cost == adj_track->other_stop->get_path_cost()
               && alt_path_distance < adj_track->other_stop->path_distance)) {
-        adj_track->other_stop->path_distance =
-          current_stop->path_distance + adj_track->get_distance();
+        adj_track->other_stop
+          ->path_distance = current_stop->path_distance + adj_track->get_distance();
         adj_track->other_stop->set_path_cost(alt_path_cost);
         adj_track->other_stop->path_predecessor = current_stop;
         // The stop with modified data must be reinserted to maintain sorting
