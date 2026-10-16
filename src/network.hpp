@@ -16,12 +16,15 @@ public:
     -> std::shared_ptr<Stop>;
 
   /// Create and add a track to the network, specifying the distance traveled between the two stops.
-  void new_track(const std::shared_ptr<Stop> &stop1, const std::shared_ptr<Stop> &stop2,
-                 double distance);
+  void new_track(
+    const std::shared_ptr<Stop> &stop1,
+    const std::shared_ptr<Stop> &stop2,
+    double                       distance
+  );
 
   /// Create a new station that has all the provided stops.
-  [[nodiscard]] static auto new_station(const std::string                               &name,
-                                        const std::unordered_set<std::shared_ptr<Stop>> &stops)
+  [[nodiscard]] static auto
+  new_station(const std::string &name, const std::unordered_set<std::shared_ptr<Stop>> &stops)
     -> Station;
 
   /// Get all adjacent tracks for a given stop, including connections to different lines.

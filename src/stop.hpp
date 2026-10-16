@@ -29,7 +29,7 @@ struct Stop {
   // cppcoreguidelines-non-private-member-variables-in-classes)
 
   Stop(std::string id, std::shared_ptr<const Line> line)
-      : id(std::move(id)), line(std::move(line)) {}
+    : id(std::move(id)), line(std::move(line)) {}
 
   /// Retrieve the ID of this stop.
   [[nodiscard]] auto get_id() const -> std::string_view { return std::string_view{this->id}; }
